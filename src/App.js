@@ -1,22 +1,22 @@
 import React, {Component} from 'react';
-import GameTableList from './Components/gameTableList';
-import { apiUrl } from './Components/Constants';
+import MainHeader from './Components/Header/MainHeader';
+import SubHeader from './Components/Header/SubHeader';
+import Main from './Components/Main';
 
     class App extends Component {
       state = {
+        sports: ["NBA"],
         games: []
       }
 
       render () {
         return (
-          <GameTableList games={this.state.games} />
+          <div>
+            <MainHeader />
+            <SubHeader />
+            <Main />
+          </div>          
         );
-      }
-
-      componentDidMount() {
-        fetch(apiUrl + '/games?onlyFutureGames=true')
-        .then(res => res.json()) 
-        .then(data => this.setState({ games: data }))
       }
     }
 
