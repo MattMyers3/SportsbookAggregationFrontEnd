@@ -14,10 +14,6 @@ class Main extends React.Component {
       }
      
       handleChange = date => {
-          console.log(date);
-          console.log(date.getFullYear());
-          console.log(date.getMonth());
-          console.log(date.getDate());
         this.setState({
           startDate: date
         });
