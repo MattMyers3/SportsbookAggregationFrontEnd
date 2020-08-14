@@ -14,7 +14,7 @@ import GameRow from './GameRow';
                   </tr>
                 </thead>
                 <tbody>
-                  {games.map((game, i) => <GameRow homeTeamId={game.homeTeamId} awayTeamId={game.awayTeamId} gameId={game.gameId}/>)}
+                  {games.map((game, i) => <GameRow key={game.gameId} homeTeamId={game.homeTeamId} awayTeamId={game.awayTeamId} gameId={game.gameId}/>)}
                 </tbody>
               </table>
             </div>

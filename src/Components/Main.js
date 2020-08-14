@@ -1,14 +1,27 @@
 import React from 'react';
-import DateSelector from './DateSelector';
 import {Container, Row, Col, Dropdown, DropdownButton} from 'react-bootstrap';
 import GameTableList from './GameTableList';
 import { apiUrl } from './Constants';
+import DatePicker from "react-datepicker";
+ 
+import "react-datepicker/dist/react-datepicker.css";
 
 class Main extends React.Component {
     state = {
         sports: ["NBA"],
-        games: []
+        games: [],
+        startDate: new Date()
       }
+     
+      handleChange = date => {
+        this.setState({
+          startDate: date
+        });
+
+        fetch(apiUrl + '/games?year=' + date.getFullYear() + '&month=' + (date.getMonth() + 1) + '&day=' + date.getDate())
+        .then(res => res.json()) 
+        .then(data => this.setState({ games: data }))
+      };
 
     render ()
     {
@@ -18,7 +31,7 @@ class Main extends React.Component {
                     <Col>
                         <h4 className="text-center">NBA Best Lines</h4>
                         <div className="text-center">
-                            <DateSelector />
+                            <DatePicker selected={this.state.startDate} onChange={this.handleChange} />
                         </div>
                     </Col>
                     <Col>
@@ -35,7 +48,7 @@ class Main extends React.Component {
     }
 
     componentDidMount() {
-        fetch(apiUrl + '/games?onlyFutureGames=true')
+        fetch(apiUrl + '/games?year=' + this.state.startDate.getFullYear() + '&month=' + (this.state.startDate.getMonth() + 1) + '&day=' + this.state.startDate.getDate())
         .then(res => res.json()) 
         .then(data => this.setState({ games: data }))
       }
