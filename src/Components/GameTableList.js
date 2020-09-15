@@ -12,7 +12,7 @@ class GameTableList extends React.Component{
   {
     return (
       <div className="mt-3">
-        <small>Last Refresh Time: {this.state.lastRefreshTime.getMonth() + '/' + this.state.lastRefreshTime.getDate() + '/' +
+        <small>Last Refresh Time: {(this.state.lastRefreshTime.getMonth() + 1) + '/' + this.state.lastRefreshTime.getDate() + '/' +
                                    this.state.lastRefreshTime.getFullYear() + ' ' + this.state.lastRefreshTime.getHours() + ':' +
                                    this.state.lastRefreshTime.getMinutes() + ':' + this.state.lastRefreshTime.getSeconds()}</small>
         <table className="table">
