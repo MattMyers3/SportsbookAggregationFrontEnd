@@ -25,15 +25,15 @@ class GameRow extends React.Component {
             <React.Fragment>
                 <tr style={{borderLeft: '2px solid black', borderRight: '2px solid black', borderTop: '2px solid black'}}>
                     <th scope="row">{this.state.awayTeamName}</th>
-                    <td>{this.state.currentAwaySpread}<br/>{this.state.currentAwaySpreadSite}</td>
-                    <td>{this.state.currentAwayMoneyline}<br/>{this.state.currentAwayMoneylineSite}</td>
-                    <td>{this.state.currentOver}<br/>{this.state.currentOverSite}</td>
+                    <td>{this.state.currentAwaySpread>0 ? '+'+this.state.currentAwaySpread : this.state.currentAwaySpread}<br/>{this.state.currentAwaySpreadSite}</td>
+                    <td>{this.state.currentAwayMoneyline>99 ? '+'+this.state.currentAwayMoneyline : this.state.currentAwayMoneyline}<br/>{this.state.currentAwayMoneylineSite}</td>
+                    <td>o{this.state.currentOver}<br/>{this.state.currentOverSite}</td>
                 </tr>
                 <tr style={{borderLeft: '2px solid black', borderRight: '2px solid black', borderBottom: '2px solid black'}}>
                     <th scope="row">{this.state.homeTeamName}</th>
-                    <td>{this.state.currentHomeSpread}<br/>{this.state.currentHomeSpreadSite}</td>
-                    <td>{this.state.currentHomeMoneyline}<br/>{this.state.currentHomeMoneylineSite}</td>
-                    <td>{this.state.currentUnder}<br/>{this.state.currentUnderSite}</td>
+                    <td>{this.state.currentHomeSpread>0 ? '+'+this.state.currentHomeSpread : this.state.currentHomeSpread}<br/>{this.state.currentHomeSpreadSite}</td>
+                    <td>{this.state.currentHomeMoneyline>99 ? '+'+this.state.currentHomeMoneyline : this.state.currentHomeMoneyline}<br/>{this.state.currentHomeMoneylineSite}</td>
+                    <td>u{this.state.currentUnder}<br/>{this.state.currentUnderSite}</td>
                 </tr>
             </React.Fragment>
             )
