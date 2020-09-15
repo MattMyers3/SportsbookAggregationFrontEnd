@@ -14,7 +14,7 @@ class GameTableList extends React.Component{
       <div className="mt-3">
         <small>Last Refresh Time: {(this.state.lastRefreshTime.getMonth() + 1) + '/' + this.state.lastRefreshTime.getDate() + '/' +
                                    this.state.lastRefreshTime.getFullYear() + ' ' + this.state.lastRefreshTime.getHours() + ':' +
-                                   this.state.lastRefreshTime.getMinutes() + ':' + this.state.lastRefreshTime.getSeconds()}</small>
+                                   this.state.lastRefreshTime.getMinutes() + ':' + this.state.lastRefreshTime.getSeconds() + '(UTC)'} </small>
         <table className="table">
           <thead className="thead-dark">
             <tr>
@@ -32,7 +32,7 @@ class GameTableList extends React.Component{
     )
   }   
 
-   componentDidMount(){
+   componentWillMount(){
      fetch(apiUrl + '/GameLines/LastRefreshTime?year=' + this.state.startDate.getFullYear() + '&month=' + (this.state.startDate.getMonth() + 1) + '&day=' + this.state.startDate.getDate())
          .then(res => res.json())
          .then(data => this.setState({ lastRefreshTime: new Date(data.lastRefreshTime)}))
