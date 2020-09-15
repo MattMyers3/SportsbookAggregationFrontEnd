@@ -32,7 +32,7 @@ class GameTableList extends React.Component{
     )
   }   
 
-   componentWillMount(){
+   componentDidMount(){
      fetch(apiUrl + '/GameLines/LastRefreshTime?year=' + this.state.startDate.getFullYear() + '&month=' + (this.state.startDate.getMonth() + 1) + '&day=' + this.state.startDate.getDate())
          .then(res => res.json())
          .then(data => this.setState({ lastRefreshTime: new Date(data.lastRefreshTime)}))
