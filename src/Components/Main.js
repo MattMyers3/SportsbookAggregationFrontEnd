@@ -35,11 +35,11 @@ class Main extends React.Component {
                         </div>
                     </Col>
                     <Col>
-                        <DropdownButton className="text-center" variant="white" title="Select State" id="select-state-dropdown">
+                        {/*<DropdownButton className="text-center" variant="white" title="Select State" id="select-state-dropdown">
                             <Dropdown.Item href="#/PA">PA</Dropdown.Item>
                             <Dropdown.Item href="#/NJ">NJ</Dropdown.Item>
                             <Dropdown.Item href="#/DE">DE</Dropdown.Item>
-                        </DropdownButton>
+                            </DropdownButton>*/}
                     </Col>
                 </Row>
                 <GameTableList games={this.state.games} />
