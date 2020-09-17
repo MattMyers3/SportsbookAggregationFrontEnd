@@ -17,10 +17,6 @@ class Main extends React.Component {
         this.setState({
           startDate: date
         });
-
-        fetch(apiUrl + '/games?year=' + date.getFullYear() + '&month=' + (date.getMonth() + 1) + '&day=' + date.getDate())
-        .then(res => res.json()) 
-        .then(data => this.setState({ games: data }))
       };
 
     render ()
@@ -47,8 +43,8 @@ class Main extends React.Component {
         );
     }
 
-    componentDidUpdate(prevProps) {
-        if(prevProps.sport == this.props.sport)
+    componentDidUpdate(prevProps, prevState) {
+        if(prevState.startDate == this.state.startDate && prevProps.sport == this.props.sport)
             return;
         fetch(apiUrl + '/games?year=' + this.state.startDate.getFullYear() + '&month=' + (this.state.startDate.getMonth() + 1) + '&day=' + this.state.startDate.getDate() + '&sport=' + this.props.sport)
         .then(res => res.json()) 
