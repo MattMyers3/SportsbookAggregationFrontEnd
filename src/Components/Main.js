@@ -3,6 +3,7 @@ import {Container, Row, Col, Dropdown, DropdownButton} from 'react-bootstrap';
 import GameTableList from './GameTableList';
 import { apiUrl } from './Constants';
 import DatePicker from "react-datepicker";
+import ReactGA from 'react-ga';
  
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -17,6 +18,12 @@ class Main extends React.Component {
         this.setState({
           startDate: date
         });
+
+        ReactGA.event({
+            category: 'User',
+            action: 'Changed date',
+            value: date
+          });
       };
 
     render ()
