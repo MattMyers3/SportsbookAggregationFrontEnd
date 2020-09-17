@@ -4,8 +4,7 @@ import { apiUrl } from './Constants';
 
 class GameTableList extends React.Component{
   state = {
-    lastRefreshTime: new Date(),
-    startDate: new Date()
+    lastRefreshTime: new Date()
   }
 
   render()
@@ -13,8 +12,8 @@ class GameTableList extends React.Component{
     return (
       <div className="mt-3">
         <small>Last Refresh Time: {(this.state.lastRefreshTime.getMonth() + 1) + '/' + this.state.lastRefreshTime.getDate() + '/' +
-                                   this.state.lastRefreshTime.getFullYear() + ' ' + this.state.lastRefreshTime.getHours() + ':' +
-                                   this.state.lastRefreshTime.getMinutes() + ':' + this.state.lastRefreshTime.getSeconds() + ' (EST)'} </small>
+                                   this.state.lastRefreshTime.getFullYear() + ' ' + ('0'+this.state.lastRefreshTime.getHours()).slice(-2) + ':' +
+                                   ('0'+this.state.lastRefreshTime.getMinutes()).slice(-2) + ':' + ('0'+this.state.lastRefreshTime.getSeconds()).slice(-2) + ' (EST)'} </small>
         <table className="table">
           <thead className="thead-dark">
             <tr>
@@ -33,7 +32,7 @@ class GameTableList extends React.Component{
   }   
 
    componentDidMount(){
-     fetch(apiUrl + '/GameLines/LastRefreshTime?year=' + this.state.startDate.getFullYear() + '&month=' + (this.state.startDate.getMonth() + 1) + '&day=' + this.state.startDate.getDate())
+     fetch(apiUrl + '/GameLines/LastRefreshTime')
          .then(res => res.json())
          .then(data => this.setState({ lastRefreshTime: new Date(data.lastRefreshTime)}))
    }
