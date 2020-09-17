@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import MainHeader from './Components/Header/MainHeader';
 import SubHeader from './Components/Header/SubHeader';
 import Main from './Components/Main';
+import { BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 
     class App extends Component {
       state = {
@@ -11,11 +12,17 @@ import Main from './Components/Main';
 
       render () {
         return (
-          <div>
-            <MainHeader />
-            <SubHeader />
-            <Main />
-          </div>          
+          <Router>
+            <div>
+              <MainHeader />
+              <SubHeader />
+              <Switch>
+                <Route  path="/NBA" render={(props) => <Main sport={`NBA`} />} />
+                <Route  path="/NFL" render={(props) => <Main sport={`NFL`} />} />
+                <Route exact path="/" render={(props) => <Main sport={`NFL`} />} />
+              </Switch>
+            </div>
+          </Router>          
         );
       }
     }
