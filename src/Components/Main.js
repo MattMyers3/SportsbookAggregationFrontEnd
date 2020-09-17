@@ -29,7 +29,7 @@ class Main extends React.Component {
             <Container>
                 <Row className="mt-3">
                     <Col>
-                        <h4 className="text-center">NBA Best Lines</h4>
+                        <h4 className="text-center">{this.props.sport} Best Lines</h4>
                         <div className="text-center">
                             <DatePicker selected={this.state.startDate} onChange={this.handleChange} />
                         </div>
@@ -47,11 +47,19 @@ class Main extends React.Component {
         );
     }
 
-    componentDidMount() {
-        fetch(apiUrl + '/games?year=' + this.state.startDate.getFullYear() + '&month=' + (this.state.startDate.getMonth() + 1) + '&day=' + this.state.startDate.getDate())
+    componentDidUpdate(prevProps) {
+        if(prevProps.sport == this.props.sport)
+            return;
+        fetch(apiUrl + '/games?year=' + this.state.startDate.getFullYear() + '&month=' + (this.state.startDate.getMonth() + 1) + '&day=' + this.state.startDate.getDate() + '&sport=' + this.props.sport)
         .then(res => res.json()) 
         .then(data => this.setState({ games: data }))
       }
+
+    componentDidMount() {
+        fetch(apiUrl + '/games?year=' + this.state.startDate.getFullYear() + '&month=' + (this.state.startDate.getMonth() + 1) + '&day=' + this.state.startDate.getDate() + '&sport=' + this.props.sport)
+        .then(res => res.json()) 
+        .then(data => this.setState({ games: data }))
+    }
 }
 
 export default Main;

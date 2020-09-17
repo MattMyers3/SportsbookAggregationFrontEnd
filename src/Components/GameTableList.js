@@ -1,3 +1,4 @@
+
 import React from 'react'
 import GameRow from './GameRow';
 import { apiUrl } from './Constants';
@@ -14,7 +15,7 @@ class GameTableList extends React.Component{
         <small>Last Refresh Time: {(this.state.lastRefreshTime.getMonth() + 1) + '/' + this.state.lastRefreshTime.getDate() + '/' +
                                    this.state.lastRefreshTime.getFullYear() + ' ' + ('0'+this.state.lastRefreshTime.getHours()).slice(-2) + ':' +
                                    ('0'+this.state.lastRefreshTime.getMinutes()).slice(-2) + ':' + ('0'+this.state.lastRefreshTime.getSeconds()).slice(-2) + ' (EST)'} </small>
-        <table className="table">
+        <table className="table table-hover">
           <thead className="thead-dark">
             <tr>
                 <th scope="col">Games</th>

@@ -1,5 +1,7 @@
 import React from 'react'
 import {Container, Navbar, Nav} from 'react-bootstrap';
+import {NavLink} from 'react-router-dom';
+import {LinkContainer} from 'react-router-bootstrap';
 
 class MainHeader extends React.Component {
     render()
@@ -11,12 +13,14 @@ class MainHeader extends React.Component {
                         <Navbar.Brand href="#home">SportsAgg</Navbar.Brand>
                         <Navbar.Toggle aria-controls="basic-navbar-nav" />
                         <Navbar.Collapse id="basic-navbar-nav">
-                        <Nav className="mr-auto">
-                            <Nav.Link href="#NBA">NBA</Nav.Link>
-                        </Nav>
-                        <Nav>
-                            <Nav.Link href="#account">Account</Nav.Link>
-                        </Nav>
+                            <Nav className="mr-auto">
+                                <LinkContainer to="/NFL">
+                                    <Nav.Link>NFL</Nav.Link>
+                                </LinkContainer>
+                                <LinkContainer to="/NBA">
+                                    <Nav.Link>NBA</Nav.Link>
+                                </LinkContainer>
+                            </Nav>
                         </Navbar.Collapse>
                     </Navbar>
                 </Container>
