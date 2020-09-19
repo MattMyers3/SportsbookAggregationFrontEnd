@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import MainHeader from './Components/Header/MainHeader';
-import SubHeader from './Components/Header/SubHeader';
 import Main from './Components/Main';
 import { BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 
@@ -15,10 +14,10 @@ import { BrowserRouter as Router, Switch, Route} from 'react-router-dom';
           <Router>
             <div>
               <MainHeader />
-              <SubHeader />
               <Switch>
                 <Route  path="/NBA" render={(props) => <Main sport={`NBA`} />} />
                 <Route  path="/NFL" render={(props) => <Main sport={`NFL`} />} />
+                <Route  path="/MLB" render={(props) => <Main sport={`MLB`} />} />
                 <Route exact path="/" render={(props) => <Main sport={`NFL`} />} />
               </Switch>
             </div>

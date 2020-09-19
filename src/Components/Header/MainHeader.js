@@ -20,6 +20,9 @@ class MainHeader extends React.Component {
                                 <LinkContainer to="/NBA">
                                     <Nav.Link>NBA</Nav.Link>
                                 </LinkContainer>
+                                <LinkContainer to="/MLB">
+                                    <Nav.Link>MLB</Nav.Link>
+                                </LinkContainer>
                             </Nav>
                         </Navbar.Collapse>
                     </Navbar>
