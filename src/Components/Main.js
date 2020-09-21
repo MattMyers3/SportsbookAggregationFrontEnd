@@ -10,6 +10,7 @@ import "react-datepicker/dist/react-datepicker.css";
 class Main extends React.Component {
     state = {
         checkedBooks: [],
+        allBooks : [],
         games: [],
         startDate: new Date()
       }
@@ -64,16 +65,8 @@ class Main extends React.Component {
                             <Form>
                                 {['checkbox'].map((type) => (
                                     <div key={`inline-${type}`} className="mb-3">
-                                        <Form.Check inline onChange={e => this.handleCheck("Barstool")} checked={this.state.checkedBooks.includes("Barstool")} label="Barstool" type={type} id={`inline-${type}-1`} />
-                                        <Form.Check inline onChange={e => this.handleCheck("BetAmerica")} checked={this.state.checkedBooks.includes("BetAmerica")} label="Bet America" type={type} id={`inline-${type}-2`} />
-                                        <Form.Check inline onChange={e => this.handleCheck("BetRivers")} checked={this.state.checkedBooks.includes("BetRivers")} label="Bet Rivers" type={type} id={`inline-${type}-3`} />
-                                        <Form.Check inline onChange={e => this.handleCheck("Caesars")} checked={this.state.checkedBooks.includes("Caesars")} label="Caesars" type={type} id={`inline-${type}-4`} />
-                                        <Form.Check inline onChange={e => this.handleCheck("DraftKings")} checked={this.state.checkedBooks.includes("DraftKings")} label="Draft Kings" type={type} id={`inline-${type}-5`} />
-                                        <Form.Check inline onChange={e => this.handleCheck("Fanduel")} checked={this.state.checkedBooks.includes("Fanduel")} label="Fanduel" type={type} id={`inline-${type}-6`} />
-                                        <Form.Check inline onChange={e => this.handleCheck("FoxBet")} checked={this.state.checkedBooks.includes("FoxBet")} label="Fox Bet" type={type} id={`inline-${type}-7`} />
-                                        <Form.Check inline onChange={e => this.handleCheck("Parx")} checked={this.state.checkedBooks.includes("Parx")} label="Parx" type={type} id={`inline-${type}-8`} />
-                                        <Form.Check inline onChange={e => this.handleCheck("SugarHouse")} checked={this.state.checkedBooks.includes("SugarHouse")} label="Sugar House" type={type} id={`inline-${type}-9`} />
-                                        <Form.Check inline onChange={e => this.handleCheck("Unibet")} checked={this.state.checkedBooks.includes("Unibet")} label="Unibet" type={type} id={`inline-${type}-10`} />
+                                        {this.state.allBooks.map(book => 
+                                            <Form.Check inline onChange={e => this.handleCheck(book)} checked={this.state.checkedBooks.includes(book)} label={book} type={type} id={`inline-${type}-1`}/>)}
                                     </div>
                                 ))}
                             </Form>
@@ -107,7 +100,7 @@ class Main extends React.Component {
 
         fetch(apiUrl + '/gamblingsite')
         .then(res => res.json())
-        .then(data => this.setState({checkedBooks : data.map(site => site.name)}))
+        .then(data => this.setState({checkedBooks : data.map(site => site.name), allBooks : data.map(site => site.name)}))
     }
 }
 
