@@ -29,26 +29,75 @@ class GameRow extends React.Component {
             <React.Fragment>
                 <tr style={{borderLeft: '2px solid black', borderRight: '2px solid black', borderTop: '2px solid black'}}>
                     <th scope="row">{this.state.awayTeamName}</th>
-                    <td><b>{this.getDisplayValue(this.state.currentAwaySpread)}</b><sup> ({this.getDisplayValue(this.state.currentAwaySpreadPayout)})</sup><br/>{this.state.currentAwaySpreadSite}</td>
-                    <td><b>{this.getDisplayValue(this.state.currentAwayMoneyline)}</b><br/>{this.state.currentAwayMoneylineSite}</td>
-                    <td>o<b>{this.state.currentOver}</b><sup> ({this.getDisplayValue(this.state.currentOverPayout)})</sup><br/>{this.state.currentOverSite}</td>
+                    {this.getDisplayCell(this.state.currentAwaySpread, this.state.currentAwaySpreadPayout, this.state.currentAwaySpreadSite, null)}
+                    {this.getDisplayCell(this.state.currentAwayMoneyline, null, this.state.currentAwayMoneylineSite, null)}
+                    {this.getDisplayCell(this.state.currentOver, this.state.currentOverPayout, this.state.currentOverSite, "o")}
                 </tr>
                 <tr style={{borderLeft: '2px solid black', borderRight: '2px solid black', borderBottom: '2px solid black'}}>
                     <th scope="row">{this.state.homeTeamName}</th>
-                    <td><b>{this.getDisplayValue(this.state.currentHomeSpread)}</b><sup> ({this.getDisplayValue(this.state.currentHomeSpreadPayout)})</sup><br/>{this.state.currentHomeSpreadSite}</td>
-                    <td><b>{this.getDisplayValue(this.state.currentHomeMoneyline)}</b><br/>{this.state.currentHomeMoneylineSite}</td>
-                    <td>u<b>{this.state.currentUnder}</b><sup> ({this.getDisplayValue(this.state.currentUnderPayout)})</sup><br/>{this.state.currentUnderSite}</td>
+                    {this.getDisplayCell(this.state.currentHomeSpread, this.state.currentHomeSpreadPayout, this.state.currentHomeSpreadSite, null)}
+                    {this.getDisplayCell(this.state.currentHomeMoneyline, null, this.state.currentHomeMoneylineSite, null)}
+                    {this.getDisplayCell(this.state.currentUnder, this.state.currentUnderPayout, this.state.currentUnderSite, "u")}
                 </tr>
             </React.Fragment>
             )
     };
 
+    getDisplayCell(val, odds, site, appendedLetters){
+        if(val == null)
+            return (<td><b>_</b></td>);
+        if(odds == null) //Moneyline
+            return (<td><b>{this.getDisplayValue(val)}</b><br/>{site}</td>)
+        
+        return (
+             <td>
+                 {appendedLetters}
+                 <b>
+                    {appendedLetters == null ? this.getDisplayValue(val) : val}
+                </b>
+                <sup>
+                    {this.getOddsDisplayValue(odds)}
+                </sup>
+                <br/>{site}
+            </td>);
+        
+    }
     getDisplayValue(val) {
         if(val > 0)
             return "+" + val
         return val;
     }
 
+    getOddsDisplayValue(val) {
+        return "(" + this.getDisplayValue(val) + ")";
+    }
+
+    componentDidUpdate(prevProps, prevState){
+        if(prevProps.checkedBooks != this.props.checkedBooks)
+        {
+            fetch(apiUrl + '/GameLines/best/' + this.props.gameId + "?sportsbooks=" + this.props.checkedBooks.join())
+            .then(res => res.json()) 
+            .then(data => this.setState({ 
+                currentAwaySpread: data.currentAwaySpread,
+                currentAwaySpreadPayout: data.currentAwaySpreadPayout,
+                currentAwaySpreadSite: data.awaySpreadSite,
+                currentHomeSpread: data.currentHomeSpread,
+                currentHomeSpreadPayout: data.currentHomeSpreadPayout,
+                currentHomeSpreadSite: data.homeSpreadSite,
+                currentAwayMoneyline: data.currentAwayMoneyLine,
+                currentAwayMoneylineSite: data.awayMoneyLineSite,
+                currentHomeMoneyline: data.currentHomeMoneyLine,
+                currentHomeMoneylineSite: data.homeMoneyLineSite,
+                currentOver: data.currentOver,
+                currentOverPayout : data.currentOverPayout,
+                currentOverSite: data.overSite,
+                currentUnder: data.currentUnder,
+                currentUnderPayout : data.currentUnderPayout,
+                currentUnderSite: data.underSite,
+            }))
+            .catch()
+        }
+    }
     componentDidMount() {
         fetch(apiUrl + '/teams/' + this.props.homeTeamId)
         .then(res => res.json()) 
@@ -62,7 +111,7 @@ class GameRow extends React.Component {
             awayTeamName: data.location + ' ' + data.mascot
          }))
 
-         fetch(apiUrl + '/GameLines/best/' + this.props.gameId)
+         fetch(apiUrl + '/GameLines/best/' + this.props.gameId + "?sportsbooks=" + this.props.checkedBooks.join())
         .then(res => res.json()) 
         .then(data => this.setState({ 
             currentAwaySpread: data.currentAwaySpread,

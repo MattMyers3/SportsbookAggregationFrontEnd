@@ -1,5 +1,5 @@
 import React from 'react';
-import {Container, Row, Col, Dropdown, DropdownButton} from 'react-bootstrap';
+import {Container, Row, Col, Dropdown, DropdownButton, Form} from 'react-bootstrap';
 import GameTableList from './GameTableList';
 import { apiUrl } from './Constants';
 import DatePicker from "react-datepicker";
@@ -9,7 +9,7 @@ import "react-datepicker/dist/react-datepicker.css";
 
 class Main extends React.Component {
     state = {
-        sports: ["NBA"],
+        checkedBooks: [],
         games: [],
         startDate: new Date()
       }
@@ -26,6 +26,28 @@ class Main extends React.Component {
           });
       };
 
+     handleCheck = label => {
+         if (!this.state.checkedBooks.includes(label)) {
+            this.setState(state => {
+                const checkedBooks = [...state.checkedBooks, label];
+           
+                return {
+                    checkedBooks
+                };
+              });
+          } else {
+            this.setState(state => {
+                const checkedBooks = state.checkedBooks.filter(l => l !== label);
+           
+                return {
+                  checkedBooks,
+                };
+              });
+     
+            }
+            console.log(this.state.checkedBooks);
+       }       
+
     render ()
     {
         return (
@@ -38,6 +60,26 @@ class Main extends React.Component {
                         </div>
                     </Col>
                     <Col>
+                        <div>
+                            <Form>
+                                {['checkbox'].map((type) => (
+                                    <div key={`inline-${type}`} className="mb-3">
+                                        <Form.Check inline onChange={e => this.handleCheck("Barstool")} checked={this.state.checkedBooks.includes("Barstool")} label="Barstool" type={type} id={`inline-${type}-1`} />
+                                        <Form.Check inline onChange={e => this.handleCheck("BetAmerica")} checked={this.state.checkedBooks.includes("BetAmerica")} label="Bet America" type={type} id={`inline-${type}-2`} />
+                                        <Form.Check inline onChange={e => this.handleCheck("BetRivers")} checked={this.state.checkedBooks.includes("BetRivers")} label="Bet Rivers" type={type} id={`inline-${type}-3`} />
+                                        <Form.Check inline onChange={e => this.handleCheck("Caesars")} checked={this.state.checkedBooks.includes("Caesars")} label="Caesars" type={type} id={`inline-${type}-4`} />
+                                        <Form.Check inline onChange={e => this.handleCheck("DraftKings")} checked={this.state.checkedBooks.includes("DraftKings")} label="Draft Kings" type={type} id={`inline-${type}-5`} />
+                                        <Form.Check inline onChange={e => this.handleCheck("Fanduel")} checked={this.state.checkedBooks.includes("Fanduel")} label="Fanduel" type={type} id={`inline-${type}-6`} />
+                                        <Form.Check inline onChange={e => this.handleCheck("FoxBet")} checked={this.state.checkedBooks.includes("FoxBet")} label="Fox Bet" type={type} id={`inline-${type}-7`} />
+                                        <Form.Check inline onChange={e => this.handleCheck("Parx")} checked={this.state.checkedBooks.includes("Parx")} label="Parx" type={type} id={`inline-${type}-8`} />
+                                        <Form.Check inline onChange={e => this.handleCheck("SugarHouse")} checked={this.state.checkedBooks.includes("SugarHouse")} label="Sugar House" type={type} id={`inline-${type}-9`} />
+                                        <Form.Check inline onChange={e => this.handleCheck("Unibet")} checked={this.state.checkedBooks.includes("Unibet")} label="Unibet" type={type} id={`inline-${type}-10`} />
+                                    </div>
+                                ))}
+                            </Form>
+                        </div>
+                    </Col>
+                    <Col>
                         {/*<DropdownButton className="text-center" variant="white" title="Select State" id="select-state-dropdown">
                             <Dropdown.Item href="#/PA">PA</Dropdown.Item>
                             <Dropdown.Item href="#/NJ">NJ</Dropdown.Item>
@@ -45,7 +87,7 @@ class Main extends React.Component {
                             </DropdownButton>*/}
                     </Col>
                 </Row>
-                <GameTableList games={this.state.games} />
+                <GameTableList games={this.state.games} checkedBooks={this.state.checkedBooks}/>
             </Container>
         );
     }
@@ -62,6 +104,10 @@ class Main extends React.Component {
         fetch(apiUrl + '/games?year=' + this.state.startDate.getFullYear() + '&month=' + (this.state.startDate.getMonth() + 1) + '&day=' + this.state.startDate.getDate() + '&sport=' + this.props.sport)
         .then(res => res.json()) 
         .then(data => this.setState({ games: data }))
+
+        fetch(apiUrl + '/gamblingsite')
+        .then(res => res.json())
+        .then(data => this.setState({checkedBooks : data.map(site => site.name)}))
     }
 }
 
