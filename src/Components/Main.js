@@ -1,5 +1,5 @@
 import React from 'react';
-import {Container, Row, Col, Dropdown, DropdownButton} from 'react-bootstrap';
+import {Container, Row, Col, Dropdown, DropdownButton, Form} from 'react-bootstrap';
 import GameTableList from './GameTableList';
 import { apiUrl } from './Constants';
 import DatePicker from "react-datepicker";
@@ -9,7 +9,8 @@ import "react-datepicker/dist/react-datepicker.css";
 
 class Main extends React.Component {
     state = {
-        sports: ["NBA"],
+        checkedBooks: [],
+        allBooks : [],
         games: [],
         startDate: new Date()
       }
@@ -26,6 +27,27 @@ class Main extends React.Component {
           });
       };
 
+     handleCheck = label => {
+         if (!this.state.checkedBooks.includes(label)) {
+            this.setState(state => {
+                const checkedBooks = [...state.checkedBooks, label];
+           
+                return {
+                    checkedBooks
+                };
+              });
+          } else {
+            this.setState(state => {
+                const checkedBooks = state.checkedBooks.filter(l => l !== label);
+           
+                return {
+                  checkedBooks,
+                };
+              });
+     
+            }
+       }       
+
     render ()
     {
         return (
@@ -38,6 +60,18 @@ class Main extends React.Component {
                         </div>
                     </Col>
                     <Col>
+                        <div>
+                            <Form>
+                                {['checkbox'].map((type) => (
+                                    <div key={`inline-${type}`} className="mb-3">
+                                        {this.state.allBooks.map(book => 
+                                            <Form.Check inline onChange={e => this.handleCheck(book)} checked={this.state.checkedBooks.includes(book)} label={book} type={type} id={`inline-${type}-1`}/>)}
+                                    </div>
+                                ))}
+                            </Form>
+                        </div>
+                    </Col>
+                    <Col>
                         {/*<DropdownButton className="text-center" variant="white" title="Select State" id="select-state-dropdown">
                             <Dropdown.Item href="#/PA">PA</Dropdown.Item>
                             <Dropdown.Item href="#/NJ">NJ</Dropdown.Item>
@@ -45,7 +79,7 @@ class Main extends React.Component {
                             </DropdownButton>*/}
                     </Col>
                 </Row>
-                <GameTableList games={this.state.games} />
+                <GameTableList games={this.state.games} checkedBooks={this.state.checkedBooks}/>
             </Container>
         );
     }
@@ -62,6 +96,10 @@ class Main extends React.Component {
         fetch(apiUrl + '/games?year=' + this.state.startDate.getFullYear() + '&month=' + (this.state.startDate.getMonth() + 1) + '&day=' + this.state.startDate.getDate() + '&sport=' + this.props.sport)
         .then(res => res.json()) 
         .then(data => this.setState({ games: data }))
+
+        fetch(apiUrl + '/gamblingsite')
+        .then(res => res.json())
+        .then(data => this.setState({checkedBooks : data.map(site => site.name), allBooks : data.map(site => site.name)}))
     }
 }
 
