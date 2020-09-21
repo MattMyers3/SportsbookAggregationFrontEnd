@@ -18,7 +18,7 @@ import { BrowserRouter as Router, Switch, Route} from 'react-router-dom';
                 <Route  path="/NBA" render={(props) => <Main sport={`NBA`} />} />
                 <Route  path="/NFL" render={(props) => <Main sport={`NFL`} />} />
                 <Route  path="/MLB" render={(props) => <Main sport={`MLB`} />} />
-                <Route exact path="/" render={(props) => <Main sport={'NFL'} />} />
+                <Route exact path="/" render={(props) => <Main sport={`NFL`} />} />
               </Switch>
             </div>
           </Router>          

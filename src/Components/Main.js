@@ -46,7 +46,6 @@ class Main extends React.Component {
               });
      
             }
-            console.log(this.state.checkedBooks);
        }       
 
     render ()
