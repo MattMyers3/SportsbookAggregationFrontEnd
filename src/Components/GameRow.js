@@ -73,7 +73,7 @@ class GameRow extends React.Component {
     }
 
     componentDidUpdate(prevProps, prevState){
-        if(prevProps.checkedBooks != this.props.checkedBooks)
+        if(prevProps.checkedBooks !== this.props.checkedBooks)
         {
             fetch(apiUrl + '/GameLines/best/' + this.props.gameId + "?sportsbooks=" + this.props.checkedBooks.join())
             .then(res => res.json()) 
