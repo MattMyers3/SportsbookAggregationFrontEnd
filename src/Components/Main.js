@@ -1,8 +1,7 @@
 import React from 'react';
-import {Container, Row, Col, Dropdown, DropdownButton, Form} from 'react-bootstrap';
+import {Container, Row, Col, Form} from 'react-bootstrap';
 import GameTableList from './GameTableList';
 import { apiUrl } from './Constants';
-import DatePicker from "react-datepicker";
 import ReactGA from 'react-ga';
  
 import "react-datepicker/dist/react-datepicker.css";
@@ -15,18 +14,6 @@ class Main extends React.Component {
         startDate: new Date(),
         endDate: new Date()
       }
-     
-      handleChange = date => {
-        this.setState({
-          startDate: date
-        });
-
-        ReactGA.event({
-            category: 'User',
-            action: 'Changed date',
-            value: date
-          });
-      };
 
      handleCheck = label => {
          if (!this.state.checkedBooks.includes(label)) {
@@ -53,11 +40,11 @@ class Main extends React.Component {
     {
         return (
             <div>
-            <h4 className="text-center">{this.props.sport} Best Lines</h4>
+            <h4 key={893475} className="text-center">{this.props.sport} Best Lines</h4>
             <Container>
                 <Row className="mt-3">
                     <Col>
-                        {this.getDateSelector()}
+                        {/*this.getDateSelector()*/}
                     </Col>
                     <Col>
                         <div>
@@ -84,9 +71,15 @@ class Main extends React.Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
-        if(prevState.startDate == this.state.startDate && prevProps.sport == this.props.sport)
+        if(prevState.startDate == this.state.startDate && prevState.endDate == this.state.endDate && prevProps.sport == this.props.sport)
             return;
-        fetch(apiUrl + '/games?year=' + this.state.startDate.getFullYear() + '&month=' + (this.state.startDate.getMonth() + 1) + '&day=' + this.state.startDate.getDate() + '&sport=' + this.props.sport)
+            fetch(apiUrl + '/games?startYear=' + this.state.startDate.getFullYear() + 
+            '&startMonth=' + (this.state.startDate.getMonth() + 1) + 
+            '&startDay=' + this.state.startDate.getDate() + 
+            '&endYear=' + this.state.endDate.getFullYear() + 
+            '&endMonth=' + (this.state.endDate.getMonth() + 1) + 
+            '&endDay=' + this.state.endDate.getDate() + 
+            '&sport=' + this.props.sport)
         .then(res => res.json()) 
         .then(data => this.setState({ games: data }))
       }
@@ -97,7 +90,6 @@ class Main extends React.Component {
         this.state.startDate = new Date(parseInt(startDateString[2], 10),
                         parseInt(startDateString[0], 10) - 1,
                         parseInt(startDateString[1], 10));
-                        console.log(this.state.startDate);
         var endDateString = dateRange[1].split("/");
         this.state.endDate = new Date(parseInt(endDateString[2], 10),
                         parseInt(endDateString[0], 10) - 1,
@@ -179,11 +171,14 @@ class Main extends React.Component {
                 if(currentDay >= 10 && currentDay <= 14){
                     return "9/10/2020-9/14/2020";
                 }
-                else if(currentDay >= 17 && currentDay <= 21){
+                else if(currentDay >= 15 && currentDay <= 21){
                     return "9/17/2020-9/21/2020";
                 }
-                else if(currentDay >= 24 && currentDay <= 28){
+                else if(currentDay >= 22 && currentDay <= 28){
                     return "9/24/2020-9/28/2020";
+                }
+                else if(currentDay >= 29){
+                    return "10/01/2020-10/05/2020";
                 }
             }
             else if(currentMonth === 9)
@@ -191,16 +186,16 @@ class Main extends React.Component {
                 if(currentDay >= 1 && currentDay <= 5){
                     return "10/01/2020-10/05/2020";
                 }
-                else if(currentDay >= 8 && currentDay <= 12){
+                else if(currentDay >= 6 && currentDay <= 12){
                     return "10/08/2020-10/12/2020";
                 }
-                else if(currentDay >= 15 && currentDay <= 19){
+                else if(currentDay >= 13 && currentDay <= 19){
                     return "10/15/2020-10/19/2020";
                 }
-                else if(currentDay >= 22 && currentDay <= 26){
+                else if(currentDay >= 20 && currentDay <= 26){
                     return "10/22/2020-10/26/2020";
                 }
-                else if(currentDay >= 26)
+                else if(currentDay >= 27)
                 {
                     return "10/29/2020-11/02/2020";
                 }
@@ -210,34 +205,37 @@ class Main extends React.Component {
                 if(currentDay <= 2){
                     return "10/29/2020-11/02/2020";
                 }
-                else if(currentDay >= 5 && currentDay <= 9){
+                else if(currentDay >= 3 && currentDay <= 9){
                     return "11/05/2020-11/09/2020";
                 }
-                else if(currentDay >= 12 && currentDay <= 16){
+                else if(currentDay >= 10 && currentDay <= 16){
                     return "11/12/2020-11/16/2020";
                 }
-                else if(currentDay >= 19 && currentDay <= 23){
+                else if(currentDay >= 17 && currentDay <= 23){
                     return "11/19/2020-11/23/2020";
                 }
-                else if(currentDay >= 26 && currentDay <= 30){
+                else if(currentDay >= 24 && currentDay <= 30){
                     return "11/26/2020-11/30/2020";
+                }
+                else if(currentDay >= 31){
+                    return "12/03/2020-12/07/2020";
                 }
             }
             else if(currentMonth === 11)
             {
-                if(currentDay >= 3 && currentDay <= 7){
+                if(currentDay >= 1 && currentDay <= 7){
                     return "12/03/2020-12/07/2020";
                 }
-                else if(currentDay >= 10 && currentDay <= 14){
+                else if(currentDay >= 8 && currentDay <= 14){
                     return "12/10/2020-12/14/2020";
                 }
-                else if(currentDay >= 17 && currentDay <= 21){
+                else if(currentDay >= 15 && currentDay <= 21){
                     return "12/17/2020-12/21/2020";
                 }
-                else if(currentDay >= 24 && currentDay <= 28){
+                else if(currentDay >= 22 && currentDay <= 28){
                     return "12/24/2020-12/28/2020";
                 }
-                else if(currentDay >= 31)
+                else if(currentDay >= 29)
                 {
                     return "12/31/2020-01/04/2020";
                 }
