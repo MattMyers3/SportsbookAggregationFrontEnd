@@ -78,13 +78,11 @@ class Main extends React.Component {
             return;
         if(prevState.startDate !== this.state.startDate && this.props.sport !== "NFL")
         {
-            console.log("got here 1");
             fetch(apiUrl + '/games?startYear=' + this.state.startDate.getFullYear() + '&startMonth=' + (this.state.startDate.getMonth() + 1) + '&startDay=' + this.state.startDate.getDate() + '&sport=' + this.props.sport)
             .then(res => res.json()) 
             .then(data => this.setState({ games: data }))
         }
         else if((prevProps.sport !== "NFL" && this.props.sport === "NFL")){
-            console.log("got here 2");
             var dateRange = this.getDefaultDateSelect().split('-');
             var startDateString = dateRange[0].split("/");
             var endDateString = dateRange[1].split("/");
@@ -92,13 +90,11 @@ class Main extends React.Component {
         }
         else if(prevProps.sport !== this.props.sport)
         {
-            console.log("got here 3");
             this.setState({startDate : new Date()})
         }
       }
 
     componentDidMount() {
-        console.log("got here 4");
         var dateRange = this.getDefaultDateSelect().split('-');
         var startDateString = dateRange[0].split("/");
         var endDateString = dateRange[1].split("/");
