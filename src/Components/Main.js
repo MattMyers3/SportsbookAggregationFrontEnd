@@ -53,7 +53,7 @@ class Main extends React.Component {
                                     {['checkbox'].map((type, i) => (
                                         <div key={`inline-${type}`} className="mb-3">
                                             {this.state.allBooks.map((book, i) => 
-                                                <Form.Check key={i} inline onChange={e => this.handleCheck(book)} checked={this.state.checkedBooks.includes(book)} label={book} type={type} id={`inline-${type}-1`}/>)}
+                                                <Form.Check key={i} inline onChange={e => this.handleCheck(book)} checked={this.state.checkedBooks.includes(book)} label={book} type={type} id={`inline-${type}-${i}`}/>)}
                                         </div>
                                     ))}
                                 </Form>
