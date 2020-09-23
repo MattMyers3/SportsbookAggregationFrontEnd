@@ -40,7 +40,7 @@ class GameTableList extends React.Component{
 
   renderNoGamesWeekMessage(){
     return <Jumbotron> 
-              <h1>No Games this Week!</h1> 
+              <h1>Lines not available yet!</h1> 
               <p>Please select a different week</p>
           </Jumbotron>
   }

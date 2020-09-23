@@ -41,7 +41,7 @@ class Main extends React.Component {
     {
         return (
             <div>
-                <h4 key={893475} className="text-center">{this.props.sport} Best Lines</h4>
+                <h4 className="text-center">{this.props.sport} Best Lines</h4>
                 <Container>
                     <Row className="mt-3">
                         <Col>
@@ -82,7 +82,7 @@ class Main extends React.Component {
             .then(res => res.json()) 
             .then(data => this.setState({ games: data }))
         }
-        else if(prevProps.sport != "NFL" && this.state.sport == "NFL"){
+        else if((prevProps.sport != "NFL" && this.state.sport == "NFL")){
             var dateRange = this.getDefaultDateSelect().split('-');
             var startDateString = dateRange[0].split("/");
             this.state.startDate = new Date(parseInt(startDateString[2], 10),
@@ -104,6 +104,7 @@ class Main extends React.Component {
         }
         else if(prevProps.sport != this.state.sport)
         {
+            this.setState({startDate: new Date()});
             fetch(apiUrl + '/games?startYear=' + this.state.startDate.getFullYear() + '&startMonth=' + (this.state.startDate.getMonth() + 1) + '&startDay=' + this.state.startDate.getDate() + '&sport=' + this.props.sport)
             .then(res => res.json()) 
             .then(data => this.setState({ games: data }))
