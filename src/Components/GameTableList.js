@@ -16,8 +16,8 @@ class GameTableList extends React.Component{
         <small>Last Refresh Time: {(this.state.lastRefreshTime.getMonth() + 1) + '/' + this.state.lastRefreshTime.getDate() + '/' +
                                    this.state.lastRefreshTime.getFullYear() + ' ' + ('0'+this.state.lastRefreshTime.getHours()).slice(-2) + ':' +
                                    ('0'+this.state.lastRefreshTime.getMinutes()).slice(-2) + ':' + ('0'+this.state.lastRefreshTime.getSeconds()).slice(-2) + ' (EST)'} </small>
-        {this.props.games.length == 0 ? this.renderNoGamesTodayMessage() :
-          this.props.checkedBooks.length == 0 ? this.renderNoBooksCheckedMessage() : this.renderTable()}
+        {this.props.games.length === 0 ? this.props.sport === "NFL" ? this.renderNoGamesWeekMessage() : this.renderNoGamesTodayMessage() :
+          this.props.checkedBooks.length === 0 ? this.renderNoBooksCheckedMessage() : this.renderTable()}
       </div>
     )
   }   
@@ -36,6 +36,13 @@ class GameTableList extends React.Component{
         {this.props.games.map((game, i) => <GameRow key={game.gameId} homeTeamId={game.homeTeamId} awayTeamId={game.awayTeamId} gameId={game.gameId} checkedBooks={this.props.checkedBooks}/>)}
       </tbody>
     </table>
+  }
+
+  renderNoGamesWeekMessage(){
+    return <Jumbotron> 
+              <h1>Lines not available yet!</h1> 
+              <p>Please select a different week</p>
+          </Jumbotron>
   }
 
   renderNoGamesTodayMessage(){
