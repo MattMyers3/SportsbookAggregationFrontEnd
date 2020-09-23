@@ -1,1 +1,1 @@
-export const apiUrl = "https://sportsbettingaggregation.com/api";
+export const apiUrl = "https://localhost:44354/api";

@@ -9,7 +9,7 @@ class MainHeader extends React.Component {
             <div>
                 <Container>
                     <Navbar bg="light" expand="md">
-                        <Navbar.Brand href="#home">SportsAgg</Navbar.Brand>
+                        <Navbar.Brand>SportsAgg</Navbar.Brand>
                         <Navbar.Toggle aria-controls="basic-navbar-nav" />
                         <Navbar.Collapse id="basic-navbar-nav">
                             <Nav className="mr-auto">
