@@ -13,9 +13,7 @@ class GameTableList extends React.Component{
   {
     return (
       <div className="mt-3">
-        <small>Last Refresh Time: {(this.state.lastRefreshTime.getMonth() + 1) + '/' + this.state.lastRefreshTime.getDate() + '/' +
-                                   this.state.lastRefreshTime.getFullYear() + ' ' + ('0'+this.state.lastRefreshTime.getHours()).slice(-2) + ':' +
-                                   ('0'+this.state.lastRefreshTime.getMinutes()).slice(-2) + ':' + ('0'+this.state.lastRefreshTime.getSeconds()).slice(-2) + ' (EST)'} </small>
+        <small>Last Refresh Time: {this.state.lastRefreshTime.toLocaleDateString()} {this.state.lastRefreshTime.toLocaleTimeString()} </small>
         {this.props.games.length === 0 ? this.props.sport === "NFL" ? this.renderNoGamesWeekMessage() : this.renderNoGamesTodayMessage() :
           this.props.checkedBooks.length === 0 ? this.renderNoBooksCheckedMessage() : this.renderTable()}
       </div>
@@ -63,7 +61,10 @@ class GameTableList extends React.Component{
    componentDidMount(){
      fetch(apiUrl + '/GameLines/LastRefreshTime')
          .then(res => res.json())
-         .then(data => this.setState({ lastRefreshTime: new Date(data.lastRefreshTime)}))
+         .then(data => {
+            var serverDate = new Date(data.lastRefreshTime);
+            this.setState({ lastRefreshTime: new Date(Date.UTC(serverDate.getFullYear(), serverDate.getMonth(), serverDate.getDate(), serverDate.getHours(), serverDate.getMinutes(), serverDate.getSeconds()))});
+         })
    }
 }
 
