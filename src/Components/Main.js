@@ -48,7 +48,7 @@ class Main extends React.Component {
                         <Col>
                             {this.getDateSelector()}
                         </Col>
-                        <Col id="checkBoxes">
+                        <Col>
                             <div>
                                 <br/>
                                 <Form>
