@@ -78,9 +78,7 @@ class Main extends React.Component {
             return;
         if(prevState.startDate !== this.state.startDate && this.props.sport !== "NFL")
         {
-            fetch(apiUrl + '/games?startYear=' + this.state.startDate.getFullYear() + '&startMonth=' + (this.state.startDate.getMonth() + 1) + '&startDay=' + this.state.startDate.getDate() + '&sport=' + this.props.sport)
-            .then(res => res.json()) 
-            .then(data => this.setState({ games: data }))
+            this.fetchGamesOnDay(this.state.startDate);
         }
         else if((prevProps.sport !== "NFL" && this.props.sport === "NFL")){
             var dateRange = this.getDefaultDateSelect().split('-');
@@ -95,10 +93,17 @@ class Main extends React.Component {
       }
 
     componentDidMount() {
-        var dateRange = this.getDefaultDateSelect().split('-');
-        var startDateString = dateRange[0].split("/");
-        var endDateString = dateRange[1].split("/");
-        this.fetchGamesInRange(startDateString, endDateString);
+        if(this.props.sport == "NFL")
+        {
+            var dateRange = this.getDefaultDateSelect().split('-');
+            var startDateString = dateRange[0].split("/");
+            var endDateString = dateRange[1].split("/");
+            this.fetchGamesInRange(startDateString, endDateString);
+        }
+        else
+        {
+            this.fetchGamesOnDay(new Date());
+        }
 
         fetch(apiUrl + '/gamblingsite')
         .then(res => res.json())
@@ -269,6 +274,13 @@ class Main extends React.Component {
                         '&sport=' + this.props.sport)
         .then(res => res.json()) 
         .then(data => this.setState({ games: data }))
+    }
+
+    fetchGamesOnDay(date)
+    {
+        fetch(apiUrl + '/games?startYear=' + date.getFullYear() + '&startMonth=' + (date.getMonth() + 1) + '&startDay=' + date.getDate() + '&sport=' + this.props.sport)
+            .then(res => res.json()) 
+            .then(data => this.setState({ games: data }))
     }
 }
 
