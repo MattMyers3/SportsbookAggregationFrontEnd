@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import MainHeader from './Components/Header/MainHeader';
 import Main from './Components/Main';
+import FAQ from './Components/FAQ';
 import { BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 
     class App extends Component {
@@ -18,6 +19,7 @@ import { BrowserRouter as Router, Switch, Route} from 'react-router-dom';
                 <Route  path="/NBA" render={(props) => <Main sport={`NBA`} />} />
                 <Route  path="/NFL" render={(props) => <Main sport={`NFL`} />} />
                 <Route  path="/MLB" render={(props) => <Main sport={`MLB`} />} />
+                <Route  path="/FAQ" render={(props) => <FAQ />} />                
                 <Route exact path="/" render={(props) => <Main sport={`NFL`} />} />
               </Switch>
             </div>

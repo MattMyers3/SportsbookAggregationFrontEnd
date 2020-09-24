@@ -41,14 +41,16 @@ class Main extends React.Component {
     {
         return (
             <div>
-                <h4 className="text-center">{this.props.sport} Best Lines</h4>
                 <Container>
+                <br/>
+                <h2 className="text-center">{this.props.sport} Best Lines</h2>
                     <Row className="mt-3">
                         <Col>
                             {this.getDateSelector()}
                         </Col>
-                        <Col>
+                        <Col id="checkBoxes">
                             <div>
+                                <br/>
                                 <Form>
                                     {['checkbox'].map((type, i) => (
                                         <div key={`inline-${type}`} className="mb-3">
@@ -58,13 +60,6 @@ class Main extends React.Component {
                                     ))}
                                 </Form>
                             </div>
-                        </Col>
-                        <Col>
-                            {/*<DropdownButton className="text-center" variant="white" title="Select State" id="select-state-dropdown">
-                                <Dropdown.Item href="#/PA">PA</Dropdown.Item>
-                                <Dropdown.Item href="#/NJ">NJ</Dropdown.Item>
-                                <Dropdown.Item href="#/DE">DE</Dropdown.Item>
-                                </DropdownButton>*/}
                         </Col>
                     </Row>
                     <GameTableList games={this.state.games} sport={this.props.sport} checkedBooks={this.state.checkedBooks}/>
