@@ -62,8 +62,10 @@ class GameTableList extends React.Component{
      fetch(apiUrl + '/GameLines/LastRefreshTime')
          .then(res => res.json())
          .then(data => {
-            var serverDate = new Date(data.lastRefreshTime);
-            this.setState({ lastRefreshTime: new Date(Date.UTC(serverDate.getFullYear(), serverDate.getMonth(), serverDate.getDate(), serverDate.getHours(), serverDate.getMinutes(), serverDate.getSeconds()))});
+            var serverDateArray = data.lastRefreshTime.toString().split("T");
+            var dateArray = serverDateArray[0].split("-");
+            var timeArray = serverDateArray[1].split(":");
+            this.setState({ lastRefreshTime: new Date(Date.UTC(dateArray[0], dateArray[1], dateArray[2], timeArray[0], timeArray[1], timeArray[2]))});
          })
    }
 }
