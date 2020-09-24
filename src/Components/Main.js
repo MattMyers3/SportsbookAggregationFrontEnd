@@ -71,64 +71,38 @@ class Main extends React.Component {
     componentDidUpdate(prevProps, prevState) {
         if(prevState.startDate === this.state.startDate && prevState.endDate === this.state.endDate && prevProps.sport === this.props.sport)
             return;
-        if(prevState.startDate != this.state.startDate && this.state.sport != "NFL")
+        if(prevState.startDate !== this.state.startDate && this.props.sport !== "NFL")
         {
-            fetch(apiUrl + '/games?startYear=' + this.state.startDate.getFullYear() + '&startMonth=' + (this.state.startDate.getMonth() + 1) + '&startDay=' + this.state.startDate.getDate() + '&sport=' + this.props.sport)
-            .then(res => res.json()) 
-            .then(data => this.setState({ games: data }))
+            this.fetchGamesOnDay(this.state.startDate);
         }
-        else if((prevProps.sport != "NFL" && this.state.sport == "NFL")){
+        else if((prevProps.sport !== "NFL" && this.props.sport === "NFL")){
             var dateRange = this.getDefaultDateSelect().split('-');
             var startDateString = dateRange[0].split("/");
-            this.state.startDate = new Date(parseInt(startDateString[2], 10),
-                            parseInt(startDateString[0], 10) - 1,
-                            parseInt(startDateString[1], 10));
             var endDateString = dateRange[1].split("/");
-            this.state.endDate = new Date(parseInt(endDateString[2], 10),
-                            parseInt(endDateString[0], 10) - 1,
-                            parseInt(endDateString[1], 10));
-            fetch(apiUrl + '/games?startYear=' + this.state.startDate.getFullYear() + 
-                            '&startMonth=' + (this.state.startDate.getMonth() + 1) + 
-                            '&startDay=' + this.state.startDate.getDate() + 
-                            '&endYear=' + this.state.endDate.getFullYear() + 
-                            '&endMonth=' + (this.state.endDate.getMonth() + 1) + 
-                            '&endDay=' + this.state.endDate.getDate() + 
-                            '&sport=' + this.props.sport)
-                            .then(res => res.json()) 
-                            .then(data => this.setState({ games: data }))
+            this.fetchGamesInRange(startDateString, endDateString);
         }
-        else if(prevProps.sport != this.state.sport)
+        else if(prevProps.sport !== this.props.sport)
         {
-            this.setState({startDate: new Date()});
-            fetch(apiUrl + '/games?startYear=' + this.state.startDate.getFullYear() + '&startMonth=' + (this.state.startDate.getMonth() + 1) + '&startDay=' + this.state.startDate.getDate() + '&sport=' + this.props.sport)
-            .then(res => res.json()) 
-            .then(data => this.setState({ games: data }))
+            this.setState({startDate : new Date()})
         }
       }
 
     componentDidMount() {
-        var dateRange = this.getDefaultDateSelect().split('-');
-        var startDateString = dateRange[0].split("/");
-        this.state.startDate = new Date(parseInt(startDateString[2], 10),
-                        parseInt(startDateString[0], 10) - 1,
-                        parseInt(startDateString[1], 10));
-        var endDateString = dateRange[1].split("/");
-        this.state.endDate = new Date(parseInt(endDateString[2], 10),
-                        parseInt(endDateString[0], 10) - 1,
-                        parseInt(endDateString[1], 10));
-        fetch(apiUrl + '/games?startYear=' + this.state.startDate.getFullYear() + 
-                        '&startMonth=' + (this.state.startDate.getMonth() + 1) + 
-                        '&startDay=' + this.state.startDate.getDate() + 
-                        '&endYear=' + this.state.endDate.getFullYear() + 
-                        '&endMonth=' + (this.state.endDate.getMonth() + 1) + 
-                        '&endDay=' + this.state.endDate.getDate() + 
-                        '&sport=' + this.props.sport)
-                        .then(res => res.json()) 
-                        .then(data => this.setState({ games: data }))
+        if(this.props.sport == "NFL")
+        {
+            var dateRange = this.getDefaultDateSelect().split('-');
+            var startDateString = dateRange[0].split("/");
+            var endDateString = dateRange[1].split("/");
+            this.fetchGamesInRange(startDateString, endDateString);
+        }
+        else
+        {
+            this.fetchGamesOnDay(new Date());
+        }
 
         fetch(apiUrl + '/gamblingsite')
         .then(res => res.json())
-        .then(data => this.setState({checkedBooks : data.map(site => site.name), allBooks : data.map(site => site.name)}))
+        .then(data => this.setState({checkedBooks : data.map(site => site.name), allBooks : data.map(site => site.name)}));
     }
 
     getDateSelector(){        
@@ -183,22 +157,8 @@ class Main extends React.Component {
     handleWeekChange(event){
         var dateRange = event.target.value.split('-');
         var startDateString = dateRange[0].split("/");
-        var startDate = new Date(parseInt(startDateString[2], 10),
-                        parseInt(startDateString[0], 10) - 1,
-                        parseInt(startDateString[1], 10));
         var endDateString = dateRange[1].split("/");
-        var endDate = new Date(parseInt(endDateString[2], 10),
-                        parseInt(endDateString[0], 10) - 1,
-                        parseInt(endDateString[1], 10));
-        fetch(apiUrl + '/games?startYear=' + startDate.getFullYear() + 
-                        '&startMonth=' + (startDate.getMonth() + 1) + 
-                        '&startDay=' + startDate.getDate() + 
-                        '&endYear=' + endDate.getFullYear() + 
-                        '&endMonth=' + (endDate.getMonth() + 1) + 
-                        '&endDay=' + endDate.getDate() + 
-                        '&sport=' + this.props.sport)
-        .then(res => res.json()) 
-        .then(data => this.setState({ games: data }))
+        this.fetchGamesInRange(startDateString, endDateString);
     }
 
     getDefaultDateSelect(){
@@ -290,6 +250,32 @@ class Main extends React.Component {
             }
         }
         return "9/10/2020-9/14/2020";
+    }
+
+    fetchGamesInRange(startDateString, endDateString)
+    {
+        var startDate = new Date(parseInt(startDateString[2], 10),
+                        parseInt(startDateString[0], 10) - 1,
+                        parseInt(startDateString[1], 10));
+        var endDate = new Date(parseInt(endDateString[2], 10),
+                        parseInt(endDateString[0], 10) - 1,
+                        parseInt(endDateString[1], 10));
+        fetch(apiUrl + '/games?startYear=' + startDate.getFullYear() + 
+                        '&startMonth=' + (startDate.getMonth() + 1) + 
+                        '&startDay=' + startDate.getDate() + 
+                        '&endYear=' + endDate.getFullYear() + 
+                        '&endMonth=' + (endDate.getMonth() + 1) + 
+                        '&endDay=' + endDate.getDate() + 
+                        '&sport=' + this.props.sport)
+        .then(res => res.json()) 
+        .then(data => this.setState({ games: data }))
+    }
+
+    fetchGamesOnDay(date)
+    {
+        fetch(apiUrl + '/games?startYear=' + date.getFullYear() + '&startMonth=' + (date.getMonth() + 1) + '&startDay=' + date.getDate() + '&sport=' + this.props.sport)
+            .then(res => res.json()) 
+            .then(data => this.setState({ games: data }))
     }
 }
 
