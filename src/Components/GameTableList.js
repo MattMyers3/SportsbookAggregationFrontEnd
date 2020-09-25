@@ -21,8 +21,8 @@ class GameTableList extends React.Component{
   }   
 
   renderTable(){
-      return <table className="table table-hover">
-      <thead className="thead-dark">
+      return <table className="table table-hover" >
+      <thead className="thead-dark" style={{borderLeft: '2px solid black', borderRight: '2px solid black', borderTop: '2px solid black', borderBottom: '2px solid black'}}>
         <tr>
             <th scope="col">Games</th>
             <th scope="col">Spread</th>
@@ -31,7 +31,7 @@ class GameTableList extends React.Component{
         </tr>
       </thead>
       <tbody>
-        {this.props.games.map((game, i) => <GameRow key={game.gameId} homeTeamId={game.homeTeamId} awayTeamId={game.awayTeamId} gameId={game.gameId} checkedBooks={this.props.checkedBooks}/>)}
+        {this.props.games.map((game, i) => <GameRow key={game.gameId} homeTeamId={game.homeTeamId} awayTeamId={game.awayTeamId} gameId={game.gameId} checkedBooks={this.props.checkedBooks} gameTime={game.timeStamp}/>)}
       </tbody>
     </table>
   }
