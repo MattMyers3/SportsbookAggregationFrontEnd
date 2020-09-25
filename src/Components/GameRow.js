@@ -34,7 +34,7 @@ class GameRow extends React.Component {
                     {this.getDisplayCell(this.state.currentOver, this.state.currentOverPayout, this.state.currentOverSite, "o")}
                 </tr>
                 <tr style={{borderLeft: '2px solid black', borderRight: '2px solid black', borderBottom: '2px solid black'}}>
-                    <th scope="row">{this.state.homeTeamName}<br></br><small style={{margin:'0px'}} class="text-muted">{this.getFormattedDate(this.props.gameTime)}</small></th>
+                    <th scope="row">{this.state.homeTeamName}<br></br><small style={{margin:'0px'}} className="text-muted">{this.getFormattedDate(this.props.gameTime)}</small></th>
                     {this.getDisplayCell(this.state.currentHomeSpread, this.state.currentHomeSpreadPayout, this.state.currentHomeSpreadSite, null)}
                     {this.getDisplayCell(this.state.currentHomeMoneyline, null, this.state.currentHomeMoneylineSite, null)}
                     {this.getDisplayCell(this.state.currentUnder, this.state.currentUnderPayout, this.state.currentUnderSite, "u")}
@@ -44,9 +44,18 @@ class GameRow extends React.Component {
     };
 
     getFormattedDate(dateString){
-        var date = new Date(dateString)
-        return date.toLocaleString();
+        var dateArray = dateString.toString().split("T");
+        var timeArray = dateArray[1].split(":");
+        return this.convertHoursToAMPM(timeArray[0], timeArray[1]);
     }
+
+    convertHoursToAMPM(hours, minutes) {
+        var ampm = hours >= 12 ? 'pm' : 'am';
+        hours = hours % 12;
+        hours = hours ? hours : 12; 
+        var strTime = hours + ':' + minutes + ' ' + ampm;
+        return strTime;
+      }
 
     getDisplayCell(val, odds, site, appendedLetters){
         if(val == null)

@@ -88,7 +88,7 @@ class Main extends React.Component {
       }
 
     componentDidMount() {
-        if(this.props.sport == "NFL")
+        if(this.props.sport === "NFL")
         {
             var dateRange = this.getDefaultDateSelect().split('-');
             var startDateString = dateRange[0].split("/");
