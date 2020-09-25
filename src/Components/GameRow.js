@@ -21,7 +21,6 @@ class GameRow extends React.Component {
         currentHomeMoneylineSite : null,
         currentAwayMoneyline : 0,
         currentAwayMoneylineSite : null,
-        gameTime : null
     }
 
     render()
