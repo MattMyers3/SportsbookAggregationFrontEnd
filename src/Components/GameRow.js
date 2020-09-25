@@ -20,7 +20,7 @@ class GameRow extends React.Component {
         currentHomeMoneyline : 0,
         currentHomeMoneylineSite : null,
         currentAwayMoneyline : 0,
-        currentAwayMoneylineSite : null,
+        currentAwayMoneylineSite : null
     }
 
     render()
@@ -28,13 +28,13 @@ class GameRow extends React.Component {
         return (
             <React.Fragment>
                 <tr style={{borderLeft: '2px solid black', borderRight: '2px solid black', borderTop: '2px solid black'}}>
-                    <th scope="row">{this.state.awayTeamName}<p class="text-muted">{this.getFormattedDate(this.props.gameTime)}</p></th>
+                    <th scope="row">{this.state.awayTeamName}</th>
                     {this.getDisplayCell(this.state.currentAwaySpread, this.state.currentAwaySpreadPayout, this.state.currentAwaySpreadSite, null)}
                     {this.getDisplayCell(this.state.currentAwayMoneyline, null, this.state.currentAwayMoneylineSite, null)}
                     {this.getDisplayCell(this.state.currentOver, this.state.currentOverPayout, this.state.currentOverSite, "o")}
                 </tr>
                 <tr style={{borderLeft: '2px solid black', borderRight: '2px solid black', borderBottom: '2px solid black'}}>
-                    <th scope="row">{this.state.homeTeamName}</th>
+                    <th scope="row">{this.state.homeTeamName}<br></br><small style={{margin:'0px'}} class="text-muted">{this.getFormattedDate(this.props.gameTime)}</small></th>
                     {this.getDisplayCell(this.state.currentHomeSpread, this.state.currentHomeSpreadPayout, this.state.currentHomeSpreadSite, null)}
                     {this.getDisplayCell(this.state.currentHomeMoneyline, null, this.state.currentHomeMoneylineSite, null)}
                     {this.getDisplayCell(this.state.currentUnder, this.state.currentUnderPayout, this.state.currentUnderSite, "u")}
