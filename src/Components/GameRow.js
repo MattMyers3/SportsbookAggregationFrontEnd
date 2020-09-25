@@ -34,7 +34,7 @@ class GameRow extends React.Component {
                     {this.getDisplayCell(this.state.currentOver, this.state.currentOverPayout, this.state.currentOverSite, "o")}
                 </tr>
                 <tr style={{borderLeft: '2px solid black', borderRight: '2px solid black', borderBottom: '2px solid black'}}>
-                    <th scope="row">{this.state.homeTeamName}</th>
+                    <th scope="row">{this.state.homeTeamName}<br></br><small style={{margin:'0px'}} class="text-muted">{this.getFormattedDate(this.props.gameTime)}</small></th>
                     {this.getDisplayCell(this.state.currentHomeSpread, this.state.currentHomeSpreadPayout, this.state.currentHomeSpreadSite, null)}
                     {this.getDisplayCell(this.state.currentHomeMoneyline, null, this.state.currentHomeMoneylineSite, null)}
                     {this.getDisplayCell(this.state.currentUnder, this.state.currentUnderPayout, this.state.currentUnderSite, "u")}
@@ -42,6 +42,11 @@ class GameRow extends React.Component {
             </React.Fragment>
             )
     };
+
+    getFormattedDate(dateString){
+        var date = new Date(dateString)
+        return date.toLocaleString();
+    }
 
     getDisplayCell(val, odds, site, appendedLetters){
         if(val == null)
