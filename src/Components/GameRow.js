@@ -27,13 +27,13 @@ class GameRow extends React.Component {
     {
         return (
             <React.Fragment>
-                <tr style={{borderLeft: '2px solid black', borderRight: '2px solid black', borderTop: '2px solid black'}}>
+                <tr style={{backgroundColor : this.getUtcGameTime(this.props.gameTime) < new Date() ? 'lightgrey' : 'white', borderLeft: '2px solid black', borderRight: '2px solid black', borderTop: '2px solid black'}}>
                     <th scope="row">{this.state.awayTeamName}</th>
                     {this.getDisplayCell(this.state.currentAwaySpread, this.state.currentAwaySpreadPayout, this.state.currentAwaySpreadSite, null)}
                     {this.getDisplayCell(this.state.currentAwayMoneyline, null, this.state.currentAwayMoneylineSite, null)}
                     {this.getDisplayCell(this.state.currentOver, this.state.currentOverPayout, this.state.currentOverSite, "o")}
                 </tr>
-                <tr style={{borderLeft: '2px solid black', borderRight: '2px solid black', borderBottom: '2px solid black'}}>
+                <tr style={{backgroundColor : this.getUtcGameTime(this.props.gameTime) < new Date() ? 'lightgrey' : 'white', borderLeft: '2px solid black', borderRight: '2px solid black', borderBottom: '2px solid black'}}>
                     <th scope="row">{this.state.homeTeamName}<br></br><small style={{margin:'0px'}} className="text-muted">{this.getFormattedDate(this.props.gameTime)}</small></th>
                     {this.getDisplayCell(this.state.currentHomeSpread, this.state.currentHomeSpreadPayout, this.state.currentHomeSpreadSite, null)}
                     {this.getDisplayCell(this.state.currentHomeMoneyline, null, this.state.currentHomeMoneylineSite, null)}
@@ -55,6 +55,15 @@ class GameRow extends React.Component {
         hours = hours ? hours : 12; 
         var strTime = hours + ':' + minutes + ' ' + ampm;
         return strTime;
+      }
+
+      getUtcGameTime(dateString){
+        var initialDateArray = dateString.toString().split("T");
+        var dateArray = initialDateArray[0].split("-");
+        var timeArray = initialDateArray[1].split(":");
+        var gameTimeUtc = new Date(Date.UTC(dateArray[0], dateArray[1] - 1, dateArray[2], timeArray[0], timeArray[1], timeArray[2]));
+        gameTimeUtc.setHours(gameTimeUtc.getHours() + 4);
+        return gameTimeUtc;
       }
 
     getDisplayCell(val, odds, site, appendedLetters){
