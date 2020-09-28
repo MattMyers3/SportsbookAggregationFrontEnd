@@ -45,8 +45,9 @@ class GameRow extends React.Component {
 
     getFormattedDate(dateString){
         var dateArray = dateString.toString().split("T");
+        var day = new Date(dateString).toLocaleDateString([],{weekday:'short'});
         var timeArray = dateArray[1].split(":");
-        return this.convertHoursToAMPM(timeArray[0], timeArray[1]);
+        return day + " " +this.convertHoursToAMPM(timeArray[0], timeArray[1]);
     }
 
     convertHoursToAMPM(hours, minutes) {
