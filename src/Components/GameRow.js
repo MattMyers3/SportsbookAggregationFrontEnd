@@ -47,7 +47,12 @@ class GameRow extends React.Component {
         var dateArray = dateString.toString().split("T");
         var day = new Date(dateString).toLocaleDateString([],{weekday:'short'});
         var timeArray = dateArray[1].split(":");
-        return day + " " +this.convertHoursToAMPM(timeArray[0], timeArray[1]);
+        if(this.props.sport === "NFL"){
+            return day + " " +this.convertHoursToAMPM(timeArray[0], timeArray[1]);
+        }
+        else{
+            return this.convertHoursToAMPM(timeArray[0],timeArray[1]);
+        }
     }
 
     convertHoursToAMPM(hours, minutes) {

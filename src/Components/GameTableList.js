@@ -31,7 +31,7 @@ class GameTableList extends React.Component{
         </tr>
       </thead>
       <tbody>
-        {this.props.games.map((game, i) => <GameRow key={game.gameId} homeTeamId={game.homeTeamId} awayTeamId={game.awayTeamId} gameId={game.gameId} checkedBooks={this.props.checkedBooks} gameTime={game.timeStamp}/>)}
+        {this.props.games.map((game, i) => <GameRow key={game.gameId} sport={this.props.sport}homeTeamId={game.homeTeamId} awayTeamId={game.awayTeamId} gameId={game.gameId} checkedBooks={this.props.checkedBooks} gameTime={game.timeStamp}/>)}
       </tbody>
     </table>
   }
