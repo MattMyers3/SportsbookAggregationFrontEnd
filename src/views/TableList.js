@@ -25,7 +25,9 @@ import {
   CardTitle,
   Table,
   Row,
-  Col
+  Col,
+  CardText,
+  Container
 } from "reactstrap";
 
 // core components
@@ -47,7 +49,8 @@ class RegularTables extends React.Component {
     allBooks: [],
     games: [],
     startDate: new Date(),
-    endDate: new Date()
+    endDate: new Date(),
+    lastRefreshTime: new Date()
   }
 
   render() {
@@ -55,20 +58,21 @@ class RegularTables extends React.Component {
       <>
         <PanelHeader size="sm" />
         <div className="content">
-          <Row>
-            <Col xs={12}>
               <Card>
                 <CardHeader>
-                  <CardTitle tag="h4">{this.props.sport} Best Lines</CardTitle>
+                  <CardTitle tag="h3">{this.props.sport} Best Lines</CardTitle>
+                  <CardText>
+                  <div className="text-muted">Last Refresh Time: {this.getFormattedDate(this.state.lastRefreshTime)}</div><br/>
+                    <Row>
+                      <Col lg={2} xs={12}>
+                        {this.getDateSelector()}
+                      </Col><br/>
+                      <Col lg={{span:2,offset:8}} s={true} xs={true}>
+                        <ReactMultiSelectCheckboxes options={this.state.allBooks} onChange={this.handleCheck} placeholderButtonLabel="Select Sportsbooks..." defaultValue={this.state.checkedBooks}/>
+                      </Col>
+                    </Row>
+                </CardText>
                 </CardHeader>
-                <Row>
-                  <Col lg={4} xs={12}>
-                    {this.getDateSelector()}
-                  </Col>
-                  <Col lg={8} xs={12}>
-                    <ReactMultiSelectCheckboxes options={this.state.allBooks} onChange={this.handleCheck} placeholderButtonLabel="Matt put text here" defaultValue={this.state.checkedBooks}/>
-                  </Col>
-                </Row>
                 <CardBody>
                   <Table responsive>
                     <thead className="text-primary">
@@ -94,12 +98,19 @@ class RegularTables extends React.Component {
                   </Table>
                 </CardBody>
               </Card>
-            </Col>
-          </Row>
         </div>
       </>
     );
   }
+
+  getFormattedDate(dateString){
+    let options = {  
+        hour: "numeric", minute: "2-digit"  
+    };  
+    
+    return new Date(dateString + "Z").toLocaleTimeString("en-us", options)
+    
+}
 
   getDateSelector() {
     if (this.props.sport === "NFL") {
@@ -282,7 +293,13 @@ class RegularTables extends React.Component {
 
         return container;});
         this.setState({ checkedBooks: books, allBooks: books});
-  });
+    });
+
+    fetch(apiUrl + '/GameLines/LastRefreshTime')
+    .then(res => res.json())
+    .then(data => {
+       this.setState({ lastRefreshTime: data.lastRefreshTime});
+    })
   }
 
   fetchGamesInRange(startDateString, endDateString) {

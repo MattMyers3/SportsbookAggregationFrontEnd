@@ -52,22 +52,14 @@ class Sidebar extends React.Component {
     return (
       <div className="sidebar" data-color={this.props.backgroundColor}>
         <div className="logo">
-          <a
-            href="https://www.creative-tim.com?ref=nudr-sidebar"
-            className="simple-text logo-mini"
-            target="_blank"
-          >
+          <a className="simple-text logo-mini">
             <div className="logo-img">
               <img src={logo} alt="react-logo" />
             </div>
           </a>
-          <a
-            href="https://www.creative-tim.com?ref=nudr-sidebar"
-            className="simple-text logo-normal"
-            target="_blank"
-          >
-            Creative Tim
-          </a>
+          <div className="simple-text logo-normal" >
+            Odds Library
+          </div>
         </div>
         <div className="sidebar-wrapper" ref="sidebar">
           <Nav>

@@ -68,7 +68,6 @@ class Dashboard extends React.Component {
           backgroundColor={this.state.backgroundColor}
         />
         <div className="main-panel" ref={this.mainPanel}>
-          <DemoNavbar {...this.props} />
           <Switch>
             {routes.map((prop, key) => {
               return (
@@ -81,7 +80,6 @@ class Dashboard extends React.Component {
             })}
             <Redirect from="/admin" to="/admin/dashboard" />
           </Switch>
-          <Footer fluid />
         </div>
       </div>
     );

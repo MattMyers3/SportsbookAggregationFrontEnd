@@ -35,7 +35,7 @@ class Footer extends React.Component {
                   href="https://www.creative-tim.com?ref=nudr-footer"
                   target="_blank"
                 >
-                  Creative Tim
+                  Odds Library
                 </a>
               </li>
               <li>
