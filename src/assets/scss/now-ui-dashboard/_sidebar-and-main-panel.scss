@@ -203,7 +203,7 @@
             display: block;
             white-space: nowrap;
             font-size: $font-size-large;
-            color: $white-color;
+            color: $ol-white;
             text-decoration: none;
             font-weight: $font-weight-normal;
             line-height: 30px;
@@ -286,8 +286,8 @@
     float: right;
     width: $sidebar-width;
     // width: 100%;
-    background-color: $light-gray;
-    background-color: #ebecf1;
+    background-color: $ol-white;
+    background-color: $ol-white;
 
     @include transition (0.50s, cubic-bezier(0.685, 0.0473, 0.346, 1));
 

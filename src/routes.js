@@ -16,6 +16,7 @@
 
 */
 import TableList from "views/TableList.js";
+import { faBaseballBall, faBasketballBall, faFootballBall } from '@fortawesome/free-solid-svg-icons';
 
 
 var dashRoutes = [
@@ -23,7 +24,7 @@ var dashRoutes = [
     path: "/NFL",
     sport: "NFL",
     name: "NFL",
-    icon: "files_paper",
+    icon: faFootballBall,
     component: TableList,
     layout: "/admin",
   },
@@ -31,7 +32,7 @@ var dashRoutes = [
     path: "/NBA",
     sport: "NBA",
     name: "NBA",
-    icon: "files_paper",
+    icon: faBasketballBall,
     component: TableList,
     layout: "/admin",
   },
@@ -39,7 +40,7 @@ var dashRoutes = [
     path: "/MLB",
     sport: "MLB",
     name: "MLB",
-    icon: "files_paper",
+    icon: faBaseballBall,
     component: TableList,
     layout: "/admin",
   }

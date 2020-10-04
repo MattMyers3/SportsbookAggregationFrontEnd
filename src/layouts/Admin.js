@@ -24,7 +24,6 @@ import { Route, Switch, Redirect } from "react-router-dom";
 
 // core components
 import DemoNavbar from "components/Navbars/DemoNavbar.js";
-import Footer from "components/Footer/Footer.js";
 import Sidebar from "components/Sidebar/Sidebar.js";
 import RegularTables from "views/TableList.js"
 
@@ -34,7 +33,7 @@ var ps;
 
 class Dashboard extends React.Component {
   state = {
-    backgroundColor: "blue",
+    backgroundColor: "black",
   };
   mainPanel = React.createRef();
   componentDidMount() {
@@ -68,6 +67,7 @@ class Dashboard extends React.Component {
           backgroundColor={this.state.backgroundColor}
         />
         <div className="main-panel" ref={this.mainPanel}>
+          <DemoNavbar {...this.props} />
           <Switch>
             {routes.map((prop, key) => {
               return (

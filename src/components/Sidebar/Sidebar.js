@@ -22,7 +22,8 @@ import { Nav } from "reactstrap";
 // javascript plugin used to create scrollbars on windows
 import PerfectScrollbar from "perfect-scrollbar";
 
-import logo from "logo-white.svg";
+import logo from "OlLogo.png";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 var ps;
 
@@ -54,7 +55,7 @@ class Sidebar extends React.Component {
         <div className="logo">
           <a className="simple-text logo-mini">
             <div className="logo-img">
-              <img src={logo} alt="react-logo" />
+              <img src={logo}/>
             </div>
           </a>
           <div className="simple-text logo-normal" >
@@ -78,8 +79,8 @@ class Sidebar extends React.Component {
                     className="nav-link"
                     activeClassName="active"
                   >
-                    <i className={"now-ui-icons " + prop.icon} />
-                    <p>{prop.name}</p>
+                    <FontAwesomeIcon icon={prop.icon} size="2x" />
+                    <p style={{display: 'inline', fontSize: 'large'}}>&nbsp;&nbsp;&nbsp;{prop.name}</p>
                   </NavLink>
                 </li>
               );

@@ -33,7 +33,7 @@ import {
 // core components
 import PanelHeader from "components/PanelHeader/PanelHeader.js";
 
-import { thead, tbody } from "variables/general";
+import { thead } from "variables/general";
 
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -42,6 +42,7 @@ import { apiUrl } from "variables/constants.js";
 import ReactGA from 'react-ga';
 import { Form } from 'react-bootstrap';
 import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
+
 
 class RegularTables extends React.Component {
   state = {
@@ -60,15 +61,16 @@ class RegularTables extends React.Component {
         <div className="content">
               <Card>
                 <CardHeader>
-                  <CardTitle tag="h3">{this.props.sport} Best Lines</CardTitle>
+                  <CardTitle className="text-primary" tag="h3">{this.props.sport} Best Lines</CardTitle>
                   <CardText>
                   <div className="text-muted">Last Refresh Time: {this.getFormattedDate(this.state.lastRefreshTime)}</div><br/>
                     <Row>
-                      <Col lg={2} xs={12}>
+                      <Col lg={2}>
                         {this.getDateSelector()}
                       </Col><br/>
-                      <Col lg={{span:2,offset:8}} s={true} xs={true}>
-                        <ReactMultiSelectCheckboxes options={this.state.allBooks} onChange={this.handleCheck} placeholderButtonLabel="Select Sportsbooks..." defaultValue={this.state.checkedBooks}/>
+                      <Col lg={{span:2,offset:6}} s={true} xs={true}>
+                        <Form.Label>Select Sportsbooks</Form.Label><br></br>
+                        <ReactMultiSelectCheckboxes options={this.state.allBooks} onChange={this.handleCheck} placeholderButtonLabel="Sportsbooks..." defaultValue={this.state.checkedBooks}/>
                       </Col>
                     </Row>
                 </CardText>
