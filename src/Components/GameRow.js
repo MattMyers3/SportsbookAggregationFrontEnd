@@ -1,5 +1,5 @@
 import React from 'react';
-import { apiUrl } from './Constants';
+import { apiUrl } from 'variables/constants.js';
 
 class GameRow extends React.Component {
     state = {
@@ -27,13 +27,13 @@ class GameRow extends React.Component {
     {
         return (
             <React.Fragment>
-                <tr style={{backgroundColor : this.getUtcGameTime(this.props.gameTime) < new Date() ? 'lightgrey' : 'white', borderLeft: '2px solid black', borderRight: '2px solid black', borderTop: '2px solid black'}}>
+                <tr>
                     <th scope="row">{this.state.awayTeamName}</th>
                     {this.getDisplayCell(this.state.currentAwaySpread, this.state.currentAwaySpreadPayout, this.state.currentAwaySpreadSite, null)}
                     {this.getDisplayCell(this.state.currentAwayMoneyline, null, this.state.currentAwayMoneylineSite, null)}
                     {this.getDisplayCell(this.state.currentOver, this.state.currentOverPayout, this.state.currentOverSite, "o")}
                 </tr>
-                <tr style={{backgroundColor : this.getUtcGameTime(this.props.gameTime) < new Date() ? 'lightgrey' : 'white', borderLeft: '2px solid black', borderRight: '2px solid black', borderBottom: '2px solid black'}}>
+                <tr>
                     <th scope="row">{this.state.homeTeamName}<br></br><small style={{margin:'0px'}} className="text-muted">{this.getFormattedDate(this.props.gameTime)}</small></th>
                     {this.getDisplayCell(this.state.currentHomeSpread, this.state.currentHomeSpreadPayout, this.state.currentHomeSpreadSite, null)}
                     {this.getDisplayCell(this.state.currentHomeMoneyline, null, this.state.currentHomeMoneylineSite, null)}
@@ -44,27 +44,14 @@ class GameRow extends React.Component {
     };
 
     getFormattedDate(dateString){
-        var dateArray = dateString.toString().split("T");
-        var timeArray = dateArray[1].split(":");
-        return this.convertHoursToAMPM(timeArray[0], timeArray[1]);
+        console.log(dateString);
+        let options = {  
+            hour: "numeric", minute: "2-digit"  
+        };  
+        
+        return new Date(dateString + "Z").toLocaleTimeString("en-us", options)
+        
     }
-
-    convertHoursToAMPM(hours, minutes) {
-        var ampm = hours >= 12 ? 'pm' : 'am';
-        hours = hours % 12;
-        hours = hours ? hours : 12; 
-        var strTime = hours + ':' + minutes + ' ' + ampm;
-        return strTime;
-      }
-
-      getUtcGameTime(dateString){
-        var initialDateArray = dateString.toString().split("T");
-        var dateArray = initialDateArray[0].split("-");
-        var timeArray = initialDateArray[1].split(":");
-        var gameTimeUtc = new Date(Date.UTC(dateArray[0], dateArray[1] - 1, dateArray[2], timeArray[0], timeArray[1], timeArray[2]));
-        gameTimeUtc.setHours(gameTimeUtc.getHours() + 4);
-        return gameTimeUtc;
-      }
 
     getDisplayCell(val, odds, site, appendedLetters){
         if(val == null)
@@ -98,43 +85,12 @@ class GameRow extends React.Component {
     componentDidUpdate(prevProps, prevState){
         if(prevProps.checkedBooks !== this.props.checkedBooks)
         {
-            fetch(apiUrl + '/GameLines/best/' + this.props.gameId + "?sportsbooks=" + this.props.checkedBooks.join())
-            .then(res => res.json()) 
-            .then(data => this.setState({ 
-                currentAwaySpread: data.currentAwaySpread,
-                currentAwaySpreadPayout: data.currentAwaySpreadPayout,
-                currentAwaySpreadSite: data.awaySpreadSite,
-                currentHomeSpread: data.currentHomeSpread,
-                currentHomeSpreadPayout: data.currentHomeSpreadPayout,
-                currentHomeSpreadSite: data.homeSpreadSite,
-                currentAwayMoneyline: data.currentAwayMoneyLine,
-                currentAwayMoneylineSite: data.awayMoneyLineSite,
-                currentHomeMoneyline: data.currentHomeMoneyLine,
-                currentHomeMoneylineSite: data.homeMoneyLineSite,
-                currentOver: data.currentOver,
-                currentOverPayout : data.currentOverPayout,
-                currentOverSite: data.overSite,
-                currentUnder: data.currentUnder,
-                currentUnderPayout : data.currentUnderPayout,
-                currentUnderSite: data.underSite,
-            }))
-            .catch()
+            this.getGameLines();
         }
     }
-    componentDidMount() {
-        fetch(apiUrl + '/teams/' + this.props.homeTeamId)
-        .then(res => res.json()) 
-        .then(data => this.setState({ 
-            homeTeamName: data.location + ' ' + data.mascot
-         }))
 
-         fetch(apiUrl + '/teams/' + this.props.awayTeamId)
-        .then(res => res.json()) 
-        .then(data => this.setState({ 
-            awayTeamName: data.location + ' ' + data.mascot
-         }))
-
-         fetch(apiUrl + '/GameLines/best/' + this.props.gameId + "?sportsbooks=" + this.props.checkedBooks.join())
+    getGameLines() {
+        fetch(apiUrl + '/GameLines/best/' + this.props.gameId + "?sportsbooks=" + this.props.checkedBooks.join())
         .then(res => res.json()) 
         .then(data => this.setState({ 
             currentAwaySpread: data.currentAwaySpread,
@@ -153,6 +109,22 @@ class GameRow extends React.Component {
             currentUnder: data.currentUnder,
             currentUnderPayout : data.currentUnderPayout,
             currentUnderSite: data.underSite,
+        }))
+        .catch()
+    }
+
+    componentWillMount() {
+        this.getGameLines();
+        fetch(apiUrl + '/teams/' + this.props.homeTeamId)
+        .then(res => res.json()) 
+        .then(data => this.setState({ 
+            homeTeamName: data.location + ' ' + data.mascot
+         }))
+
+         fetch(apiUrl + '/teams/' + this.props.awayTeamId)
+        .then(res => res.json()) 
+        .then(data => this.setState({ 
+            awayTeamName: data.location + ' ' + data.mascot
          }))
         }
 }
