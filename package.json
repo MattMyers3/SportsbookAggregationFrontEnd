@@ -1,9 +1,8 @@
 {
-  "name": "now-ui-dashboard-react",
+  "name": "odds-library",
   "version": "1.4.0",
   "main": "dist/index.js",
-  "private": true,
-  "homepage": "https://demos.creative-tim.com/now-ui-dashboard-react/#/",
+  "private": false,
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.31",
     "@fortawesome/free-solid-svg-icons": "^5.15.0",
