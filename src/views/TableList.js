@@ -93,7 +93,7 @@ class RegularTables extends React.Component {
                     <tbody className='games-striped'>
                       {this.state.games.map((game, key) => {
                         return (
-                          <GameRow key={game.gameId} homeTeamId={game.homeTeamId} awayTeamId={game.awayTeamId} gameId={game.gameId} checkedBooks={this.state.checkedBooks.map(book => book.value)} gameTime={game.timeStamp} />
+                          <GameRow key={game.gameId} sport={this.props.sport} homeTeamId={game.homeTeamId} awayTeamId={game.awayTeamId} gameId={game.gameId} checkedBooks={this.state.checkedBooks.map(book => book.value)} gameTime={game.timeStamp} />
                         );
                       })}
                     </tbody>

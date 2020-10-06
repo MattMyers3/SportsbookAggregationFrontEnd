@@ -47,7 +47,10 @@ class GameRow extends React.Component {
         console.log(dateString);
         let options = {  
             hour: "numeric", minute: "2-digit"  
-        };  
+        };
+        if(this.props.sport === "NFL"){
+            options.weekday = "short";
+        }  
         
         return new Date(dateString + "Z").toLocaleTimeString("en-us", options)
         
