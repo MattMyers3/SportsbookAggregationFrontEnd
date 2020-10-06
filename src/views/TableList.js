@@ -157,6 +157,7 @@ class RegularTables extends React.Component {
   }
 
   handleDateChange = date => {
+    date.setHours(0,0,0,0);
     this.setState({
       startDate: date
     });
@@ -307,23 +308,22 @@ class RegularTables extends React.Component {
   fetchGamesInRange(startDateString, endDateString) {
     var startDate = new Date(parseInt(startDateString[2], 10),
       parseInt(startDateString[0], 10) - 1,
-      parseInt(startDateString[1], 10));
+      parseInt(startDateString[1], 10))
     var endDate = new Date(parseInt(endDateString[2], 10),
       parseInt(endDateString[0], 10) - 1,
-      parseInt(endDateString[1], 10));
-    fetch(apiUrl + '/games?startYear=' + startDate.getFullYear() +
-      '&startMonth=' + (startDate.getMonth() + 1) +
-      '&startDay=' + startDate.getDate() +
-      '&endYear=' + endDate.getFullYear() +
-      '&endMonth=' + (endDate.getMonth() + 1) +
-      '&endDay=' + endDate.getDate() +
+      parseInt(endDateString[1], 10) + 1)
+    startDate.setHours(0,0,0,0);
+    endDate.setHours(0,0,0,0);
+    fetch(apiUrl + '/games?start=' + startDate.toISOString() +
+      '&end=' + endDate.toISOString() +
       '&sport=' + this.props.sport)
       .then(res => res.json())
       .then(data => this.setState({ games: data }))
   }
 
   fetchGamesOnDay(date) {
-    fetch(apiUrl + '/games?startYear=' + date.getFullYear() + '&startMonth=' + (date.getMonth() + 1) + '&startDay=' + date.getDate() + '&sport=' + this.props.sport)
+    date.setHours(0,0,0,0);
+    fetch(apiUrl + '/games?start=' + date.toISOString() + '&sport=' + this.props.sport)
       .then(res => res.json())
       .then(data => this.setState({ games: data }))
   }
