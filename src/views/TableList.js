@@ -308,10 +308,10 @@ class RegularTables extends React.Component {
   fetchGamesInRange(startDateString, endDateString) {
     var startDate = new Date(parseInt(startDateString[2], 10),
       parseInt(startDateString[0], 10) - 1,
-      parseInt(startDateString[1], 10))
+      parseInt(startDateString[1], 10));
     var endDate = new Date(parseInt(endDateString[2], 10),
       parseInt(endDateString[0], 10) - 1,
-      parseInt(endDateString[1], 10) + 1)
+      parseInt(endDateString[1], 10) + 1);
     startDate.setHours(0,0,0,0);
     endDate.setHours(0,0,0,0);
     fetch(apiUrl + '/games?start=' + startDate.toISOString() +
