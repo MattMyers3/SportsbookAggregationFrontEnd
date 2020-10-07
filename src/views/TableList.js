@@ -91,11 +91,7 @@ class RegularTables extends React.Component {
                       </tr>
                     </thead>
                     <tbody className='games-striped'>
-                      {this.state.games.map((game, key) => {
-                        return (
-                          <GameRow key={game.gameId} homeTeamId={game.homeTeamId} awayTeamId={game.awayTeamId} gameId={game.gameId} checkedBooks={this.state.checkedBooks.map(book => book.value)} gameTime={game.timeStamp} />
-                        );
-                      })}
+                      {this.renderGameRows()}
                     </tbody>
                   </Table>
                 </CardBody>
@@ -105,6 +101,16 @@ class RegularTables extends React.Component {
     );
   }
 
+  renderGameRows() {
+    var sortGames = this.state.games;
+    sortGames.sort(function(a,b) { return new Date(a.timeStamp) - new Date(b.timeStamp);});
+    return sortGames.map((game, key) => {
+      return (
+        <GameRow key={game.gameId} sport={this.props.sport} homeTeamId={game.homeTeamId} awayTeamId={game.awayTeamId} gameId={game.gameId} checkedBooks={this.state.checkedBooks.map(book => book.value)} gameTime={game.timeStamp} />
+      );
+    })
+  }
+  
   getFormattedDate(dateString){
     let options = {  
         hour: "numeric", minute: "2-digit"  
