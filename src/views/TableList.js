@@ -61,7 +61,7 @@ class RegularTables extends React.Component {
         <div className="content">
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-primary" tag="h3">{this.props.sport} Best Lines</CardTitle>
+                  <CardTitle className="text-primary" tag="h3">{this.props.sport} Best Lines (PA)</CardTitle>
                   <CardText>
                   <div className="text-muted">Last Refresh Time: {this.getFormattedDate(this.state.lastRefreshTime)}</div><br/>
                     <Row>
