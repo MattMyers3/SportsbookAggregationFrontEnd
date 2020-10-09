@@ -42,6 +42,7 @@ import GameRow from "components/GameRow.js";
 import { apiUrl } from "variables/constants.js";
 import ReactGA from "react-ga";
 import { Form } from "react-bootstrap";
+import Select from "react-select";
 import makeAnimated from "react-select/animated";
 
 const animatedComponents = makeAnimated();
@@ -78,7 +79,15 @@ class RegularTables extends React.Component {
                   <Col lg={{ span: 2, offset: 6 }} s={true} xs={true}>
                     <Form.Label>Select Sportsbooks</Form.Label>
                     <br></br>
-                   
+                    <Select
+                      isSearchable={false}
+                      isMulti={true}
+                      options={this.state.allBooks}
+                      components={animatedComponents}
+                      onChange={this.handleCheck}
+                      placeholderButtonLabel="Sportsbooks..."
+                      value={this.state.checkedBooks}
+                    />
                   </Col>
                 </Row>
               </CardText>
@@ -295,7 +304,7 @@ class RegularTables extends React.Component {
       else {
         var dateRange = this.getDefaultDateSelect().split('-');
         var startDate = new Date();
-        var endDate = dateRange[1].split("/");
+        var endDate = new Date(dateRange[1].split("/"));
         this.setState({startDate : startDate, endDate : endDate});
       }
     }
