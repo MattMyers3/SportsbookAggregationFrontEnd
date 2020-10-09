@@ -205,10 +205,10 @@ class RegularTables extends React.Component {
   handleWeekChange(event) {
     var dateRange = event.target.value.split('-');
     var now = new Date();
-    var startDate = new Date(dateRange[0].split("/"));
+    var startDate = new Date(dateRange[0]);
     if(now > startDate)
       startDate = now;
-    var endDate = new Date(dateRange[1].split("/"));
+    var endDate = new Date(dateRange[1]);
     this.setState({
       startDate : startDate,
       endDate : endDate
@@ -304,7 +304,7 @@ class RegularTables extends React.Component {
       else {
         var dateRange = this.getDefaultDateSelect().split('-');
         var startDate = new Date();
-        var endDate = new Date(dateRange[1].split("/"));
+        var endDate = new Date(dateRange[1]);
         this.setState({startDate : startDate, endDate : endDate});
       }
     }
@@ -324,7 +324,7 @@ class RegularTables extends React.Component {
     if (this.props.sport === "NFL") {
       var dateRange = this.getDefaultDateSelect().split('-');
       var startDate = new Date();
-      var endDate = new Date(dateRange[1].split("/"));
+      var endDate = new Date(dateRange[1]);
       this.fetchGamesInRange(startDate, endDate);
     }
     else {
