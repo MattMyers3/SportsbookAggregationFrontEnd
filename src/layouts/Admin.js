@@ -78,7 +78,6 @@ class Dashboard extends React.Component {
                 />
               );
             })}
-            <Redirect from="/admin" to="/admin/dashboard" />
           </Switch>
         </div>
       </div>

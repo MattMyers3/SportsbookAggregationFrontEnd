@@ -26,7 +26,7 @@ var dashRoutes = [
     name: "NFL",
     icon: faFootballBall,
     component: TableList,
-    layout: "/admin",
+    layout: "/sports",
   },
   {
     path: "/NBA",
@@ -34,7 +34,7 @@ var dashRoutes = [
     name: "NBA",
     icon: faBasketballBall,
     component: TableList,
-    layout: "/admin",
+    layout: "/sports",
   },
   {
     path: "/MLB",
@@ -42,7 +42,7 @@ var dashRoutes = [
     name: "MLB",
     icon: faBaseballBall,
     component: TableList,
-    layout: "/admin",
+    layout: "/sports",
   }
 ];
 export default dashRoutes;
