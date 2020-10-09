@@ -191,8 +191,10 @@ class RegularTables extends React.Component {
   };
 
   handleDateChange = date => {
+    if(date.getDate() > new Date().getDate())
+      date.setHours(0,0,0);
     this.setState({
-      startDate: date,
+      startDate: date
     });
 
     ReactGA.event({
