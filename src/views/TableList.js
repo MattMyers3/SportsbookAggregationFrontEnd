@@ -163,7 +163,6 @@ class RegularTables extends React.Component {
   }
 
   handleDateChange = date => {
-    date.setHours(0,0,0,0);
     this.setState({
       startDate: date
     });
@@ -177,9 +176,15 @@ class RegularTables extends React.Component {
 
   handleWeekChange(event) {
     var dateRange = event.target.value.split('-');
-    var startDateString = dateRange[0].split("/");
-    var endDateString = dateRange[1].split("/");
-    this.fetchGamesInRange(startDateString, endDateString);
+    var now = new Date();
+    var startDateString = new Date(dateRange[0].split("/"));
+    if(now > startDateString)
+      startDateString = now;
+    var endDateString = new Date(dateRange[1].split("/"));
+    this.setState({
+      startDate : startDateString,
+      endDate : endDateString
+    });
   }
 
   getDefaultDateSelect() {
@@ -268,26 +273,35 @@ class RegularTables extends React.Component {
   componentDidUpdate(prevProps, prevState) {
     if (prevState.startDate === this.state.startDate && prevState.endDate === this.state.endDate && prevProps.sport === this.props.sport)
       return;
-    if (prevState.startDate !== this.state.startDate && this.props.sport !== "NFL") {
-      this.fetchGamesOnDay(this.state.startDate);
+
+    if(prevProps.sport !== this.props.sport) {
+      if(this.props.sport != "NFL")
+        this.setState({ startDate: new Date() })
+      else {
+        var dateRange = this.getDefaultDateSelect().split('-');
+        var startDate = new Date();
+        var endDate = dateRange[1].split("/");
+        this.setState({startDate : startDate, endDate : endDate});
+      }
     }
-    else if ((prevProps.sport !== "NFL" && this.props.sport === "NFL")) {
-      var dateRange = this.getDefaultDateSelect().split('-');
-      var startDateString = dateRange[0].split("/");
-      var endDateString = dateRange[1].split("/");
-      this.fetchGamesInRange(startDateString, endDateString);
-    }
-    else if (prevProps.sport !== this.props.sport) {
-      this.setState({ startDate: new Date() })
+
+    if(prevState.startDate !== this.state.startDate){
+      if(this.state.startDate.getDate() < new Date().getDate()) // Don't show games in the past
+        this.setState({games : []});
+      else if(this.props.sport != "NFL")
+        this.fetchGamesOnDay(this.state.startDate);
+      else {
+        this.fetchGamesInRange(this.state.startDate, this.state.endDate);
+      }
     }
   }
 
   componentWillMount() {
     if (this.props.sport === "NFL") {
       var dateRange = this.getDefaultDateSelect().split('-');
-      var startDateString = dateRange[0].split("/");
-      var endDateString = dateRange[1].split("/");
-      this.fetchGamesInRange(startDateString, endDateString);
+      var startDate = new Date();
+      var endDate = new Date(dateRange[1].split("/"));
+      this.fetchGamesInRange(startDate, endDate);
     }
     else {
       this.fetchGamesOnDay(new Date());
@@ -311,44 +325,18 @@ class RegularTables extends React.Component {
     })
   }
 
-  fetchGamesInRange(startDateString, endDateString) {
-    var startDate = new Date(parseInt(startDateString[2], 10),
-      parseInt(startDateString[0], 10) - 1,
-      parseInt(startDateString[1], 10));
-    var endDate = new Date(parseInt(endDateString[2], 10),
-      parseInt(endDateString[0], 10) - 1,
-      parseInt(endDateString[1], 10) + 1);
-    startDate.setHours(0,0,0,0);
-    endDate.setHours(0,0,0,0);
-    var now = new Date();
-    if(startDate.getDate() >= now.getDate()){
-      if(startDate.getDate()===now.getDate()){
-        startDate = now;
-      }
-      fetch(apiUrl + '/games?start=' + startDate.toISOString() +
-        '&end=' + endDate.toISOString() +
-        '&sport=' + this.props.sport)
-        .then(res => res.json())
-        .then(data => this.setState({ games: data }))
-    }
-    else{
-      this.setState({games:[]})
-    }
-    
+  fetchGamesInRange(startDate, endDate) {
+    endDate.setHours(23,59,59,999);
+    fetch(apiUrl + '/games?start=' + startDate.toISOString() +
+      '&end=' + endDate.toISOString() +
+      '&sport=' + this.props.sport)
+      .then(res => res.json())
+      .then(data => this.setState({ games: data }))
   }
 
   fetchGamesOnDay(date) {
-    date.setHours(0,0,0,0);
     var endTime = new Date(date);
-    endTime.setHours(23,59,59,999);
-    if(date.getDate() < new Date().getDate()){
-      this.setState({games: []});
-    }
-    else{
-      fetch(apiUrl + '/games?start=' + date.toISOString() + '&end=' + endTime.toISOString() + '&sport=' + this.props.sport)
-      .then(res => res.json())
-      .then(data => this.setState({ games: data }))
-    }
+    this.fetchGamesInRange(date, endTime);
   }
 }
 
