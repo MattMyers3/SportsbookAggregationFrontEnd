@@ -42,7 +42,6 @@ import GameRow from "components/GameRow.js";
 import { apiUrl } from "variables/constants.js";
 import ReactGA from "react-ga";
 import { Form } from "react-bootstrap";
-import Select from "react-select";
 import makeAnimated from "react-select/animated";
 
 const animatedComponents = makeAnimated();
