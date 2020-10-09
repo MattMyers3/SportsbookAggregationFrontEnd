@@ -41,7 +41,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import GameRow from "components/GameRow.js";
 import { apiUrl } from "variables/constants.js";
 import ReactGA from "react-ga";
-import { Form } from "react-bootstrap";
+import { Form, Jumbotron } from "react-bootstrap";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 
@@ -93,22 +93,8 @@ class RegularTables extends React.Component {
               </CardText>
             </CardHeader>
             <CardBody>
-              <Table responsive>
-                <thead className="text-primary">
-                  <tr>
-                    {thead.map((prop, key) => {
-                      if (key === thead.length - 1)
-                        return (
-                          <th key={key} className="text-left">
-                            {prop}
-                          </th>
-                        );
-                      return <th key={key}>{prop}</th>;
-                    })}
-                  </tr>
-                </thead>
-                <tbody className="games-striped">{this.renderGameRows()}</tbody>
-              </Table>
+              {this.state.games.length === 0 ? this.props.sport === "NFL" ? this.renderNoGamesWeekMessage() : this.renderNoGamesTodayMessage() :
+              this.state.checkedBooks.length === 0 ? this.renderNoBooksCheckedMessage() : this.renderTable()}
             </CardBody>
           </Card>
         </div>
@@ -133,6 +119,47 @@ class RegularTables extends React.Component {
         />
       );
     });
+  }
+
+  renderNoGamesWeekMessage(){
+    return <Jumbotron> 
+              <h1>Lines not available!</h1> 
+              <p>Please select a different week</p>
+          </Jumbotron>
+  }
+
+  renderNoGamesTodayMessage(){
+    return <Jumbotron> 
+              <h1>No Games Today!</h1> 
+              <p>Please use the calendar to select a new date</p>
+          </Jumbotron>
+  }
+
+  renderNoBooksCheckedMessage(){
+    return <Jumbotron> 
+              <h1>No books!</h1> 
+              <p>Please check at least one sportsbook in order to see the best available game lines.</p>
+            </Jumbotron>
+
+  }
+
+  renderTable(){
+    return <Table responsive>
+      <thead className="text-primary">
+        <tr>
+          {thead.map((prop, key) => {
+            if (key === thead.length - 1)
+              return (
+                <th key={key} className="text-left">
+                  {prop}
+                </th>
+              );
+            return <th key={key}>{prop}</th>;
+          })}
+        </tr>
+      </thead>
+      <tbody className="games-striped">{this.renderGameRows()}</tbody>
+    </Table>
   }
 
   getFormattedDate(dateString) {
