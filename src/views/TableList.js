@@ -79,15 +79,7 @@ class RegularTables extends React.Component {
                   <Col lg={{ span: 2, offset: 6 }} s={true} xs={true}>
                     <Form.Label>Select Sportsbooks</Form.Label>
                     <br></br>
-                    <Select
-                      isSearchable={false}
-                      isMulti={true}
-                      options={this.state.allBooks}
-                      components={animatedComponents}
-                      onChange={this.handleCheck}
-                      placeholderButtonLabel="Sportsbooks..."
-                      value={this.state.checkedBooks}
-                    />
+                   
                   </Col>
                 </Row>
               </CardText>
@@ -342,7 +334,6 @@ class RegularTables extends React.Component {
 
           return container;
         });
-        console.log(books);
         this.setState({ checkedBooks: books, allBooks: books });
       });
 
