@@ -138,7 +138,7 @@ class RegularTables extends React.Component {
   renderNoBooksCheckedMessage(){
     return <Jumbotron> 
               <h1>No books!</h1> 
-              <p>Please check at least one sportsbook in order to see the best available game lines.</p>
+              <p>Please select at least one sportsbook in order to see the best available game lines.</p>
             </Jumbotron>
 
   }
