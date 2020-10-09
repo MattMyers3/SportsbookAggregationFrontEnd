@@ -126,23 +126,23 @@ class RegularTables extends React.Component {
         <Form>
           <Form.Label>Select Week</Form.Label>
           <Form.Control as="select" defaultValue={this.getDefaultDateSelect()} onChange={this.handleWeekChange.bind(this)} >
-            <option value="9/10/2020-9/14/2020">Week 1</option>
-            <option value="9/17/2020-9/21/2020">Week 2</option>
-            <option value="9/24/2020-9/28/2020">Week 3</option>
-            <option value="10/01/2020-10/05/2020">Week 4</option>
-            <option value="10/08/2020-10/12/2020">Week 5</option>
-            <option value="10/15/2020-10/19/2020">Week 6</option>
-            <option value="10/22/2020-10/26/2020">Week 7</option>
-            <option value="10/29/2020-11/02/2020">Week 8</option>
-            <option value="11/05/2020-11/09/2020">Week 9</option>
-            <option value="11/12/2020-11/16/2020">Week 10</option>
-            <option value="11/19/2020-11/23/2020">Week 11</option>
-            <option value="11/26/2020-11/30/2020">Week 12</option>
-            <option value="12/03/2020-12/07/2020">Week 13</option>
-            <option value="12/10/2020-12/14/2020">Week 14</option>
-            <option value="12/17/2020-12/21/2020">Week 15</option>
-            <option value="12/24/2020-12/28/2020">Week 16</option>
-            <option value="12/31/2020-01/04/2020">Week 17</option>
+            <option value="9/10/2020-9/15/2020">Week 1</option>
+            <option value="9/17/2020-9/22/2020">Week 2</option>
+            <option value="9/24/2020-9/29/2020">Week 3</option>
+            <option value="10/01/2020-10/06/2020">Week 4</option>
+            <option value="10/08/2020-10/13/2020">Week 5</option>
+            <option value="10/15/2020-10/20/2020">Week 6</option>
+            <option value="10/22/2020-10/27/2020">Week 7</option>
+            <option value="10/29/2020-11/03/2020">Week 8</option>
+            <option value="11/05/2020-11/10/2020">Week 9</option>
+            <option value="11/12/2020-11/17/2020">Week 10</option>
+            <option value="11/19/2020-11/24/2020">Week 11</option>
+            <option value="11/26/2020-12/01/2020">Week 12</option>
+            <option value="12/03/2020-12/08/2020">Week 13</option>
+            <option value="12/10/2020-12/15/2020">Week 14</option>
+            <option value="12/17/2020-12/22/2020">Week 15</option>
+            <option value="12/24/2020-12/29/2020">Week 16</option>
+            <option value="12/31/2020-01/05/2020">Week 17</option>
           </Form.Control>
         </Form>);
     }
@@ -177,13 +177,13 @@ class RegularTables extends React.Component {
   handleWeekChange(event) {
     var dateRange = event.target.value.split('-');
     var now = new Date();
-    var startDateString = new Date(dateRange[0].split("/"));
-    if(now > startDateString)
-      startDateString = now;
-    var endDateString = new Date(dateRange[1].split("/"));
+    var startDate = new Date(dateRange[0].split("/"));
+    if(now > startDate)
+      startDate = now;
+    var endDate = new Date(dateRange[1].split("/"));
     this.setState({
-      startDate : startDateString,
-      endDate : endDateString
+      startDate : startDate,
+      endDate : endDate
     });
   }
 
@@ -195,53 +195,53 @@ class RegularTables extends React.Component {
     if (currentYear === 2020 || currentYear === 2021) {
       if (currentMonth === 8) {
         if (currentDay >= 10 && currentDay <= 14) {
-          return "9/10/2020-9/14/2020";
+          return "9/10/2020-9/15/2020";
         }
         else if (currentDay >= 15 && currentDay <= 21) {
-          return "9/17/2020-9/21/2020";
+          return "9/17/2020-9/22/2020";
         }
         else if (currentDay >= 22 && currentDay <= 28) {
-          return "9/24/2020-9/28/2020";
+          return "9/24/2020-9/29/2020";
         }
         else if (currentDay >= 29) {
-          return "10/01/2020-10/05/2020";
+          return "10/01/2020-10/06/2020";
         }
       }
       else if (currentMonth === 9) {
         if (currentDay >= 1 && currentDay <= 5) {
-          return "10/01/2020-10/05/2020";
+          return "10/01/2020-10/06/2020";
         }
         else if (currentDay >= 6 && currentDay <= 12) {
-          return "10/08/2020-10/12/2020";
+          return "10/08/2020-10/13/2020";
         }
         else if (currentDay >= 13 && currentDay <= 19) {
-          return "10/15/2020-10/19/2020";
+          return "10/15/2020-10/20/2020";
         }
         else if (currentDay >= 20 && currentDay <= 26) {
-          return "10/22/2020-10/26/2020";
+          return "10/22/2020-10/27/2020";
         }
         else if (currentDay >= 27) {
-          return "10/29/2020-11/02/2020";
+          return "10/29/2020-11/03/2020";
         }
       }
       else if (currentMonth === 10) {
         if (currentDay <= 2) {
-          return "10/29/2020-11/02/2020";
+          return "10/29/2020-11/03/2020";
         }
         else if (currentDay >= 3 && currentDay <= 9) {
-          return "11/05/2020-11/09/2020";
+          return "11/05/2020-11/10/2020";
         }
         else if (currentDay >= 10 && currentDay <= 16) {
-          return "11/12/2020-11/16/2020";
+          return "11/12/2020-11/17/2020";
         }
         else if (currentDay >= 17 && currentDay <= 23) {
-          return "11/19/2020-11/23/2020";
+          return "11/19/2020-11/24/2020";
         }
         else if (currentDay >= 24 && currentDay <= 30) {
-          return "11/26/2020-11/30/2020";
+          return "11/26/2020-12/01/2020";
         }
         else if (currentDay >= 31) {
-          return "12/03/2020-12/07/2020";
+          return "12/03/2020-12/08/2020";
         }
       }
       else if (currentMonth === 11) {
@@ -267,7 +267,7 @@ class RegularTables extends React.Component {
         }
       }
     }
-    return "9/10/2020-9/14/2020";
+    return "9/10/2020-9/15/2020";
   }
 
   componentDidUpdate(prevProps, prevState) {
