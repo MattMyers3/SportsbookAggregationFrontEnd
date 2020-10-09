@@ -32,6 +32,7 @@ ReactDOM.render(
   <Router history={hist}>
     <Switch>
       <Route path="/sports" render={(props) => <AdminLayout {...props} />} />
+      <Route path="/info" render={(props) => <AdminLayout {...props} />} />
       <Redirect to="/sports/nfl" />
     </Switch>
   </Router>,

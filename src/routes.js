@@ -51,7 +51,7 @@ var dashRoutes = [
     name: "FAQ",
     icon: faQuestion,
     component: FAQ,
-    layout: "/sports",
+    layout: "/info",
   }
 ];
 export default dashRoutes;
