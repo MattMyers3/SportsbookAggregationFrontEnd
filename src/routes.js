@@ -16,7 +16,8 @@
 
 */
 import TableList from "views/TableList.js";
-import { faBaseballBall, faBasketballBall, faFootballBall } from '@fortawesome/free-solid-svg-icons';
+import { faBaseballBall, faBasketballBall, faFootballBall, faQuestion } from '@fortawesome/free-solid-svg-icons';
+import FAQ from "views/Faq.js";
 
 
 var dashRoutes = [
@@ -43,6 +44,14 @@ var dashRoutes = [
     icon: faBaseballBall,
     component: TableList,
     layout: "/sports",
+  },
+  {
+    pro: true,
+    path: "/FAQ",
+    name: "FAQ",
+    icon: faQuestion,
+    component: FAQ,
+    layout: "/info",
   }
 ];
 export default dashRoutes;

@@ -73,7 +73,7 @@ class Dashboard extends React.Component {
               return (
                 <Route
                   path={prop.layout + prop.path}
-                  render={(props) => <RegularTables {...prop} />}
+                  render={(props) => <prop.component {...prop} />}
                   key={key}
                 />
               );
