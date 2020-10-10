@@ -49,8 +49,6 @@ const animatedComponents = makeAnimated();
 
 class RegularTables extends React.Component {
   state = {
-    checkedBooks: [],
-    allBooks: [],
     games: [],
     startDate: new Date(),
     endDate: new Date(),
@@ -82,11 +80,11 @@ class RegularTables extends React.Component {
                     <Select
                       isSearchable={false}
                       isMulti={true}
-                      options={this.state.allBooks}
+                      options={this.props.allBooks}
                       components={animatedComponents}
-                      onChange={this.handleCheck}
+                      onChange={this.props.handleSportsbookChange}
                       placeholderButtonLabel="Sportsbooks..."
-                      value={this.state.checkedBooks}
+                      value={this.props.checkedBooks}
                     />
                   </Col>
                 </Row>
@@ -94,7 +92,7 @@ class RegularTables extends React.Component {
             </CardHeader>
             <CardBody>
               {this.state.games.length === 0 ? this.props.sport === "NFL" ? this.renderNoGamesWeekMessage() : this.renderNoGamesTodayMessage() :
-              this.state.checkedBooks.length === 0 ? this.renderNoBooksCheckedMessage() : this.renderTable()}
+              this.props.checkedBooks.length === 0 ? this.renderNoBooksCheckedMessage() : this.renderTable()}
             </CardBody>
           </Card>
         </div>
@@ -114,7 +112,7 @@ class RegularTables extends React.Component {
           homeTeamId={game.homeTeamId}
           awayTeamId={game.awayTeamId}
           gameId={game.gameId}
-          checkedBooks={this.state.checkedBooks.map((book) => book.value)}
+          checkedBooks={this.props.checkedBooks.map((book) => book.value)}
           gameTime={game.timeStamp}
         />
       );
@@ -210,12 +208,6 @@ class RegularTables extends React.Component {
       );
     }
   }
-
-  handleCheck = (books) => {
-    this.setState({
-      checkedBooks: books,
-    });
-  };
 
   handleDateChange = date => {
     if(date.getDate() > new Date().getDate())
@@ -359,20 +351,6 @@ class RegularTables extends React.Component {
     else {
       this.fetchGamesOnDay(new Date());
     }
-
-    fetch(apiUrl + "/gamblingsite")
-      .then((res) => res.json())
-      .then((data) => {
-        var books = data.map((site) => {
-          const container = {};
-
-          container["value"] = site.name;
-          container["label"] = site.name;
-
-          return container;
-        });
-        this.setState({ checkedBooks: books, allBooks: books });
-      });
 
     fetch(apiUrl + "/GameLines/LastRefreshTime")
       .then((res) => res.json())
