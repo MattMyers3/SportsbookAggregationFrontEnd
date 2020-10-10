@@ -92,7 +92,7 @@ class RegularTables extends React.Component {
             </CardHeader>
             <CardBody>
               {this.state.games.length === 0 ? this.props.sport === "NFL" ? this.renderNoGamesWeekMessage() : this.renderNoGamesTodayMessage() :
-              this.props.checkedBooks.length === 0 ? this.renderNoBooksCheckedMessage() : this.renderTable()}
+              this.props.checkedBooks != null && this.props.checkedBooks.length === 0 ? this.renderNoBooksCheckedMessage() : this.renderTable()}
             </CardBody>
           </Card>
         </div>
@@ -112,7 +112,7 @@ class RegularTables extends React.Component {
           homeTeamId={game.homeTeamId}
           awayTeamId={game.awayTeamId}
           gameId={game.gameId}
-          checkedBooks={this.props.checkedBooks.map((book) => book.value)}
+          checkedBooks={this.props.checkedBooks != null ? this.props.checkedBooks.map((book) => book.value) : []}
           gameTime={game.timeStamp}
         />
       );
