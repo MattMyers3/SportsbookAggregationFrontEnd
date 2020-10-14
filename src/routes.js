@@ -16,11 +16,20 @@
 
 */
 import TableList from "views/TableList.js";
-import { faBaseballBall, faBasketballBall, faFootballBall, faQuestion } from '@fortawesome/free-solid-svg-icons';
+import BoostRegularTables from "views/OddsBoostTableList.js";
+import { faBaseballBall, faBasketballBall, faFootballBall, faQuestion, faRocket } from '@fortawesome/free-solid-svg-icons';
 import FAQ from "views/Faq.js";
 
 
 var dashRoutes = [
+  {
+    path: "/OddsBoosts",
+    sport: "Odds Boosts",
+    name: "Odds Boosts",
+    icon: faRocket,
+    component: BoostRegularTables,
+    layout: "/oddsboosts"
+  },
   {
     path: "/NFL",
     sport: "NFL",

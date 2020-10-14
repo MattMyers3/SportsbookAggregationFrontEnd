@@ -40,6 +40,7 @@ const tasks = [
 // #############################
 
 const thead = ["Games", "Spread", "Money Line", "Total"];
+const theadOddsBoosts = ["Boosted Odds", "Previous Odds"];
 const tbody = [
   {
     className: "table-success",
@@ -71,4 +72,4 @@ const tbody = [
 // tasks list for Tasks card in Dashboard view
 // data for <thead> of table in TableList view
 // data for <tbody> of table in TableList view
-export { tasks, thead, tbody };
+export { tasks, thead, tbody, theadOddsBoosts };
