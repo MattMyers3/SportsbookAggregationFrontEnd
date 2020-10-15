@@ -106,7 +106,7 @@ class BoostRegularTables extends React.Component {
         <BoostRow
           key={boost.oddsboostid}
           description={boost.description}
-          previousOdds={this.formatOdds(boost.previousOdds)}
+          previousOdds={boost.previousOdds}
           boostedOdds={this.formatOdds(boost.boostedOdds)}
           />
       );
