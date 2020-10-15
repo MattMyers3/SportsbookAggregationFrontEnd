@@ -87,7 +87,7 @@ class BoostRegularTables extends React.Component {
               </CardText>
             </CardHeader>
             <CardBody>
-              {this.props.checkedBooks != null && this.props.checkedBooks.length === 0 ? this.renderNoBooksCheckedMessage() : this.props.checkedBooks.map((book) => this.renderTable(book))}
+              {this.props.checkedBooks == null || this.props.checkedBooks.length === 0 ? this.renderNoBooksCheckedMessage() : this.props.checkedBooks.map((book) => this.renderTable(book))}
             </CardBody>
           </Card>
         </div>
@@ -119,16 +119,13 @@ class BoostRegularTables extends React.Component {
     }
     else if(odds == 0){
       return "N/A";
-    }  
-    else{
-      return "-" + odds;
     }
   }
 
   renderNoBooksCheckedMessage(){
     return <Jumbotron> 
               <h1>No books!</h1> 
-              <p>Please select at least one sportsbook in order to see the best available game lines.</p>
+              <p>Please select at least one sportsbook in order to see the available odds boosts.</p>
             </Jumbotron>
 
   }

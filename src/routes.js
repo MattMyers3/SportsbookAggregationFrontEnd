@@ -28,7 +28,7 @@ var dashRoutes = [
     name: "Odds Boosts",
     icon: faRocket,
     component: BoostRegularTables,
-    layout: "/oddsboosts"
+    layout: "/sports"
   },
   {
     path: "/NFL",
