@@ -25,7 +25,8 @@ import { Route, Switch, Redirect } from "react-router-dom";
 // core components
 import DemoNavbar from "components/Navbars/DemoNavbar.js";
 import Sidebar from "components/Sidebar/Sidebar.js";
-import RegularTables from "views/TableList.js"
+import RegularTable from "views/TableList.js"
+import { apiUrl } from "variables/constants.js";
 
 import routes from "routes.js";
 
@@ -34,6 +35,8 @@ var ps;
 class Dashboard extends React.Component {
   state = {
     backgroundColor: "black",
+    allBooks: [],
+    checkedBooks: []
   };
   mainPanel = React.createRef();
   componentDidMount() {
@@ -41,6 +44,20 @@ class Dashboard extends React.Component {
       ps = new PerfectScrollbar(this.mainPanel.current);
       document.body.classList.toggle("perfect-scrollbar-on");
     }
+
+    fetch(apiUrl + "/gamblingsite")
+    .then((res) => res.json())
+    .then((data) => {
+        var books = data.map((site) => {
+        const container = {};
+
+        container["value"] = site.name;
+        container["label"] = site.name;
+
+        return container;
+        });
+        this.setState({ checkedBooks: books, allBooks: books });
+    });
   }
   componentWillUnmount() {
     if (navigator.platform.indexOf("Win") > -1) {
@@ -58,6 +75,12 @@ class Dashboard extends React.Component {
   handleColorClick = (color) => {
     this.setState({ backgroundColor: color });
   };
+
+  handleCheck = (books) => {
+    this.setState({
+      checkedBooks: books,
+    });
+  };
   render() {
     return (
       <div className="wrapper">
@@ -73,7 +96,7 @@ class Dashboard extends React.Component {
               return (
                 <Route
                   path={prop.layout + prop.path}
-                  render={(props) => <prop.component {...prop} />}
+                  render={(props) => <prop.component {...prop} allBooks={this.state.allBooks} checkedBooks={this.state.checkedBooks} handleSportsbookChange={this.handleCheck}/>}
                   key={key}
                 />
               );
