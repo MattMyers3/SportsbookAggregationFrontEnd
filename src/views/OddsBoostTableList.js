@@ -106,7 +106,7 @@ class BoostRegularTables extends React.Component {
         <BoostRow
           key={boost.oddsboostid}
           description={boost.description}
-          previousOdds={boost.previousOdds}
+          previousOdds={this.formatOdds(boost.previousOdds)}
           boostedOdds={this.formatOdds(boost.boostedOdds)}
           />
       );
@@ -120,12 +120,15 @@ class BoostRegularTables extends React.Component {
     else if(odds == 0){
       return "N/A";
     }
+    else{
+      return odds;
+    }
   }
 
   renderNoBooksCheckedMessage(){
     return <Jumbotron> 
               <h1>No books!</h1> 
-              <p>Please select at least one sportsbook in order to see the available odds boosts.</p>
+              <p>Please select at least one sportsbook in order to see the available odds.</p>
             </Jumbotron>
 
   }
