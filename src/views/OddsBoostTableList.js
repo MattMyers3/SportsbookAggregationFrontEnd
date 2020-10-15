@@ -70,7 +70,7 @@ class BoostRegularTables extends React.Component {
                 </div>
                 <br />
                 <Row>
-                  <Col lg={{ span: 2, offset: 6 }} s={true} xs={true}>
+                  <Col lg={true} s={true} xs={true}>
                     <Form.Label>Select Sportsbooks</Form.Label>
                     <br></br>
                     <Select
