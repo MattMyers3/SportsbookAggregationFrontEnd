@@ -48,7 +48,6 @@ const animatedComponents = makeAnimated();
 
 class BoostRegularTables extends React.Component {
   state = {
-    checkedBooks: [],
     allBooks: [],
     oddsBoosts: [],
     lastRefreshTime: new Date(),
@@ -77,18 +76,18 @@ class BoostRegularTables extends React.Component {
                     <Select
                       isSearchable={false}
                       isMulti={true}
-                      options={this.state.allBooks}
+                      options={this.props.allBooks}
                       components={animatedComponents}
-                      onChange={this.handleCheck}
+                      onChange={this.props.handleSportsbookChange}
                       placeholderButtonLabel="Sportsbooks..."
-                      value={this.state.checkedBooks}
+                      value={this.props.checkedBooks}
                     />
                   </Col>
                 </Row>
               </CardText>
             </CardHeader>
             <CardBody>
-              {this.state.checkedBooks != null && this.state.checkedBooks.length === 0 ? this.renderNoBooksCheckedMessage() : this.state.checkedBooks.map((book) => this.renderTable(book))}
+              {this.props.checkedBooks != null && this.props.checkedBooks.length === 0 ? this.renderNoBooksCheckedMessage() : this.props.checkedBooks.map((book) => this.renderTable(book))}
             </CardBody>
           </Card>
         </div>
@@ -166,31 +165,11 @@ class BoostRegularTables extends React.Component {
     return new Date(dateString + "Z").toLocaleTimeString("en-us", options);
   }
 
-  handleCheck = (books) => {
-    this.setState({
-      checkedBooks: books,
-    });
-  };
-
   componentWillMount() {
     fetch(apiUrl + "/oddsboosts")
       .then((res) => res.json())
       .then((data) => {
-        this.setState({ oddsBoosts: data})
-      });
-
-    fetch(apiUrl + "/gamblingsite")
-      .then((res) => res.json())
-      .then((data) => {
-        var books = data.map((site) => {
-          const container = {};
-
-          container["value"] = site.name;
-          container["label"] = site.name;
-
-          return container;
-        });
-        this.setState({ checkedBooks: books, allBooks: books });
+        this.setState({ oddsBoosts: data});
       });
 
     fetch(apiUrl + "/OddsBoosts/LastRefreshTime")
