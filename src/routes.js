@@ -38,14 +38,6 @@ var dashRoutes = [
     layout: "/sports",
   },
   {
-    path: "/NBA",
-    sport: "NBA",
-    name: "NBA",
-    icon: faBasketballBall,
-    component: TableList,
-    layout: "/sports",
-  },
-  {
     path: "/MLB",
     sport: "MLB",
     name: "MLB",
