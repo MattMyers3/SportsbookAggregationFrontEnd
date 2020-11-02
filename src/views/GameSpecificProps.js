@@ -22,12 +22,13 @@ import { thead } from "variables/general";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import PropRow from "components/PropRow.js";
+import PropRowOverUnder from "components/PropRowOverUnder.js"
 import { apiUrl } from "variables/constants.js";
 import ReactGA from "react-ga";
 import { Form, Jumbotron } from "react-bootstrap";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
-import { theadProps } from "variables/general";
+import { theadProps, theadPropsOverUnder } from "variables/general";
 
 const animatedComponents = makeAnimated();
 
@@ -115,28 +116,49 @@ class GameSpecificProps extends React.Component {
       ).length == 0
     )
       return;
-
-    return (
-      <Table responsive>
-        <thead className="text-primary">
-          <tr className="d-flex">
-            <th className="col-6">{propType}</th>
-            {theadProps.map((head) => {
-              return(<th className="col-3">{head}</th>)
-            })}
-          </tr>
-        </thead>
-        <tbody className="boosts-striped">
-          {this.renderGamePropRows(propType)}
-        </tbody>
-      </Table>
-    );
+      const first = this.state.GameProps.filter(singleProp=>singleProp.propType === propType)[0];
+      debugger;
+      if(first.overLine !== undefined){
+        return (
+          <Table responsive>
+            <thead className="text-primary">
+              <tr className="d-flex">
+                <th className="col-6">{propType}</th>
+                {theadPropsOverUnder.map((head) => {
+                  return(<th className="col-3">{head}</th>)
+                })}
+              </tr>
+            </thead>
+            <tbody className="boosts-striped">
+              {this.renderGamePropRowsOverUnder(propType)}
+            </tbody>
+          </Table>
+        );
+      }
+      else{
+        return (
+          <Table responsive>
+            <thead className="text-primary">
+              <tr className="d-flex">
+                <th className="col-6">{propType}</th>
+                {theadProps.map((head) => {
+                  return(<th className="col-3">{head}</th>)
+                })}
+              </tr>
+            </thead>
+            <tbody className="boosts-striped">
+              {this.renderGamePropRows(propType)}
+            </tbody>
+          </Table>
+        );
+      }
+    
   }
 
   renderGamePropRows(propType) {
     var playerProps =
       this.state.GameProps != null
-        ? this.state.GameProps.filter((prop) => prop.propType == propType)
+        ? this.state.GameProps.filter((prop) => prop.propType === propType)
         : null;
     if (playerProps == null) return;
 
@@ -152,17 +174,40 @@ class GameSpecificProps extends React.Component {
       );
     });
   }
+  renderGamePropRowsOverUnder(propType) {
+    var playerProps =
+      this.state.GameProps != null
+        ? this.state.GameProps.filter((prop) => prop.propType === propType)
+        : null;
+    if (playerProps == null) return;
+
+    return playerProps.map((singleProp) => {
+      return (
+        <PropRowOverUnder
+          firstName={singleProp.firstName}
+          lastName={singleProp.lastName}
+          description={singleProp.description}
+          overLine = {singleProp.overLine}
+          underLine = {singleProp.underLine}
+          overPayout={this.formatOdds(singleProp.overPayout)}
+          underPayout = {this.formatOdds(singleProp.underPayout)}
+          overSportsbook = {singleProp.overSportsbook}
+          underSportsbook = {singleProp.underSportsbook}
+        />
+      );
+    });
+  }
   formatOdds(odds) {
     if (odds > 0) {
       return "+" + odds;
     } else if (odds == 0) {
       return "N/A";
-    } else {
+    } else { 
       return odds;
     }
   }
 
-  getPlayerProps(game) {
+  getPlayerProps(gameId) {
     const playerProps = {
       props: [
         {
@@ -228,6 +273,54 @@ class GameSpecificProps extends React.Component {
           description: "to score first",
           payout: 6000,
           sportsbook: "Barstool",
+        },
+        {
+          propType: "Reception Yards",
+          firstName: "Jordan",
+          lastName: "Franklin",
+          description: "reception yards",
+          overLine: 75.5,
+          underLine: 85.5,
+          overPayout: 110,
+          overSportsbook: "Fanduel",
+          underPayout: 110,
+          underSportsbook: "Rivers"
+        },
+        {
+          propType: "Reception Yards",
+          firstName: "Matt",
+          lastName: "Myers",
+          description: "reception yards",
+          overLine: 75.5,
+          underLine: 85.5,
+          overPayout: 120,
+          overSportsbook: "Rivers",
+          underPayout: 110,
+          underSportsbook: "Barstool"
+        },
+        {
+          propType: "Reception Yards",
+          firstName: "Nick",
+          lastName: "Smith",
+          description: "reception yards",
+          overLine: 75.5,
+          underLine: 85.5,
+          overPayout: 110,
+          overSportsbook: "Fanduel",
+          underPayout: 130,
+          underSportsbook: "DraftKings"
+        },
+        {
+          propType: "Reception Yards",
+          firstName: "Matt",
+          lastName: "Murphy",
+          description: "reception yards",
+          overLine: 75.5,
+          underLine: 85.5,
+          overPayout: 110,
+          overSportsbook: "DraftKings",
+          underPayout: -110,
+          underSportsbook: "Rivers"
         },
       ],
     };
