@@ -18,7 +18,7 @@ export class PropRowOverUnder extends React.Component {
                     </td>
                     <td className="col-3">
                         <b>{this.props.underLine}</b>
-                        <sup>{this.props.underPayout}</sup>
+                        <sup>({this.props.underPayout})</sup>
                         <br></br>
                         {this.props.underSportsbook}
                     </td>
