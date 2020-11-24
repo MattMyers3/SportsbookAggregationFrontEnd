@@ -27,18 +27,26 @@ import DemoNavbar from "components/Navbars/DemoNavbar.js";
 import Sidebar from "components/Sidebar/Sidebar.js";
 import RegularTable from "views/TableList.js"
 import { apiUrl } from "variables/constants.js";
-
+import Login from "components/Login.js";
 import routes from "routes.js";
-
+import PanelHeader from "components/PanelHeader/PanelHeader.js";
+import { withOktaAuth } from '@okta/okta-react';
 var ps;
 
-class Dashboard extends React.Component {
-  state = {
-    backgroundColor: "black",
-    allBooks: [],
-    checkedBooks: []
-  };
+export default withOktaAuth(class Dashboard extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      backgroundColor: "black",
+      allBooks: [],
+      checkedBooks: [],
+      userInfo: null
+    };
+    this.checkUser = this.checkUser.bind(this);
+    this.checkUser();
+  }
   mainPanel = React.createRef();
+
   componentDidMount() {
     if (navigator.platform.indexOf("Win") > -1) {
       ps = new PerfectScrollbar(this.mainPanel.current);
@@ -58,20 +66,60 @@ class Dashboard extends React.Component {
         });
         this.setState({ checkedBooks: books, allBooks: books });
     });
+
+    if(this.state.userInfo){
+      console.log(this.state.userInfo);
+    }
   }
+
   componentWillUnmount() {
     if (navigator.platform.indexOf("Win") > -1) {
       ps.destroy();
       document.body.classList.toggle("perfect-scrollbar-on");
     }
   }
-  componentDidUpdate(e) {
-    if (e.history.action === "PUSH") {
+
+  componentDidUpdate(prevProps, prevState) {
+    this.checkUser();
+
+    if(prevState.userInfo != this.state.userInfo){
+      this.fetchUserDefaults();
+    }
+
+    if (prevProps.history.action === "PUSH") {
       document.documentElement.scrollTop = 0;
       document.scrollingElement.scrollTop = 0;
       this.mainPanel.current.scrollTop = 0;
     }
   }
+  async fetchUserDefaults() {
+    const accessToken = this.props.authState.accessToken;
+    fetch(apiUrl + "/gamblingsite", {
+      headers: {
+        Authorization: `Bearer ${accessToken}`
+      }
+    })
+    .then((res) => res.json())
+    .then((data) => {
+        var books = data.map((site) => {
+        const container = {};
+
+        container["value"] = site.name;
+        container["label"] = site.name;
+
+        return container;
+        });
+        this.setState({ checkedBooks: books });
+    });
+  }
+
+  async checkUser() {
+    if (this.props.authState.isAuthenticated && !this.state.userInfo) {
+      const userInfo = await this.props.authService.getUser();
+      this.setState({ userInfo });
+    }
+  }
+
   handleColorClick = (color) => {
     this.setState({ backgroundColor: color });
   };
@@ -91,12 +139,14 @@ class Dashboard extends React.Component {
         />
         <div className="main-panel" ref={this.mainPanel}>
           <DemoNavbar {...this.props} />
+          <PanelHeader size="sm" />
           <Switch>
+            <Route path="/login" render={(props) => <Login baseUrl={this.props.baseUrl} {...props}/>} />
             {routes.map((prop, key) => {
               return (
                 <Route
                   path={prop.layout + prop.path}
-                  render={(props) => <prop.component {...prop} allBooks={this.state.allBooks} checkedBooks={this.state.checkedBooks} handleSportsbookChange={this.handleCheck}/>}
+                  render={(props) => <prop.component {...prop} history={this.props.history} allBooks={this.state.allBooks} checkedBooks={this.state.checkedBooks} handleSportsbookChange={this.handleCheck}/>}
                   key={key}
                 />
               );
@@ -106,6 +156,5 @@ class Dashboard extends React.Component {
       </div>
     );
   }
-}
+})
 
-export default Dashboard;

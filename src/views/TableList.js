@@ -44,27 +44,36 @@ import ReactGA from "react-ga";
 import { Form, Jumbotron } from "react-bootstrap";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
+import LoginButton from "components/LoginButton.js";
 
 const animatedComponents = makeAnimated();
 
 class RegularTables extends React.Component {
-  state = {
-    games: [],
-    startDate: new Date(),
-    endDate: new Date(),
-    lastRefreshTime: new Date(),
-  };
+  constructor(props){
+    super(props);
+
+    this.state = {
+      games: [],
+      startDate: new Date(),
+      endDate: new Date(),
+      lastRefreshTime: new Date(),
+    };
+
+    if (this.props.sport === "NFL") {
+      this.setDefaultStartAndEndForNFL();
+    }
+  }
 
   render() {
     return (
       <>
-        <PanelHeader size="sm" />
         <div className="content">
           <Card>
             <CardHeader>
               <CardTitle className="text-primary" tag="h3">
                 {this.props.sport} Best Lines (PA)
               </CardTitle>
+              <LoginButton history={this.props.history}/>
               <CardText>
                 <div className="text-muted">
                   Last Refresh Time:{" "}
@@ -92,7 +101,7 @@ class RegularTables extends React.Component {
             </CardHeader>
             <CardBody>
               {this.state.games.length === 0 ? this.props.sport === "NFL" ? this.renderNoGamesWeekMessage() : this.renderNoGamesTodayMessage() :
-              this.props.checkedBooks == null || this.props.checkedBooks.length === 0 ? this.renderNoBooksCheckedMessage() : this.renderTable()}
+              this.props.checkedBooks != null && this.props.checkedBooks.length === 0 ? this.renderNoBooksCheckedMessage() : this.renderTable()}
             </CardBody>
           </Card>
         </div>
@@ -323,10 +332,7 @@ class RegularTables extends React.Component {
       if(this.props.sport != "NFL")
         this.setState({ startDate: new Date() })
       else {
-        var dateRange = this.getDefaultDateSelect().split('-');
-        var startDate = new Date();
-        var endDate = new Date(dateRange[1]);
-        this.setState({startDate : startDate, endDate : endDate});
+        this.setDefaultStartAndEndForNFL();
       }
     }
 
@@ -341,15 +347,12 @@ class RegularTables extends React.Component {
     }
   }
 
-  componentWillMount() {
+  componentDidMount() {
     if (this.props.sport === "NFL") {
-      var dateRange = this.getDefaultDateSelect().split('-');
-      var startDate = new Date();
-      var endDate = new Date(dateRange[1]);
-      this.fetchGamesInRange(startDate, endDate);
+      this.fetchGamesInRange(this.state.startDate, this.state.endDate)
     }
     else {
-      this.fetchGamesOnDay(new Date());
+      this.fetchGamesOnDay(this.state.startDate);
     }
 
     fetch(apiUrl + "/GameLines/LastRefreshTime")
@@ -359,7 +362,22 @@ class RegularTables extends React.Component {
       });
   }
 
+  setDefaultStartAndEndForNFL() {
+    var dateRange = this.getDefaultDateSelect().split('-');
+    var now = new Date();
+    var startDate = new Date(dateRange[0]);
+    if(now > startDate)
+      startDate = now;
+    var endDate = new Date(dateRange[1]);
+    console.log(startDate);    
+    this.setState({
+      startDate : startDate,
+      endDate : endDate
+    });
+  }
+
   fetchGamesInRange(startDate, endDate) {
+    console.log(startDate);
     endDate.setHours(23,59,59,999);
     fetch(apiUrl + '/games?start=' + startDate.toISOString() +
       '&end=' + endDate.toISOString() +
