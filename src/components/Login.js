@@ -35,6 +35,6 @@ export default withOktaAuth(class Login extends Component {
         onSuccess={this.onSuccess}
         onError={this.onError}
         registration={true}
-        redirectUri= {'http://localhost:3000'}/>;
+        redirectUri= {'https://www.oddslibrary.com'}/>;
   }
 });
