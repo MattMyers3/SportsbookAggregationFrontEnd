@@ -292,19 +292,19 @@ class RegularTables extends React.Component {
         }
       } else if (currentMonth === 11) {
         if (currentDay >= 1 && currentDay <= 7) {
-          return "12/03/2020-12/07/2020";
+          return "12/03/2020-12/08/2020";
         } else if (currentDay >= 8 && currentDay <= 14) {
-          return "12/10/2020-12/14/2020";
+          return "12/10/2020-12/15/2020";
         } else if (currentDay >= 15 && currentDay <= 21) {
-          return "12/17/2020-12/21/2020";
+          return "12/17/2020-12/22/2020";
         } else if (currentDay >= 22 && currentDay <= 28) {
-          return "12/24/2020-12/28/2020";
+          return "12/24/2020-12/29/2020";
         } else if (currentDay >= 29) {
-          return "12/31/2020-01/04/2020";
+          return "12/31/2020-01/05/2020";
         }
       } else if (currentMonth === 0) {
         if (currentDay <= 4) {
-          return "12/31/2020-01/04/2020";
+          return "12/31/2020-01/05/2020";
         }
       }
     }
