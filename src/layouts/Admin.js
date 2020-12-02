@@ -31,6 +31,8 @@ import Login from "components/Login.js";
 import routes from "routes.js";
 import PanelHeader from "components/PanelHeader/PanelHeader.js";
 import { withOktaAuth } from '@okta/okta-react';
+import LoginButton from "components/LoginButton.js";
+
 var ps;
 
 export default withOktaAuth(class Dashboard extends React.Component {
@@ -42,6 +44,7 @@ export default withOktaAuth(class Dashboard extends React.Component {
       checkedBooks: [],
       userInfo: null
     };
+    this.setUserDefaults = this.setUserDefaults.bind(this);    
     this.checkUser = this.checkUser.bind(this);
     this.checkUser();
   }
@@ -64,11 +67,15 @@ export default withOktaAuth(class Dashboard extends React.Component {
 
         return container;
         });
-        this.setState({ checkedBooks: books, allBooks: books });
+        this.setState({allBooks: books });
     });
 
+    
     if(this.state.userInfo){
-      console.log(this.state.userInfo);
+      this.fetchUserDefaults();
+    }
+    else {
+      this.setState({checkedBooks: this.state.allBooks});
     }
   }
 
@@ -92,9 +99,10 @@ export default withOktaAuth(class Dashboard extends React.Component {
       this.mainPanel.current.scrollTop = 0;
     }
   }
-  async fetchUserDefaults() {
+
+  fetchUserDefaults() {
     const accessToken = this.props.authState.accessToken;
-    fetch(apiUrl + "/gamblingsite", {
+    fetch(apiUrl + "/settings", {
       headers: {
         Authorization: `Bearer ${accessToken}`
       }
@@ -113,9 +121,25 @@ export default withOktaAuth(class Dashboard extends React.Component {
     });
   }
 
-  async checkUser() {
+  setUserDefaults() {
+    const accessToken = this.props.authState.accessToken; 
+    var gamblingsites = JSON.stringify(this.state.checkedBooks.map(function(book) {
+      return book["value"];
+    }))
+    console.log(gamblingsites)   ;
+    return fetch(apiUrl + "/settings", {
+        method: 'PUT',
+        body: gamblingsites,
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          'Content-Type': "application/json"
+        }
+    })
+  }
+
+  checkUser() {
     if (this.props.authState.isAuthenticated && !this.state.userInfo) {
-      const userInfo = await this.props.authService.getUser();
+      const userInfo = this.props.authService.getUser();
       this.setState({ userInfo });
     }
   }
@@ -139,14 +163,14 @@ export default withOktaAuth(class Dashboard extends React.Component {
         />
         <div className="main-panel" ref={this.mainPanel}>
           <DemoNavbar {...this.props} />
-          <PanelHeader size="sm" />
+          <PanelHeader size="sm" history={this.props.history}/>
           <Switch>
             <Route path="/login" render={(props) => <Login baseUrl={this.props.baseUrl} {...props}/>} />
             {routes.map((prop, key) => {
               return (
                 <Route
                   path={prop.layout + prop.path}
-                  render={(props) => <prop.component {...prop} history={this.props.history} allBooks={this.state.allBooks} checkedBooks={this.state.checkedBooks} handleSportsbookChange={this.handleCheck}/>}
+                  render={(props) => <prop.component {...prop} isLoggedIn={this.props.authState.isAuthenticated} setUserDefaults={this.setUserDefaults} history={this.props.history} allBooks={this.state.allBooks} checkedBooks={this.state.checkedBooks} handleSportsbookChange={this.handleCheck}/>}
                   key={key}
                 />
               );

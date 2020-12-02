@@ -8,6 +8,8 @@ export default class OktaSignInWidget extends Component {
     const el = ReactDOM.findDOMNode(this);
     this.widget = new OktaSignIn({
       baseUrl: this.props.baseUrl,
+      logo: '/static/media/OlLogo.ec069bae.png',
+      logoText: 'Odds Library',
       authParams: {
           responseType: 'id_token'
         // If your app is configured to use the Implicit Flow
@@ -15,7 +17,7 @@ export default class OktaSignInWidget extends Component {
         // you will need to uncomment the below line
         // pkce: false
       },
-      redirectUri: 'http://localhost:3000',
+      redirectUri: 'https://www.oddslibrary.com',
       features: {
           registration: true
       }
@@ -28,6 +30,6 @@ export default class OktaSignInWidget extends Component {
   }
 
   render() {
-    return <div />;
+    return <div><br/></div>;
   }
 };

@@ -44,7 +44,6 @@ import ReactGA from "react-ga";
 import { Form, Jumbotron } from "react-bootstrap";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
-import LoginButton from "components/LoginButton.js";
 
 const animatedComponents = makeAnimated();
 
@@ -64,50 +63,6 @@ class RegularTables extends React.Component {
     }
   }
 
-  render() {
-    return (
-      <>
-        <div className="content">
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-primary" tag="h3">
-                {this.props.sport} Best Lines (PA)
-              </CardTitle>
-              <LoginButton history={this.props.history}/>
-              <CardText>
-                <div className="text-muted">
-                  Last Refresh Time:{" "}
-                  {this.getFormattedDate(this.state.lastRefreshTime)}
-                </div>
-                <br />
-                <Row>
-                  <Col lg={2}>{this.getDateSelector()}</Col>
-                  <br />
-                  <Col lg={{ span: 2, offset: 6 }} s={true} xs={true}>
-                    <Form.Label>Select Sportsbooks</Form.Label>
-                    <br></br>
-                    <Select
-                      isSearchable={false}
-                      isMulti={true}
-                      options={this.props.allBooks}
-                      components={animatedComponents}
-                      onChange={this.props.handleSportsbookChange}
-                      placeholderButtonLabel="Sportsbooks..."
-                      value={this.props.checkedBooks}
-                    />
-                  </Col>
-                </Row>
-              </CardText>
-            </CardHeader>
-            <CardBody>
-              {this.state.games.length === 0 ? this.props.sport === "NFL" ? this.renderNoGamesWeekMessage() : this.renderNoGamesTodayMessage() :
-              this.props.checkedBooks != null && this.props.checkedBooks.length === 0 ? this.renderNoBooksCheckedMessage() : this.renderTable()}
-            </CardBody>
-          </Card>
-        </div>
-      </>
-    );
-  }
   renderGameRows() {
     var sortGames = this.state.games;
     sortGames.sort(function (a, b) {
@@ -390,6 +345,52 @@ class RegularTables extends React.Component {
     var endTime = new Date(date);
     this.fetchGamesInRange(date, endTime);
   }
+
+  render() {
+    return (
+      <>
+        <div className="content">
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-primary" tag="h3">
+                {this.props.sport} Best Lines (PA)
+              </CardTitle>
+              <CardText>
+                <div className="text-muted">
+                  Last Refresh Time:{" "}
+                  {this.getFormattedDate(this.state.lastRefreshTime)}
+                </div>
+                <br />
+                <Row>
+                  <Col lg={2}>{this.getDateSelector()}</Col>
+                  <br />
+                  <Col lg={{ span: 2, offset: 6 }} s={true} xs={true}>
+                    <Form.Label>Select Sportsbooks</Form.Label>
+                    <br></br>
+                    <Select
+                      isSearchable={false}
+                      isMulti={true}
+                      options={this.props.allBooks}
+                      components={animatedComponents}
+                      onChange={this.props.handleSportsbookChange}
+                      placeholderButtonLabel="Sportsbooks..."
+                      value={this.props.checkedBooks}
+                    />
+                    {this.props.isLoggedIn && <Button onClick={this.props.setUserDefaults}>Save Selections</Button> }
+                  </Col>
+                </Row>
+              </CardText>
+            </CardHeader>
+            <CardBody>
+              {this.state.games.length === 0 ? this.props.sport === "NFL" ? this.renderNoGamesWeekMessage() : this.renderNoGamesTodayMessage() :
+              this.props.checkedBooks != null && this.props.checkedBooks.length === 0 ? this.renderNoBooksCheckedMessage() : this.renderTable()}
+            </CardBody>
+          </Card>
+        </div>
+      </>
+    );
+  }
 }
 
 export default RegularTables;
+

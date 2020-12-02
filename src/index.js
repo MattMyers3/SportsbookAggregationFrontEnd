@@ -37,7 +37,7 @@ ReactGA.pageview(window.location.pathname + window.location.search);
 const config = {
   clientId: '0oa19xhlo9NYrl4tP5d6',
   issuer: 'https://dev-5862712.okta.com/oauth2/default',
-  redirectUri: 'http://localhost:3000/login/callback',
+  redirectUri: 'https://www.oddslibrary.com/login/callback',
   scopes: ['openid', 'profile', 'email'],
   pkce: true
 };

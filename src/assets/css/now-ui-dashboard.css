@@ -22,6 +22,10 @@ Licensed under the MIT license - http://opensource.org/licenses/MIT
 
 Copyright (c) 2015 Daniel Eden
 */
+.loginButton {
+  position:absolute;
+  top:0;
+}
 
 .animated {
   -webkit-animation-duration: 1s;
