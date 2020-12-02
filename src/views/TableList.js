@@ -58,7 +58,6 @@ class RegularTables extends React.Component {
   render() {
     return (
       <>
-        <PanelHeader size="sm" />
         <div className="content">
           <Card>
             <CardHeader>
@@ -86,6 +85,7 @@ class RegularTables extends React.Component {
                       placeholderButtonLabel="Sportsbooks..."
                       value={this.props.checkedBooks}
                     />
+                    {this.props.isLoggedIn && <Button onClick={this.props.setUserDefaults}>Save Selections</Button> }
                   </Col>
                 </Row>
               </CardText>
@@ -99,7 +99,7 @@ class RegularTables extends React.Component {
       </>
     );
   }
-  
+
   renderGameRows() {
     var sortGames = this.state.games;
     sortGames.sort(function (a, b) {

@@ -68,14 +68,14 @@ export default withOktaAuth(class Dashboard extends React.Component {
         return container;
         });
         this.setState({allBooks: books });
-    });
 
-    
+        if(!this.state.userInfo) {
+          this.setState({checkedBooks: books});
+        }
+    });
+ 
     if(this.state.userInfo){
       this.fetchUserDefaults();
-    }
-    else {
-      this.setState({checkedBooks: this.state.allBooks});
     }
   }
 
@@ -170,7 +170,7 @@ export default withOktaAuth(class Dashboard extends React.Component {
               return (
                 <Route
                   path={prop.layout + prop.path}
-                  render={(props) => <prop.component {...prop} isLoggedIn={this.props.authState.isAuthenticated} setUserDefaults={this.setUserDefaults} history={this.props.history} allBooks={this.state.allBooks} checkedBooks={this.state.checkedBooks} handleSportsbookChange={this.handleCheck}/>}
+                  render={(props) => <prop.component {...prop} isLoggedIn={this.props.authState.isAuthenticated} setUserDefaults={this.setUserDefaults} allBooks={this.state.allBooks} checkedBooks={this.state.checkedBooks} handleSportsbookChange={this.handleCheck}/>}
                   key={key}
                 />
               );
