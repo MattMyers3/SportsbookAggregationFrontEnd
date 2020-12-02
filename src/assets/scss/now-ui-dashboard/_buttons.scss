@@ -1,3 +1,10 @@
+.loginButton {
+    position:absolute;
+    z-index: 10000;
+    top:0;
+    right:$margin-large-vertical;
+}
+
 .btn,
 .navbar .navbar-nav > a.btn{
     border-width: $border-thick;
