@@ -99,6 +99,7 @@ class RegularTables extends React.Component {
       </>
     );
   }
+  
   renderGameRows() {
     var sortGames = this.state.games;
     sortGames.sort(function (a, b) {
