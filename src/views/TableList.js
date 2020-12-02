@@ -48,21 +48,57 @@ import makeAnimated from "react-select/animated";
 const animatedComponents = makeAnimated();
 
 class RegularTables extends React.Component {
-  constructor(props){
-    super(props);
+  state = {
+    games: [],
+    startDate: new Date(),
+    endDate: new Date(),
+    lastRefreshTime: new Date(),
+  };
 
-    this.state = {
-      games: [],
-      startDate: new Date(),
-      endDate: new Date(),
-      lastRefreshTime: new Date(),
-    };
-
-    if (this.props.sport === "NFL") {
-      this.setDefaultStartAndEndForNFL();
-    }
+  render() {
+    return (
+      <>
+        <PanelHeader size="sm" />
+        <div className="content">
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-primary" tag="h3">
+                {this.props.sport} Best Lines (PA)
+              </CardTitle>
+              <CardText>
+                <div className="text-muted">
+                  Last Refresh Time:{" "}
+                  {this.getFormattedDate(this.state.lastRefreshTime)}
+                </div>
+                <br />
+                <Row>
+                  <Col lg={2}>{this.getDateSelector()}</Col>
+                  <br />
+                  <Col lg={{ span: 2, offset: 6 }} s={true} xs={true}>
+                    <Form.Label>Select Sportsbooks</Form.Label>
+                    <br></br>
+                    <Select
+                      isSearchable={false}
+                      isMulti={true}
+                      options={this.props.allBooks}
+                      components={animatedComponents}
+                      onChange={this.props.handleSportsbookChange}
+                      placeholderButtonLabel="Sportsbooks..."
+                      value={this.props.checkedBooks}
+                    />
+                  </Col>
+                </Row>
+              </CardText>
+            </CardHeader>
+            <CardBody>
+              {this.state.games.length === 0 ? this.props.sport === "NFL" ? this.renderNoGamesWeekMessage() : this.renderNoGamesTodayMessage() :
+              this.props.checkedBooks == null || this.props.checkedBooks.length === 0 ? this.renderNoBooksCheckedMessage() : this.renderTable()}
+            </CardBody>
+          </Card>
+        </div>
+      </>
+    );
   }
-
   renderGameRows() {
     var sortGames = this.state.games;
     sortGames.sort(function (a, b) {
@@ -287,7 +323,10 @@ class RegularTables extends React.Component {
       if(this.props.sport != "NFL")
         this.setState({ startDate: new Date() })
       else {
-        this.setDefaultStartAndEndForNFL();
+        var dateRange = this.getDefaultDateSelect().split('-');
+        var startDate = new Date();
+        var endDate = new Date(dateRange[1]);
+        this.setState({startDate : startDate, endDate : endDate});
       }
     }
 
@@ -302,12 +341,15 @@ class RegularTables extends React.Component {
     }
   }
 
-  componentDidMount() {
+  componentWillMount() {
     if (this.props.sport === "NFL") {
-      this.fetchGamesInRange(this.state.startDate, this.state.endDate)
+      var dateRange = this.getDefaultDateSelect().split('-');
+      var startDate = new Date();
+      var endDate = new Date(dateRange[1]);
+      this.fetchGamesInRange(startDate, endDate);
     }
     else {
-      this.fetchGamesOnDay(this.state.startDate);
+      this.fetchGamesOnDay(new Date());
     }
 
     fetch(apiUrl + "/GameLines/LastRefreshTime")
@@ -317,22 +359,7 @@ class RegularTables extends React.Component {
       });
   }
 
-  setDefaultStartAndEndForNFL() {
-    var dateRange = this.getDefaultDateSelect().split('-');
-    var now = new Date();
-    var startDate = new Date(dateRange[0]);
-    if(now > startDate)
-      startDate = now;
-    var endDate = new Date(dateRange[1]);
-    console.log(startDate);    
-    this.setState({
-      startDate : startDate,
-      endDate : endDate
-    });
-  }
-
   fetchGamesInRange(startDate, endDate) {
-    console.log(startDate);
     endDate.setHours(23,59,59,999);
     fetch(apiUrl + '/games?start=' + startDate.toISOString() +
       '&end=' + endDate.toISOString() +
@@ -345,52 +372,6 @@ class RegularTables extends React.Component {
     var endTime = new Date(date);
     this.fetchGamesInRange(date, endTime);
   }
-
-  render() {
-    return (
-      <>
-        <div className="content">
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-primary" tag="h3">
-                {this.props.sport} Best Lines (PA)
-              </CardTitle>
-              <CardText>
-                <div className="text-muted">
-                  Last Refresh Time:{" "}
-                  {this.getFormattedDate(this.state.lastRefreshTime)}
-                </div>
-                <br />
-                <Row>
-                  <Col lg={2}>{this.getDateSelector()}</Col>
-                  <br />
-                  <Col lg={{ span: 2, offset: 6 }} s={true} xs={true}>
-                    <Form.Label>Select Sportsbooks</Form.Label>
-                    <br></br>
-                    <Select
-                      isSearchable={false}
-                      isMulti={true}
-                      options={this.props.allBooks}
-                      components={animatedComponents}
-                      onChange={this.props.handleSportsbookChange}
-                      placeholderButtonLabel="Sportsbooks..."
-                      value={this.props.checkedBooks}
-                    />
-                    {this.props.isLoggedIn && <Button onClick={this.props.setUserDefaults}>Save Selections</Button> }
-                  </Col>
-                </Row>
-              </CardText>
-            </CardHeader>
-            <CardBody>
-              {this.state.games.length === 0 ? this.props.sport === "NFL" ? this.renderNoGamesWeekMessage() : this.renderNoGamesTodayMessage() :
-              this.props.checkedBooks != null && this.props.checkedBooks.length === 0 ? this.renderNoBooksCheckedMessage() : this.renderTable()}
-            </CardBody>
-          </Card>
-        </div>
-      </>
-    );
-  }
 }
 
 export default RegularTables;
-
