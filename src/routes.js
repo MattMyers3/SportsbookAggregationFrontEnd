@@ -54,13 +54,13 @@ var dashRoutes = [
     component: TableList,	
     layout: "/sports",	
   },
-  {	
-    path: "/NCAAB",	
-    sport: "NCAAB",	
-    name: "NCAAB",	
-    icon: faBasketballBall,	
-    component: TableList,	
-    layout: "/sports",	
+  {
+    path: "/NCAAB",
+    sport: "NCAAB",
+    name: "NCAAB",
+    icon: faBasketballBall,
+    component: TableList,
+    layout: "/sports",
   },
   {
     pro: true,
