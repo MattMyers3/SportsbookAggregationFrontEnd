@@ -25,6 +25,10 @@ class GameRow extends React.Component {
 
     render()
     {
+        if(this.state.currentAwaySpread == null && this.state.currentAwayMoneyline == null && this.state.currentOver == null &&
+           this.state.currentHomeSpread == null && this.state.currentHomeMoneyline == null && this.state.currentUnder == null){
+               return(<React.Fragment></React.Fragment>)
+           }
         return (
             <React.Fragment>
                 <tr>

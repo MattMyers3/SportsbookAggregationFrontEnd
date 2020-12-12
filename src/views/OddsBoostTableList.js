@@ -32,14 +32,12 @@ import {
 } from "reactstrap";
 
 // core components
-import PanelHeader from "components/PanelHeader/PanelHeader.js";
 
 import { theadOddsBoosts } from "variables/general";
 
 import "react-datepicker/dist/react-datepicker.css";
 import BoostRow from "components/BoostRow.js";
 import { apiUrl } from "variables/constants.js";
-import ReactGA from "react-ga";
 import { Form, Jumbotron } from "react-bootstrap";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
@@ -56,7 +54,6 @@ class BoostRegularTables extends React.Component {
   render() {
     return (
       <>
-        <PanelHeader size="sm" />
         <div className="content">
           <Card>
             <CardHeader>
