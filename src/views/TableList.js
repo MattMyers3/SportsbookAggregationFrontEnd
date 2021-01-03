@@ -176,23 +176,11 @@ class RegularTables extends React.Component {
         <Form>
           <Form.Label>Select Week</Form.Label>
           <Form.Control as="select" defaultValue={this.getDefaultDateSelect()} onChange={this.handleWeekChange.bind(this)} >
-            <option value="9/10/2020-9/15/2020">Week 1</option>
-            <option value="9/17/2020-9/22/2020">Week 2</option>
-            <option value="9/24/2020-9/29/2020">Week 3</option>
-            <option value="10/01/2020-10/06/2020">Week 4</option>
-            <option value="10/08/2020-10/13/2020">Week 5</option>
-            <option value="10/15/2020-10/20/2020">Week 6</option>
-            <option value="10/22/2020-10/27/2020">Week 7</option>
-            <option value="10/29/2020-11/03/2020">Week 8</option>
-            <option value="11/05/2020-11/10/2020">Week 9</option>
-            <option value="11/12/2020-11/17/2020">Week 10</option>
-            <option value="11/19/2020-11/24/2020">Week 11</option>
-            <option value="11/26/2020-12/01/2020">Week 12</option>
-            <option value="12/03/2020-12/08/2020">Week 13</option>
-            <option value="12/10/2020-12/15/2020">Week 14</option>
-            <option value="12/17/2020-12/22/2020">Week 15</option>
-            <option value="12/24/2020-12/29/2020">Week 16</option>
-            <option value="12/31/2020-01/05/2020">Week 17</option>
+            <option value="12/31/2020-01/05/2021">Week 17</option>
+            <option value="1/07/2021-01/11/2021">Wildcard Weekend</option>
+            <option value="01/15/2021-01/18/2021">Divisional Round</option>
+            <option value="01/23/2021-01/25/2021">Conference Championships</option>
+            <option value="02/06/2021-02/08/2021">Super Bowl</option>            
           </Form.Control>
         </Form>
       );
@@ -305,10 +293,23 @@ class RegularTables extends React.Component {
         }
       } else if (currentMonth === 0) {
         if (currentDay <= 4) {
-          return "12/31/2020-01/05/2020";
+          return "12/31/2020-01/05/2021";
         }
+        if(currentDay <= 10) {
+          return "1/07/2021-01/11/2021"
+        }
+        if(currentDay <= 17) {
+          return "01/15/2021-01/18/2021"
+        }
+        if(currentDay <= 24) {
+          return "01/23/2021-01/25/2021"
+        }
+        return "02/06/2021-02/08/2021"
       }
-    }
+      else if(currentMonth === 1) {
+        return "02/06/2021-02/08/2021"
+      }
+    }     
     return "9/10/2020-9/15/2020";
   }
 
