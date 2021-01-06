@@ -9,19 +9,19 @@ export class PropRowWithOptions extends React.Component {
             <React.Fragment>
                 <tr className="d-flex">
                     <td className="col-6" scope="row">
-                        {under.name}
+                        {under.PlayerName}
                     </td>
                     <td className="col-3">
-                        <b>{under.propValue}</b>
-                        <sup>({under.payout})</sup>
+                        <b>{under.PropValue}</b>
+                        <sup>({under.CurrentPayout})</sup>
                         <br></br>
-                        {under.sportsbook}
+                        {under.CurrentSite}
                     </td>
                     <td className="col-3">
-                    <b>{over.propValue}</b>
-                    <sup>({over.payout})</sup>
+                    <b>{over.PropValue}</b>
+                    <sup>({over.CurrentPayout})</sup>
                     <br></br>
-                    {over.sportsbook}
+                    {over.CurrentSite}
                 </td>
                 </tr>
             </React.Fragment>

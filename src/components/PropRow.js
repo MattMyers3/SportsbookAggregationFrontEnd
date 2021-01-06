@@ -7,10 +7,10 @@ class PropRow extends React.Component {
       <React.Fragment>
         <tr className="d-flex">
           <td className="col-6" scope="row">
-            {this.props.playerProp.name}
+            {this.props.playerProp.PlayerName}
           </td>
-          <td className="col-3">{this.props.playerProp.payout}</td>
-          <td className="col-3">{this.props.playerProp.sportsbook}</td>
+          <td className="col-3">{this.props.playerProp.CurrentPayout}</td>
+          <td className="col-3">{this.props.playerProp.CurrentSite}</td>
         </tr>
       </React.Fragment>
     );

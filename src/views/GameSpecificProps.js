@@ -91,12 +91,6 @@ class GameSpecificProps extends React.Component {
     let homeTeamId = null;
     let awayTeamId = null;
 
-    for (let gameProp of gameProps) {
-      let tableTitle = this.getPropTableTitle(gameProp);
-      if (!propTypes.includes(tableTitle)) {
-        propTypes.push(tableTitle);
-      }
-    }
     fetch(apiUrl + "/games/" + this.props.match.params.gameId)
     .then((res) => res.json())
     .then((data) =>
@@ -105,7 +99,14 @@ class GameSpecificProps extends React.Component {
         AwayTeamId: data.awayTeamId,
       })
     );
-    this.setState({ GameProps: gameProps, PropTypes: propTypes });
+
+    fetch(apiUrl + "/games/" + this.props.match.params.gameId + "bestprops")
+    .then((res) => res.json())
+    .then((data) =>
+      this.setState({
+        GameProps: data
+      })
+    );
   }
 
   componentDidUpdate(prevProps, prevState)
@@ -126,6 +127,18 @@ class GameSpecificProps extends React.Component {
           AwayTeamName: data.location + " " + data.mascot,
         })
       );
+    }
+
+    if(prevState.GameProps == [] && this.state.GameProps != [])
+    {
+      let propTypes = [];
+      for (let gameProp of this.state.GameProps) {
+        let tableTitle = this.getPropTableTitle(gameProp);
+        if (!propTypes.includes(tableTitle)) {
+          propTypes.push(tableTitle);
+        }
+      }
+      this.setState({ PropTypes: propTypes});
     }
   }
 
