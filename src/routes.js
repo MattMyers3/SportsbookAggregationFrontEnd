@@ -64,11 +64,6 @@ var dashRoutes = [
     layout: "/sports",
   },
   {
-    path: "/games",
-    component: GameSpecificProps,
-    layout: "/sports",
-  },
-  {
     pro: true,
     path: "/FAQ",
     name: "FAQ",

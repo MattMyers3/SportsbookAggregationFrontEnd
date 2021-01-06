@@ -24,6 +24,10 @@ class GameRow extends React.Component {
   };
 
   render() {
+    if(this.state.currentAwaySpread == null && this.state.currentAwayMoneyline == null && this.state.currentOver == null &&
+      this.state.currentHomeSpread == null && this.state.currentHomeMoneyline == null && this.state.currentUnder == null){
+          return(<React.Fragment></React.Fragment>);
+      }
     return (
       <React.Fragment>
         <tr>
@@ -56,7 +60,7 @@ class GameRow extends React.Component {
             </small>
             <br></br>
             <small>
-              <a href="/sports/games">More Wagers</a>
+              <a href={"/sports/" + this.props.sport + "/games/" + this.props.gameId}>More Wagers</a>
             </small>
           </th>
           {this.getDisplayCell(

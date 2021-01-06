@@ -46,6 +46,7 @@ ReactDOM.render(
   <Router history={hist}>
     <Security {...config}>
       <Switch>
+        <Route path="/sports/:sport/games/:gameId" render={(props) => <AdminLayout history={hist} {...props} />} />          
         <Route path="/sports" render={(props) => <AdminLayout history={hist} {...props} />} />
         <Route path="/info" render={(props) => <AdminLayout {...props} />} />
         <Route path="/oddsboosts" render={(props) => <AdminLayout {...props} />} />
