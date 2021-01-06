@@ -1,6 +1,5 @@
 import React from "react";
 import { apiUrl } from "variables/constants.js";
-import { PropRowOverUnder } from "./PropRowOverUnder";
 
 class PropRow extends React.Component {
   render() {
@@ -8,11 +7,10 @@ class PropRow extends React.Component {
       <React.Fragment>
         <tr className="d-flex">
           <td className="col-6" scope="row">
-            {this.props.firstName} {this.props.lastName}{" "}
-            {this.props.description}
+            {this.props.playerProp.name}
           </td>
-          <td className="col-3">{this.props.odds}</td>
-          <td className="col-3">{this.props.sportsbook}</td>
+          <td className="col-3">{this.props.playerProp.payout}</td>
+          <td className="col-3">{this.props.playerProp.sportsbook}</td>
         </tr>
       </React.Fragment>
     );

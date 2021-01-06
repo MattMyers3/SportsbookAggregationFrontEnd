@@ -22,7 +22,7 @@ import { thead } from "variables/general";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import PropRow from "components/PropRow.js";
-import PropRowOverUnder from "components/PropRowOverUnder.js"
+import PropRowWithOptions from "components/PropRowWithOptions.js"
 import { apiUrl } from "variables/constants.js";
 import ReactGA from "react-ga";
 import { Form, Jumbotron } from "react-bootstrap";
@@ -34,28 +34,27 @@ const animatedComponents = makeAnimated();
 
 class GameSpecificProps extends React.Component {
   state = {
-    allBooks: [],
+    GameTime: null,
+    HomeTeamName: null,
+    HomeTeamId: null,
+    AwayTeamName: null,
+    AwayTeamId: null,
     GameProps: [],
     PropTypes: [],
-    lastRefreshTime: new Date(),
   };
 
   render() {
     return (
       <>
-        <PanelHeader size="sm" />
         <div className="content">
           <Card>
             <CardHeader>
               <CardTitle className="text-primary" tag="h3">
-                Player Props
+                {this.state.HomeTeamName} vs {this.state.AwayTeamName}
               </CardTitle>
+              Player Props
+              <br/><br/>
               <CardText>
-                {/* <div className="text-muted">
-                  Last Refresh Time:{" "}
-                  {this.getFormattedDate(this.state.lastRefreshTime)}
-                </div>
-                <br /> */}
                 <Row>
                   <Col lg={true} s={true} xs={true}>
                     <Form.Label>Select Sportsbooks</Form.Label>
@@ -89,12 +88,49 @@ class GameSpecificProps extends React.Component {
   componentWillMount() {
     const gameProps = this.getPlayerProps();
     let propTypes = [];
+    let homeTeamId = null;
+    let awayTeamId = null;
+
     for (let gameProp of gameProps) {
-      if (!propTypes.includes(gameProp.propType)) {
-        propTypes.push(gameProp.propType);
+      let tableTitle = this.getPropTableTitle(gameProp);
+      if (!propTypes.includes(tableTitle)) {
+        propTypes.push(tableTitle);
       }
     }
+    fetch(apiUrl + "/games/" + this.props.match.params.gameId)
+    .then((res) => res.json())
+    .then((data) =>
+      this.setState({
+        HomeTeamId: data.homeTeamId,
+        AwayTeamId: data.awayTeamId,
+      })
+    );
     this.setState({ GameProps: gameProps, PropTypes: propTypes });
+  }
+
+  componentDidUpdate(prevProps, prevState)
+  {
+    if(prevState.HomeTeamId == null && this.state.HomeTeamId != null)
+    {
+      fetch(apiUrl + "/teams/" + this.state.HomeTeamId)
+      .then((res) => res.json())
+      .then((data) =>
+        this.setState({
+          HomeTeamName: data.location + " " + data.mascot,
+        })
+      );
+      fetch(apiUrl + "/teams/" + this.state.AwayTeamId)
+      .then((res) => res.json())
+      .then((data) =>
+        this.setState({
+          AwayTeamName: data.location + " " + data.mascot,
+        })
+      );
+    }
+  }
+
+  getPropTableTitle(prop) {
+    return prop.propValue === null ? prop.description + " " + prop.propType : prop.propType;
   }
 
   renderNoBooksCheckedMessage() {
@@ -109,16 +145,13 @@ class GameSpecificProps extends React.Component {
     );
   }
   renderTable(propType) {
-    if (
-      this.state.GameProps == null ||
-      this.state.GameProps.filter(
-        (singleProp) => singleProp.propType == propType
-      ).length == 0
-    )
-      return;
-      const first = this.state.GameProps.filter(singleProp=>singleProp.propType === propType)[0];
-      debugger;
-      if(first.overLine !== undefined){
+      if(this.state.GameProps == null) return;
+
+      let propsForPropType =  this.state.GameProps.filter((singleProp) => this.getPropTableTitle(singleProp) == propType);
+      if (propsForPropType.length == 0) return;
+      
+      const first = propsForPropType[0];
+      if(first.propValue !== null){
         return (
           <Table responsive>
             <thead className="text-primary">
@@ -130,7 +163,7 @@ class GameSpecificProps extends React.Component {
               </tr>
             </thead>
             <tbody className="boosts-striped">
-              {this.renderGamePropRowsOverUnder(propType)}
+              {this.renderGamePropRowsOverUnder(propsForPropType)}
             </tbody>
           </Table>
         );
@@ -147,7 +180,7 @@ class GameSpecificProps extends React.Component {
               </tr>
             </thead>
             <tbody className="boosts-striped">
-              {this.renderGamePropRows(propType)}
+              {this.renderGamePropRows(propsForPropType)}
             </tbody>
           </Table>
         );
@@ -155,48 +188,44 @@ class GameSpecificProps extends React.Component {
     
   }
 
-  renderGamePropRows(propType) {
-    var playerProps =
-      this.state.GameProps != null
-        ? this.state.GameProps.filter((prop) => prop.propType === propType)
-        : null;
-    if (playerProps == null) return;
-
-    return playerProps.map((singleProp) => {
+  renderGamePropRows(props) {
+    return props.map((singleProp) => {
       return (
         <PropRow
-          firstName={singleProp.firstName}
-          lastName={singleProp.lastName}
-          description={singleProp.description}
-          odds={this.formatOdds(singleProp.payout)}
-          sportsbook={singleProp.sportsbook}
+          playerProp={singleProp}
         />
       );
     });
   }
-  renderGamePropRowsOverUnder(propType) {
-    var playerProps =
-      this.state.GameProps != null
-        ? this.state.GameProps.filter((prop) => prop.propType === propType)
-        : null;
-    if (playerProps == null) return;
-
-    return playerProps.map((singleProp) => {
+  renderGamePropRowsOverUnder(props) {
+    let propsGroupedByName = this.groupBy(props, "name");
+    return propsGroupedByName.map((props) => {
       return (
-        <PropRowOverUnder
-          firstName={singleProp.firstName}
-          lastName={singleProp.lastName}
-          description={singleProp.description}
-          overLine = {singleProp.overLine}
-          underLine = {singleProp.underLine}
-          overPayout={this.formatOdds(singleProp.overPayout)}
-          underPayout = {this.formatOdds(singleProp.underPayout)}
-          overSportsbook = {singleProp.overSportsbook}
-          underSportsbook = {singleProp.underSportsbook}
+        <PropRowWithOptions
+          propList={props.groupList}
         />
       );
     });
   }
+
+  groupBy(props,field){
+  let groupedArr = [];
+  props.forEach(function(e){
+    //look for an existent group
+    let group = groupedArr.find(g => g['field'] === e[field]);
+    if (group == undefined){
+      //add new group if it doesn't exist
+      group = {field: e[field], groupList: []};
+      groupedArr.push(group);
+    }
+    
+    //add the element to the group
+    group.groupList.push(e);
+  });
+  
+  return groupedArr;
+}
+
   formatOdds(odds) {
     if (odds > 0) {
       return "+" + odds;
@@ -211,117 +240,102 @@ class GameSpecificProps extends React.Component {
     const playerProps = {
       props: [
         {
-          propType: "Anytime Scorer",
-          firstName: "Jordan",
-          lastName: "Franklin",
-          description: "to score",
+          propType: "Touchdown Scorer",
+          description: "First",
+          propValue: null,
+          name: "Jordan Franklin",
           payout: -110,
           sportsbook: "Fanduel",
         },
         {
-          propType: "Anytime Scorer",
-          firstName: "Matt",
-          lastName: "Myers",
-          description: "to score",
+          propType: "Touchdown Scorer",
+          description: "First",
+          propValue: null,
+          name: "Matt Myers",
           payout: 500,
           sportsbook: "DraftKings",
         },
         {
-          propType: "Anytime Scorer",
-          firstName: "Nick",
-          lastName: "Smith",
-          description: "to score",
+          propType: "Touchdown Scorer",
+          description: "First",
+          propValue: null,
+          name: "Nick Smith",
           payout: -250,
           sportsbook: "FoxBet",
         },
         {
-          propType: "Anytime Scorer",
-          firstName: "Matt",
-          lastName: "Murphy",
-          description: "to score",
+          propType: "Touchdown Scorer",
+          description: "First",
+          propValue: null,
+          name: "Matt Murphy",
           payout: 600,
           sportsbook: "Barstool",
         },
         {
-          propType: "First TD Scorer",
-          firstName: "Jordan",
-          lastName: "Franklin",
-          description: "to score first",
+          propType: "Touchdown Scorer",
+          description: "Anytime",
+          propValue: null,
+          name: "Jordan Franklin",
           payout: 110,
           sportsbook: "Fanduel",
         },
         {
-          propType: "First TD Scorer",
-          firstName: "Matt",
-          lastName: "Myers",
-          description: "to score first",
+          propType: "Touchdown Scorer",
+          description: "Anytime",
+          propValue: null,
+          name: "Matt Myers",
           payout: 1000,
           sportsbook: "DraftKings",
         },
         {
-          propType: "First TD Scorer",
-          firstName: "Nick",
-          lastName: "Smith",
-          description: "to score first",
+          propType: "Touchdown Scorer",
+          description: "Anytime",
+          propValue: null,
+          name: "Nick Smith",
           payout: 250,
           sportsbook: "FoxBet",
         },
         {
-          propType: "First TD Scorer",
-          firstName: "Matt",
-          lastName: "Murphy",
-          description: "to score first",
+          propType: "Touchdown Scorer",
+          description: "Anytime",
+          propValue: null,
+          name: "Matt Murphy",
           payout: 6000,
           sportsbook: "Barstool",
         },
         {
           propType: "Reception Yards",
-          firstName: "Jordan",
-          lastName: "Franklin",
-          description: "reception yards",
-          overLine: 75.5,
-          underLine: 85.5,
-          overPayout: 110,
-          overSportsbook: "Fanduel",
-          underPayout: 110,
-          underSportsbook: "Rivers"
+          name: "Jordan Franklin",
+          description: "Under",
+          propValue: 75.5,
+          payout: 110,
+          sportsbook: "Rivers"
         },
         {
           propType: "Reception Yards",
-          firstName: "Matt",
-          lastName: "Myers",
-          description: "reception yards",
-          overLine: 75.5,
-          underLine: 85.5,
-          overPayout: 120,
-          overSportsbook: "Rivers",
-          underPayout: 110,
-          underSportsbook: "Barstool"
+          name: "Jordan Franklin",
+          description: "Over",
+          propValue: 65.5,
+          payout: 110,
+          sportsbook: "Barstool"
         },
         {
           propType: "Reception Yards",
-          firstName: "Nick",
-          lastName: "Smith",
-          description: "reception yards",
-          overLine: 75.5,
-          underLine: 85.5,
-          overPayout: 110,
-          overSportsbook: "Fanduel",
-          underPayout: 130,
-          underSportsbook: "DraftKings"
+          name: "Nick Smith",
+          description: "Under",
+          propValue: 72.5,
+          payout: 110,
+          sportsbook: "DraftKings"
         },
         {
           propType: "Reception Yards",
-          firstName: "Matt",
-          lastName: "Murphy",
-          description: "reception yards",
-          overLine: 75.5,
-          underLine: 85.5,
-          overPayout: 110,
-          overSportsbook: "DraftKings",
-          underPayout: -110,
-          underSportsbook: "Rivers"
+          name: "Nick Smith",
+          description: "Over",
+          propValue: 67.5,
+          payout: 110,
+          sportsbook: "FanDuel"
         },
+
       ],
     };
     return playerProps.props;
