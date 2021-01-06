@@ -1,5 +1,4 @@
 import React from "react";
-import { apiUrl } from "variables/constants.js";
 
 class PropRow extends React.Component {
   render() {
@@ -7,10 +6,10 @@ class PropRow extends React.Component {
       <React.Fragment>
         <tr className="d-flex">
           <td className="col-6" scope="row">
-            {this.props.playerProp.PlayerName}
+            {this.props.playerProp.playerName}
           </td>
-          <td className="col-3">{this.props.playerProp.CurrentPayout}</td>
-          <td className="col-3">{this.props.playerProp.CurrentSite}</td>
+          <td className="col-3">{this.props.playerProp.currentPayout}</td>
+          <td className="col-3">{this.props.playerProp.currentSite}</td>
         </tr>
       </React.Fragment>
     );

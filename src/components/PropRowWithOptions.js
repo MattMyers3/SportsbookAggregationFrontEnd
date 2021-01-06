@@ -2,26 +2,26 @@ import React from "react";
 
 export class PropRowWithOptions extends React.Component {
     render() {
-        let under = this.props.propList.find(prop => prop.description == "Under");
-        let over = this.props.propList.find(prop => prop.description == "Over");
+        let under = this.props.propList.find(prop => prop.propDescription == "Under");
+        let over = this.props.propList.find(prop => prop.propDescription == "Over");
         
         return (
             <React.Fragment>
                 <tr className="d-flex">
                     <td className="col-6" scope="row">
-                        {under.PlayerName}
+                        {under.playerName}
                     </td>
                     <td className="col-3">
-                        <b>{under.PropValue}</b>
-                        <sup>({under.CurrentPayout})</sup>
+                        <b>{under.propValue}</b>
+                        <sup>({under.currentPayout})</sup>
                         <br></br>
-                        {under.CurrentSite}
+                        {under.currentSite}
                     </td>
                     <td className="col-3">
-                    <b>{over.PropValue}</b>
-                    <sup>({over.CurrentPayout})</sup>
+                    <b>{over.propValue}</b>
+                    <sup>({over.currentPayout})</sup>
                     <br></br>
-                    {over.CurrentSite}
+                    {over.currentSite}
                 </td>
                 </tr>
             </React.Fragment>

@@ -2,7 +2,6 @@ import React from "react";
 
 // reactstrap components
 import {
-  Button,
   Card,
   CardBody,
   CardHeader,
@@ -10,21 +9,14 @@ import {
   Table,
   Row,
   Col,
-  CardText,
-  Container,
+  CardText
 } from "reactstrap";
 
-// core components
-import PanelHeader from "components/PanelHeader/PanelHeader.js";
 
-import { thead } from "variables/general";
-
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import PropRow from "components/PropRow.js";
 import PropRowWithOptions from "components/PropRowWithOptions.js"
 import { apiUrl } from "variables/constants.js";
-import ReactGA from "react-ga";
 import { Form, Jumbotron } from "react-bootstrap";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
@@ -98,9 +90,11 @@ class GameSpecificProps extends React.Component {
         HomeTeamId: data.homeTeamId,
         AwayTeamId: data.awayTeamId,
       })
-    );
+    );    
+  }
 
-    fetch(apiUrl + "/games/" + this.props.match.params.gameId + "bestprops")
+  getGameLines() {
+    fetch(apiUrl + "/games/" + this.props.match.params.gameId + "/bestprops?sportsbooks=" + this.props.checkedBooks.map(book => book.value).join())
     .then((res) => res.json())
     .then((data) =>
       this.setState({
@@ -111,6 +105,10 @@ class GameSpecificProps extends React.Component {
 
   componentDidUpdate(prevProps, prevState)
   {
+    if (prevProps.checkedBooks !== this.props.checkedBooks) {
+      this.getGameLines();
+    }
+
     if(prevState.HomeTeamId == null && this.state.HomeTeamId != null)
     {
       fetch(apiUrl + "/teams/" + this.state.HomeTeamId)
@@ -129,7 +127,7 @@ class GameSpecificProps extends React.Component {
       );
     }
 
-    if(prevState.GameProps == [] && this.state.GameProps != [])
+    if(prevState.GameProps != this.state.GameProps)
     {
       let propTypes = [];
       for (let gameProp of this.state.GameProps) {
@@ -143,7 +141,7 @@ class GameSpecificProps extends React.Component {
   }
 
   getPropTableTitle(prop) {
-    return prop.propValue === null ? prop.description + " " + prop.propType : prop.propType;
+    return prop.propValue === null ? prop.propDescription + " " + prop.propTypeDescription : prop.propTypeDescription;
   }
 
   renderNoBooksCheckedMessage() {
@@ -211,7 +209,7 @@ class GameSpecificProps extends React.Component {
     });
   }
   renderGamePropRowsOverUnder(props) {
-    let propsGroupedByName = this.groupBy(props, "name");
+    let propsGroupedByName = this.groupBy(props, "playerName");
     return propsGroupedByName.map((props) => {
       return (
         <PropRowWithOptions
