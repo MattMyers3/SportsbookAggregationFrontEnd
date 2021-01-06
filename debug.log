@@ -1,0 +1,6 @@
+[1011/124648.156:ERROR:filesystem_win.cc(129)] GetFileAttributes C:\Users\Nick\AppData\Local\Microsoft\Edge\User Data\Crashpad\attachments\3212c623-abc9-44f8-9dee-cf0a2689de72: The system cannot find the path specified. (0x3)
+[1011/124648.160:ERROR:directory_reader_win.cc(43)] FindFirstFile: The system cannot find the path specified. (0x3)
+[1012/124643.851:ERROR:directory_reader_win.cc(43)] FindFirstFile: The system cannot find the path specified. (0x3)
+[1012/134513.646:ERROR:filesystem_win.cc(129)] GetFileAttributes C:\Users\Nick\AppData\Local\Microsoft\Edge\User Data\Crashpad\attachments\a4c68bf1-3eea-4c4f-948d-f36c83ab115e: The system cannot find the path specified. (0x3)
+[1012/134514.255:ERROR:filesystem_win.cc(129)] GetFileAttributes C:\Users\Nick\AppData\Local\Microsoft\Edge\User Data\Crashpad\attachments\ec06c8f7-5d9e-445f-a15c-61d432bfbde1: The system cannot find the path specified. (0x3)
+[1013/122414.702:ERROR:directory_reader_win.cc(43)] FindFirstFile: The system cannot find the path specified. (0x3)
