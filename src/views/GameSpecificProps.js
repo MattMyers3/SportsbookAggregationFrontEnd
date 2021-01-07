@@ -66,7 +66,7 @@ class GameSpecificProps extends React.Component {
             </CardHeader>
             <CardBody>
               {this.state.PropTypes == null || this.state.PropTypes.length === 0
-                ? this.renderNoBooksCheckedMessage()
+                ? this.renderErrorMessage()
                 : this.state.PropTypes.map((propType) =>
                     this.renderTable(propType)
                   )}
@@ -106,7 +106,10 @@ class GameSpecificProps extends React.Component {
   componentDidUpdate(prevProps, prevState)
   {
     if (prevProps.checkedBooks !== this.props.checkedBooks) {
-      this.getGameLines();
+      if(this.props.checkedBooks == null)
+        this.setState({GameProps : [], PropTypes: []});
+      else
+        this.getGameLines();
     }
 
     if(prevState.HomeTeamId == null && this.state.HomeTeamId != null)
@@ -130,10 +133,13 @@ class GameSpecificProps extends React.Component {
     if(prevState.GameProps != this.state.GameProps)
     {
       let propTypes = [];
-      for (let gameProp of this.state.GameProps) {
-        let tableTitle = this.getPropTableTitle(gameProp);
-        if (!propTypes.includes(tableTitle)) {
-          propTypes.push(tableTitle);
+      if(this.state.GameProps.length > 0)
+      {
+        for (let gameProp of this.state.GameProps) {
+          let tableTitle = this.getPropTableTitle(gameProp);
+          if (!propTypes.includes(tableTitle)) {
+            propTypes.push(tableTitle);
+          }
         }
       }
       this.setState({ PropTypes: propTypes});
@@ -144,16 +150,26 @@ class GameSpecificProps extends React.Component {
     return prop.propValue === null ? prop.propDescription + " " + prop.propTypeDescription : prop.propTypeDescription;
   }
 
-  renderNoBooksCheckedMessage() {
-    return (
-      <Jumbotron>
-        <h1>No books!</h1>
-        <p>
-          Please select at least one sportsbook in order to see the available
-          odds.
-        </p>
-      </Jumbotron>
-    );
+  renderErrorMessage() {
+    if(this.props.checkedBooks == null || this.props.checkedBooks.length == 0)
+      return (
+        <Jumbotron>
+          <h1>No books!</h1>
+          <p>
+            Please select at least one sportsbook in order to see the available
+            odds.
+          </p>
+        </Jumbotron>
+      );
+    else
+      return (
+        <Jumbotron>
+          <h1>No Props!</h1>
+          <p>
+            There are no props available for this game at this time.
+          </p>
+        </Jumbotron>
+      );
   }
   renderTable(propType) {
       if(this.state.GameProps == null) return;
@@ -200,7 +216,7 @@ class GameSpecificProps extends React.Component {
   }
 
   renderGamePropRows(props) {
-    return props.map((singleProp) => {
+    return props.sort(function(a,b){ return a.currentPayout - b.currentPayout}).map((singleProp) => {
       return (
         <PropRow
           playerProp={singleProp}
