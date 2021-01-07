@@ -32,6 +32,7 @@ import routes from "routes.js";
 import PanelHeader from "components/PanelHeader/PanelHeader.js";
 import { withOktaAuth } from '@okta/okta-react';
 import LoginButton from "components/LoginButton.js";
+import GameSpecificProps from "views/GameSpecificProps.js";
 
 var ps;
 
@@ -166,6 +167,7 @@ export default withOktaAuth(class Dashboard extends React.Component {
           <PanelHeader size="sm" history={this.props.history}/>
           <Switch>
             <Route path="/login" render={(props) => <Login baseUrl={this.props.baseUrl} {...props}/>} />
+            <Route path="/sports/:sport/games/:gameId" render={(props) => <GameSpecificProps {...props} isLoggedIn={this.props.authState.isAuthenticated} setUserDefaults={this.setUserDefaults} allBooks={this.state.allBooks} checkedBooks={this.state.checkedBooks} handleSportsbookChange={this.handleCheck}/>} />          
             {routes.map((prop, key) => {
               return (
                 <Route
