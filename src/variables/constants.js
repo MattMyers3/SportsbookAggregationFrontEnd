@@ -1,1 +1,1 @@
-export const apiUrl = "https://localhost:44354/api";
+export const apiUrl = "https://www.oddslibrary.com/api";

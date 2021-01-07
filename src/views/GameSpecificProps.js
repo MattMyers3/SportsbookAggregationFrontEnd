@@ -42,7 +42,7 @@ class GameSpecificProps extends React.Component {
           <Card>
             <CardHeader>
               <CardTitle className="text-primary" tag="h3">
-                {this.state.HomeTeamName} vs {this.state.AwayTeamName}
+                {this.state.AwayTeamName} @ {this.state.HomeTeamName}
               </CardTitle>
               Player Props
               <br/><br/>
@@ -78,12 +78,7 @@ class GameSpecificProps extends React.Component {
   }
 
   componentWillMount() {
-    const gameProps = this.getPlayerProps();
-    let propTypes = [];
-    let homeTeamId = null;
-    let awayTeamId = null;
-
-    fetch(apiUrl + "/games/" + this.props.match.params.gameId)
+     fetch(apiUrl + "/games/" + this.props.match.params.gameId)
     .then((res) => res.json())
     .then((data) =>
       this.setState({
@@ -261,111 +256,6 @@ class GameSpecificProps extends React.Component {
     } else { 
       return odds;
     }
-  }
-
-  getPlayerProps(gameId) {
-    const playerProps = {
-      props: [
-        {
-          propType: "Touchdown Scorer",
-          description: "First",
-          propValue: null,
-          name: "Jordan Franklin",
-          payout: -110,
-          sportsbook: "Fanduel",
-        },
-        {
-          propType: "Touchdown Scorer",
-          description: "First",
-          propValue: null,
-          name: "Matt Myers",
-          payout: 500,
-          sportsbook: "DraftKings",
-        },
-        {
-          propType: "Touchdown Scorer",
-          description: "First",
-          propValue: null,
-          name: "Nick Smith",
-          payout: -250,
-          sportsbook: "FoxBet",
-        },
-        {
-          propType: "Touchdown Scorer",
-          description: "First",
-          propValue: null,
-          name: "Matt Murphy",
-          payout: 600,
-          sportsbook: "Barstool",
-        },
-        {
-          propType: "Touchdown Scorer",
-          description: "Anytime",
-          propValue: null,
-          name: "Jordan Franklin",
-          payout: 110,
-          sportsbook: "Fanduel",
-        },
-        {
-          propType: "Touchdown Scorer",
-          description: "Anytime",
-          propValue: null,
-          name: "Matt Myers",
-          payout: 1000,
-          sportsbook: "DraftKings",
-        },
-        {
-          propType: "Touchdown Scorer",
-          description: "Anytime",
-          propValue: null,
-          name: "Nick Smith",
-          payout: 250,
-          sportsbook: "FoxBet",
-        },
-        {
-          propType: "Touchdown Scorer",
-          description: "Anytime",
-          propValue: null,
-          name: "Matt Murphy",
-          payout: 6000,
-          sportsbook: "Barstool",
-        },
-        {
-          propType: "Reception Yards",
-          name: "Jordan Franklin",
-          description: "Under",
-          propValue: 75.5,
-          payout: 110,
-          sportsbook: "Rivers"
-        },
-        {
-          propType: "Reception Yards",
-          name: "Jordan Franklin",
-          description: "Over",
-          propValue: 65.5,
-          payout: 110,
-          sportsbook: "Barstool"
-        },
-        {
-          propType: "Reception Yards",
-          name: "Nick Smith",
-          description: "Under",
-          propValue: 72.5,
-          payout: 110,
-          sportsbook: "DraftKings"
-        },
-        {
-          propType: "Reception Yards",
-          name: "Nick Smith",
-          description: "Over",
-          propValue: 67.5,
-          payout: 110,
-          sportsbook: "FanDuel"
-        },
-
-      ],
-    };
-    return playerProps.props;
   }
 }
 export default GameSpecificProps;
