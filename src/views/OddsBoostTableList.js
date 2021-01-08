@@ -16,6 +16,7 @@
 
 */
 import React from "react";
+import OddsFormater from "common/odds-formater";
 
 // reactstrap components
 import {
@@ -103,23 +104,11 @@ class BoostRegularTables extends React.Component {
         <BoostRow
           key={boost.oddsboostid}
           description={boost.description}
-          previousOdds={this.formatOdds(boost.previousOdds)}
-          boostedOdds={this.formatOdds(boost.boostedOdds)}
+          previousOdds={OddsFormater.americanOddSignage(boost.previousOdds)}
+          boostedOdds={OddsFormater.americanOddSignage(boost.boostedOdds)}
           />
       );
     })
-  }
-
-  formatOdds(odds){
-    if(odds > 0){
-      return "+" + odds;
-    }
-    else if(odds == 0){
-      return "N/A";
-    }
-    else{
-      return odds;
-    }
   }
 
   renderNoBooksCheckedMessage(){

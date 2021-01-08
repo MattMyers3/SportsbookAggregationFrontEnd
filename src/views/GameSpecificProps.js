@@ -247,15 +247,5 @@ class GameSpecificProps extends React.Component {
   
   return groupedArr;
 }
-
-  formatOdds(odds) {
-    if (odds > 0) {
-      return "+" + odds;
-    } else if (odds == 0) {
-      return "N/A";
-    } else { 
-      return odds;
-    }
-  }
 }
 export default GameSpecificProps;
