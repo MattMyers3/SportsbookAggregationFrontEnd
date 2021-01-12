@@ -1,12 +1,22 @@
 import React from "react";
-import { Table } from "reactstrap";
+import { Table, FormGroup, Input } from "reactstrap";
 import { theadProps } from "variables/general";
 import PropRow from "components/GameProps/SimpleProps/PropRow";
 
 class GamePropSimpleTable extends React.Component {
+  state = {
+    searchTerm: "",
+  };
   render() {
     return (
       <div>
+        <FormGroup>
+          <Input
+            onChange={this.handleSearch.bind(this)}
+            type="search"
+            placeholder="Player Search"
+          ></Input>
+        </FormGroup>
         <Table responsive>
           <thead className="text-primary">
             <tr className="d-flex">
@@ -29,8 +39,13 @@ class GamePropSimpleTable extends React.Component {
         return a.currentPayout - b.currentPayout;
       })
       .map((singleProp) => {
-        return <PropRow playerProp={singleProp} />;
+        if(singleProp.playerName.toLowerCase().includes(this.state.searchTerm)){
+          return <PropRow playerProp={singleProp} />;
+        }
       });
+  }
+  handleSearch(event) {
+    this.setState({ searchTerm: event.target.value.toLowerCase() });
   }
 }
 
