@@ -10,13 +10,6 @@ class GamePropSimpleTable extends React.Component {
   render() {
     return (
       <div>
-        <FormGroup>
-          <Input
-            onChange={this.handleSearch.bind(this)}
-            type="search"
-            placeholder="Player Search"
-          ></Input>
-        </FormGroup>
         <Table responsive>
           <thead className="text-primary">
             <tr className="d-flex">
@@ -39,13 +32,12 @@ class GamePropSimpleTable extends React.Component {
         return a.currentPayout - b.currentPayout;
       })
       .map((singleProp) => {
-        if(singleProp.playerName.toLowerCase().includes(this.state.searchTerm)){
+        if (
+          singleProp.playerName.toLowerCase().includes(this.props.searchTerm)
+        ) {
           return <PropRow playerProp={singleProp} />;
         }
       });
-  }
-  handleSearch(event) {
-    this.setState({ searchTerm: event.target.value.toLowerCase() });
   }
 }
 

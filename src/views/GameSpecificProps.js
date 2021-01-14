@@ -10,6 +10,8 @@ import {
   Row,
   Col,
   CardText,
+  FormGroup,
+  Input,
 } from "reactstrap";
 
 import "react-datepicker/dist/react-datepicker.css";
@@ -21,7 +23,7 @@ import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import { theadProps, theadPropsOverUnder } from "variables/general";
 import GamePropSimpleTable from "components/GameProps/SimpleProps/GamePropSimpleTable";
-import GamePropTableWithOptions from "components/GameProps/OverUnderProps/GamePropTableWithOptions"
+import GamePropTableWithOptions from "components/GameProps/OverUnderProps/GamePropTableWithOptions";
 
 const animatedComponents = makeAnimated();
 
@@ -34,6 +36,7 @@ class GameSpecificProps extends React.Component {
     AwayTeamId: null,
     GameProps: [],
     PropTypes: [],
+    searchTerm: "",
   };
 
   render() {
@@ -65,6 +68,13 @@ class GameSpecificProps extends React.Component {
                   </Col>
                 </Row>
               </CardText>
+              <FormGroup>
+                <Input
+                  onChange={this.handleSearch.bind(this)}
+                  type="search"
+                  placeholder="Player Search"
+                ></Input>
+              </FormGroup>
             </CardHeader>
             <CardBody>
               {this.state.PropTypes == null || this.state.PropTypes.length === 0
@@ -180,40 +190,25 @@ class GameSpecificProps extends React.Component {
     const first = propsForPropType[0];
     if (first.propValue !== null) {
       return (
-        <GamePropTableWithOptions propsForPropType={propsForPropType} propType={propType}></GamePropTableWithOptions>
+        <GamePropTableWithOptions
+          propsForPropType={propsForPropType}
+          propType={propType}
+          searchTerm={this.state.searchTerm}
+        ></GamePropTableWithOptions>
       );
     } else {
       return (
         <GamePropSimpleTable
           propsForPropType={propsForPropType}
           propType={propType}
+          searchTerm={this.state.searchTerm}
         ></GamePropSimpleTable>
       );
     }
   }
-  renderGamePropRowsOverUnder(props) {
-    let propsGroupedByName = this.groupBy(props, "playerName");
-    return propsGroupedByName.map((props) => {
-      return <PropRowWithOptions propList={props.groupList} />;
-    });
-  }
 
-  groupBy(props, field) {
-    let groupedArr = [];
-    props.forEach(function (e) {
-      //look for an existent group
-      let group = groupedArr.find((g) => g["field"] === e[field]);
-      if (group == undefined) {
-        //add new group if it doesn't exist
-        group = { field: e[field], groupList: [] };
-        groupedArr.push(group);
-      }
-
-      //add the element to the group
-      group.groupList.push(e);
-    });
-
-    return groupedArr;
+  handleSearch(event) {
+    this.setState({ searchTerm: event.target.value.toLowerCase() });
   }
 }
 export default GameSpecificProps;
