@@ -1,7 +1,14 @@
-import React from "react";
+import React, { Component } from "react";
 import OddsFormater from "common/odds-formater"
+import { GameProp } from "common/models/GameProp";
+interface PropRowProps {
+  playerProp: GameProp
+}
 
-class PropRow extends React.Component {
+interface PropRowState {
+}
+
+class PropRow extends Component<PropRowProps, PropRowState> {
   render() {
     return (
       <React.Fragment>

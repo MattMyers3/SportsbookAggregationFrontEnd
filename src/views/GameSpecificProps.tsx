@@ -6,7 +6,6 @@ import {
   CardBody,
   CardHeader,
   CardTitle,
-  Table,
   Row,
   Col,
   CardText,
@@ -15,30 +14,48 @@ import {
 } from "reactstrap";
 
 import "react-datepicker/dist/react-datepicker.css";
-import PropRow from "components/GameProps/SimpleProps/PropRow";
-import PropRowWithOptions from "components/GameProps/OverUnderProps/PropRowWithOptions";
 import { apiUrl } from "variables/constants.js";
 import { Form, Jumbotron } from "react-bootstrap";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
-import { theadProps, theadPropsOverUnder } from "variables/general";
 import GamePropSimpleTable from "components/GameProps/SimpleProps/GamePropSimpleTable";
 import GamePropTableWithOptions from "components/GameProps/OverUnderProps/GamePropTableWithOptions";
+import {GameProp} from "common/models/GameProp";
 
 const animatedComponents = makeAnimated();
 
-class GameSpecificProps extends React.Component {
+interface GameSpecificPropsProps {
+  allBooks:any;
+  handleSportsbookChange:any;
+  checkedBooks:any;
+  match:any;
+}
+
+interface GameSpecificPropsState {
+  GameTime: any;
+  HomeTeamName: string;
+  HomeTeamId: string;
+  AwayTeamName: string;
+  AwayTeamId: string;
+  GameProps: GameProp[];
+  PropTypes: any;
+  searchTerm: string;
+}
+
+class GameSpecificProps extends React.Component<
+  GameSpecificPropsProps,
+  GameSpecificPropsState
+> {
   state = {
     GameTime: null,
-    HomeTeamName: null,
-    HomeTeamId: null,
-    AwayTeamName: null,
-    AwayTeamId: null,
+    HomeTeamName: "",
+    HomeTeamId: "",
+    AwayTeamName: "",
+    AwayTeamId: "",
     GameProps: [],
     PropTypes: [],
     searchTerm: "",
   };
-
   render() {
     return (
       <>
@@ -141,7 +158,7 @@ class GameSpecificProps extends React.Component {
     }
 
     if (prevState.GameProps != this.state.GameProps) {
-      let propTypes = [];
+      let propTypes:any = [];
       if (this.state.GameProps.length > 0) {
         for (let gameProp of this.state.GameProps) {
           let tableTitle = this.getPropTableTitle(gameProp);
@@ -182,7 +199,7 @@ class GameSpecificProps extends React.Component {
   renderTable(propType) {
     if (this.state.GameProps == null) return;
 
-    let propsForPropType = this.state.GameProps.filter(
+    let propsForPropType:any = this.state.GameProps.filter(
       (singleProp) => this.getPropTableTitle(singleProp) == propType
     );
     if (propsForPropType.length == 0) return;

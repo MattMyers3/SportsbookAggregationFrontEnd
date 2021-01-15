@@ -67,6 +67,7 @@
     ]
   },
   "devDependencies": {
+    "@types/reactstrap": "^8.7.2",
     "gulp": "^4.0.2"
   }
 }
