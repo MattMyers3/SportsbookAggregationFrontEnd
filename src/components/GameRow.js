@@ -57,10 +57,12 @@ class GameRow extends React.Component {
             <br></br>
             <small style={{ margin: "0px" }} className="text-muted">
               {this.getFormattedDate(this.props.gameTime)}
-            </small>
+            </small>   
             <br></br>
             <small>
-              <a href={"/sports/" + this.props.sport + "/games/" + this.props.gameId}>More Wagers</a>
+              <b>
+                <a colspan="2" class="text-primary" href={"/sports/" + this.props.sport + "/games/" + this.props.gameId}>More Wagers</a>  
+              </b>
             </small>
           </th>
           {this.getDisplayCell(
