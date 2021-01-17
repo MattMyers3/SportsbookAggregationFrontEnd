@@ -61,7 +61,7 @@ class GameRow extends React.Component {
             <br></br>
             <small>
               <b>
-                <a colspan="2" class="text-primary" href={"/sports/" + this.props.sport + "/games/" + this.props.gameId}>More Wagers</a>  
+                <a class="text-primary" href={"/sports/" + this.props.sport + "/games/" + this.props.gameId}>More Wagers</a>  
               </b>
             </small>
           </th>
