@@ -1,5 +1,5 @@
 import React from "react";
-import OddsFormater from "common/odds-formater";
+import OddsFormater from "common/services/odds-formater";
 interface BoostRowProps {
   description: string;
   boostedOdds: number;
