@@ -2,6 +2,7 @@ import React from "react";
 import { apiUrl } from "common/variables/constants";
 import GameLinesService from "common/services/GameLinesService";
 import { GameLines } from "common/models/GameLines";
+import TeamService from "common/services/TeamService";
 
 interface GameRowProps {
   key: string;
@@ -156,24 +157,18 @@ class GameRow extends React.Component<GameRowProps, GameRowState> {
 
     this.setState({ gameLines: lines });
   }
+  async getTeamNames() {
+    var homeTeam = await TeamService.getTeam(this.props.homeTeamId);
+    var awayTeam = await TeamService.getTeam(this.props.awayTeamId);
+    this.setState({
+      homeTeamName: homeTeam.location + " " + homeTeam.mascot,
+      awayTeamName: awayTeam.location + " " + awayTeam.mascot,
+    });
+  }
 
   async componentDidMount() {
     await this.getGameLines();
-    fetch(apiUrl + "/teams/" + this.props.homeTeamId)
-      .then((res) => res.json())
-      .then((data) =>
-        this.setState({
-          homeTeamName: data.location + " " + data.mascot,
-        })
-      );
-
-    fetch(apiUrl + "/teams/" + this.props.awayTeamId)
-      .then((res) => res.json())
-      .then((data) =>
-        this.setState({
-          awayTeamName: data.location + " " + data.mascot,
-        })
-      );
+    await this.getTeamNames();
     this.setState({ isLoaded: true });
   }
 }
