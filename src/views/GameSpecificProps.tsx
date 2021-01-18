@@ -140,7 +140,7 @@ class GameSpecificProps extends React.Component<
       else this.getGameLines();
     }
 
-    if (prevState.HomeTeamId == null && this.state.HomeTeamId != null) {
+    if (prevState.HomeTeamId == "" && this.state.HomeTeamId != "") {
       fetch(apiUrl + "/teams/" + this.state.HomeTeamId)
         .then((res) => res.json())
         .then((data) =>
