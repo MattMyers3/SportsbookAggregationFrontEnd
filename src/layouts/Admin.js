@@ -25,13 +25,11 @@ import { Route, Switch, Redirect } from "react-router-dom";
 // core components
 import DemoNavbar from "components/Navbars/DemoNavbar.js";
 import Sidebar from "components/Sidebar/Sidebar.js";
-import RegularTable from "views/TableList.js"
 import { apiUrl } from "variables/constants.js";
 import Login from "components/Login.js";
 import routes from "routes.js";
 import PanelHeader from "components/PanelHeader/PanelHeader.js";
 import { withOktaAuth } from '@okta/okta-react';
-import LoginButton from "components/LoginButton.js";
 import GameSpecificProps from "views/GameSpecificProps.js";
 
 var ps;

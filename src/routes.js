@@ -16,7 +16,6 @@
 
 */
 import TableList from "views/TableList.js";
-import GameSpecificProps from "views/GameSpecificProps.js"
 import BoostRegularTables from "views/OddsBoostTableList.js";
 import { faBaseballBall, faBasketballBall, faFootballBall, faQuestion, faRocket } from '@fortawesome/free-solid-svg-icons';
 import FAQ from "views/Faq.js";
@@ -35,14 +34,6 @@ var dashRoutes = [
     path: "/NFL",
     sport: "NFL",
     name: "NFL",
-    icon: faFootballBall,
-    component: TableList,
-    layout: "/sports",
-  },
-  {
-    path: "/NCAAF",
-    sport: "NCAAF",
-    name: "NCAAF",
     icon: faFootballBall,
     component: TableList,
     layout: "/sports",

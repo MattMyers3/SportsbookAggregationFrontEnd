@@ -1,14 +1,12 @@
 import React from 'react'
 import { CardBody } from 'reactstrap';
 import { Accordion, Button, Card } from 'react-bootstrap';
-import PanelHeader from "components/PanelHeader/PanelHeader.js";
 
 class Faq extends React.Component{
   render()
   {
     return (
         <>
-            <PanelHeader size="sm" />
             <div className="content">
                 <Card>
                     <CardBody>
