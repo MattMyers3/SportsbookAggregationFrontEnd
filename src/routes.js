@@ -17,7 +17,7 @@
 */
 import TableList from "views/TableList.js";
 import GameSpecificProps from "views/GameSpecificProps";
-import BoostRegularTables from "views/OddsBoostTableList.js";
+import BoostRegularTables from "views/OddsBoostTableList";
 import {
   faBaseballBall,
   faBasketballBall,

@@ -6,3 +6,4 @@ export type GameProp = {
   propTypeDescription: string;
   propValue?: number;
 };
+

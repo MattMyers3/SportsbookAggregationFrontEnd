@@ -16,7 +16,6 @@
 
 */
 import React from "react";
-import OddsFormater from "common/odds-formater.tsx";
 
 // reactstrap components
 import {
@@ -37,18 +36,35 @@ import {
 import { theadOddsBoosts } from "common/variables/general";
 
 import "react-datepicker/dist/react-datepicker.css";
-import BoostRow from "components/BoostRow.js";
+import BoostRow from "components/BoostRow";
 import { apiUrl } from "common/variables/constants";
 import { Form, Jumbotron } from "react-bootstrap";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
+import { OddsBoost } from "common/models/OddsBoost";
 
 const animatedComponents = makeAnimated();
 
-class BoostRegularTables extends React.Component {
+interface BoostRegularTablesProps {
+  sport: string;
+  allBooks: string[];
+  handleSportsbookChange: Function;
+  checkedBooks: string[];
+}
+
+interface BoostRegularTablesState {
+  allBooks: string[];
+  oddsBoosts: OddsBoost[];
+  lastRefreshTime: Date;
+}
+
+class BoostRegularTables extends React.Component<
+  BoostRegularTablesProps,
+  BoostRegularTablesState
+> {
   state = {
     allBooks: [],
-    oddsBoosts: [],
+    oddsBoosts: [] as OddsBoost[],
     lastRefreshTime: new Date(),
   };
 
@@ -110,8 +126,8 @@ class BoostRegularTables extends React.Component {
         <BoostRow
           key={boost.oddsboostid}
           description={boost.description}
-          previousOdds={OddsFormater.americanOddSignage(boost.previousOdds)}
-          boostedOdds={OddsFormater.americanOddSignage(boost.boostedOdds)}
+          previousOdds={boost.previousOdds}
+          boostedOdds={boost.boostedOdds}
         />
       );
     });
@@ -146,7 +162,7 @@ class BoostRegularTables extends React.Component {
             {theadOddsBoosts.map((prop, key) => {
               if (key === theadOddsBoosts.length - 1)
                 return (
-                  <th className="col-3" key={key} className="text-left">
+                  <th className="col-3 text-left" key={key}>
                     {prop}
                   </th>
                 );
