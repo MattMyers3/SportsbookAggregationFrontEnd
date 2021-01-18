@@ -1,6 +1,6 @@
 import React from "react";
 import { Table, FormGroup, Input } from "reactstrap";
-import { theadProps } from "variables/general";
+import { theadProps } from "common/variables/general";
 import { GameProp } from "common/models/GameProp";
 import PropRow from "./PropRow";
 

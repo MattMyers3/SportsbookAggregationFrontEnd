@@ -1,6 +1,6 @@
 import React from "react";
 import { Table } from "reactstrap";
-import { theadPropsOverUnder } from "variables/general";
+import { theadPropsOverUnder } from "common/variables/general";
 import PropRowWithOptions from "components/GameProps/OverUnderProps/PropRowWithOptions";
 
 class GamePropTableWithOptions extends React.Component {

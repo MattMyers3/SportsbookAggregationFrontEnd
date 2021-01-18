@@ -16,7 +16,7 @@
 
 */
 import React from "react";
-import OddsFormater from "common/odds-formater";
+import OddsFormater from "common/odds-formater.tsx";
 
 // reactstrap components
 import {
@@ -34,11 +34,11 @@ import {
 
 // core components
 
-import { theadOddsBoosts } from "variables/general";
+import { theadOddsBoosts } from "common/variables/general";
 
 import "react-datepicker/dist/react-datepicker.css";
 import BoostRow from "components/BoostRow.js";
-import { apiUrl } from "variables/constants.js";
+import { apiUrl } from "common/variables/constants";
 import { Form, Jumbotron } from "react-bootstrap";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
@@ -85,7 +85,10 @@ class BoostRegularTables extends React.Component {
               </CardText>
             </CardHeader>
             <CardBody>
-              {this.props.checkedBooks == null || this.props.checkedBooks.length === 0 ? this.renderNoBooksCheckedMessage() : this.props.checkedBooks.map((book) => this.renderTable(book))}
+              {this.props.checkedBooks == null ||
+              this.props.checkedBooks.length === 0
+                ? this.renderNoBooksCheckedMessage()
+                : this.props.checkedBooks.map((book) => this.renderTable(book))}
             </CardBody>
           </Card>
         </div>
@@ -93,11 +96,14 @@ class BoostRegularTables extends React.Component {
     );
   }
 
-  renderOddsBoostRows(sportsbook)
-  {
-    var bookBoosts = this.state.oddsBoosts != null ? this.state.oddsBoosts.filter(boost => boost.siteName == sportsbook.value) : null;
-    if(bookBoosts == null)
-      return;
+  renderOddsBoostRows(sportsbook) {
+    var bookBoosts =
+      this.state.oddsBoosts != null
+        ? this.state.oddsBoosts.filter(
+            (boost) => boost.siteName == sportsbook.value
+          )
+        : null;
+    if (bookBoosts == null) return;
 
     return bookBoosts.map((boost) => {
       return (
@@ -106,40 +112,57 @@ class BoostRegularTables extends React.Component {
           description={boost.description}
           previousOdds={OddsFormater.americanOddSignage(boost.previousOdds)}
           boostedOdds={OddsFormater.americanOddSignage(boost.boostedOdds)}
-          />
+        />
       );
-    })
+    });
   }
 
-  renderNoBooksCheckedMessage(){
-    return <Jumbotron> 
-              <h1>No books!</h1> 
-              <p>Please select at least one sportsbook in order to see the available odds.</p>
-            </Jumbotron>
-
+  renderNoBooksCheckedMessage() {
+    return (
+      <Jumbotron>
+        <h1>No books!</h1>
+        <p>
+          Please select at least one sportsbook in order to see the available
+          odds.
+        </p>
+      </Jumbotron>
+    );
   }
 
-  renderTable(sportsbook){
-    if(this.state.oddsBoosts == null || this.state.oddsBoosts.filter(boost => boost.siteName == sportsbook.value).length == 0)
-      return
+  renderTable(sportsbook) {
+    if (
+      this.state.oddsBoosts == null ||
+      this.state.oddsBoosts.filter(
+        (boost) => boost.siteName == sportsbook.value
+      ).length == 0
+    )
+      return;
 
-    return <Table responsive>
-      <thead className="text-primary">
-        <tr className="d-flex">
-          <th className="col-6">{sportsbook.value}</th>
-          {theadOddsBoosts.map((prop, key) => {
-            if (key === theadOddsBoosts.length - 1)
+    return (
+      <Table responsive>
+        <thead className="text-primary">
+          <tr className="d-flex">
+            <th className="col-6">{sportsbook.value}</th>
+            {theadOddsBoosts.map((prop, key) => {
+              if (key === theadOddsBoosts.length - 1)
+                return (
+                  <th className="col-3" key={key} className="text-left">
+                    {prop}
+                  </th>
+                );
               return (
-                <th className="col-3" key={key} className="text-left">
+                <th className="col-3" key={key}>
                   {prop}
                 </th>
               );
-            return <th className="col-3" key={key}>{prop}</th>;
-          })}
-        </tr>
-      </thead>
-      <tbody className="boosts-striped">{this.renderOddsBoostRows(sportsbook)}</tbody>
-    </Table>
+            })}
+          </tr>
+        </thead>
+        <tbody className="boosts-striped">
+          {this.renderOddsBoostRows(sportsbook)}
+        </tbody>
+      </Table>
+    );
   }
 
   getFormattedDate(dateString) {
@@ -155,7 +178,7 @@ class BoostRegularTables extends React.Component {
     fetch(apiUrl + "/oddsboosts")
       .then((res) => res.json())
       .then((data) => {
-        this.setState({ oddsBoosts: data});
+        this.setState({ oddsBoosts: data });
       });
 
     fetch(apiUrl + "/OddsBoosts/LastRefreshTime")

@@ -34,12 +34,12 @@ import {
 // core components
 import PanelHeader from "components/PanelHeader/PanelHeader.js";
 
-import { thead } from "variables/general";
+import { thead } from "common/variables/general";
 
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import GameRow from "components/GameRow.js";
-import { apiUrl } from "variables/constants.js";
+import { apiUrl } from "common/variables/constants";
 import ReactGA from "react-ga";
 import { Form, Jumbotron } from "react-bootstrap";
 import Select from "react-select";
@@ -85,14 +85,24 @@ class RegularTables extends React.Component {
                       placeholderButtonLabel="Sportsbooks..."
                       value={this.props.checkedBooks}
                     />
-                    {this.props.isLoggedIn && <Button onClick={this.props.setUserDefaults}>Save Selections</Button> }
+                    {this.props.isLoggedIn && (
+                      <Button onClick={this.props.setUserDefaults}>
+                        Save Selections
+                      </Button>
+                    )}
                   </Col>
                 </Row>
               </CardText>
             </CardHeader>
             <CardBody>
-              {this.state.games.length === 0 ? this.props.sport === "NFL" ? this.renderNoGamesWeekMessage() : this.renderNoGamesTodayMessage() :
-              this.props.checkedBooks == null || this.props.checkedBooks.length === 0 ? this.renderNoBooksCheckedMessage() : this.renderTable()}
+              {this.state.games.length === 0
+                ? this.props.sport === "NFL"
+                  ? this.renderNoGamesWeekMessage()
+                  : this.renderNoGamesTodayMessage()
+                : this.props.checkedBooks == null ||
+                  this.props.checkedBooks.length === 0
+                ? this.renderNoBooksCheckedMessage()
+                : this.renderTable()}
             </CardBody>
           </Card>
         </div>
@@ -113,52 +123,66 @@ class RegularTables extends React.Component {
           homeTeamId={game.homeTeamId}
           awayTeamId={game.awayTeamId}
           gameId={game.gameId}
-          checkedBooks={this.props.checkedBooks != null ? this.props.checkedBooks.map((book) => book.value) : []}
+          checkedBooks={
+            this.props.checkedBooks != null
+              ? this.props.checkedBooks.map((book) => book.value)
+              : []
+          }
           gameTime={game.timeStamp}
         />
       );
     });
   }
 
-  renderNoGamesWeekMessage(){
-    return <Jumbotron> 
-              <h1>Lines not available!</h1> 
-              <p>Please select a different week</p>
-          </Jumbotron>
+  renderNoGamesWeekMessage() {
+    return (
+      <Jumbotron>
+        <h1>Lines not available!</h1>
+        <p>Please select a different week</p>
+      </Jumbotron>
+    );
   }
 
-  renderNoGamesTodayMessage(){
-    return <Jumbotron> 
-              <h1>No Games Today!</h1> 
-              <p>Please use the calendar to select a new date</p>
-          </Jumbotron>
+  renderNoGamesTodayMessage() {
+    return (
+      <Jumbotron>
+        <h1>No Games Today!</h1>
+        <p>Please use the calendar to select a new date</p>
+      </Jumbotron>
+    );
   }
 
-  renderNoBooksCheckedMessage(){
-    return <Jumbotron> 
-              <h1>No books!</h1> 
-              <p>Please select at least one sportsbook in order to see the best available game lines.</p>
-            </Jumbotron>
-
+  renderNoBooksCheckedMessage() {
+    return (
+      <Jumbotron>
+        <h1>No books!</h1>
+        <p>
+          Please select at least one sportsbook in order to see the best
+          available game lines.
+        </p>
+      </Jumbotron>
+    );
   }
 
-  renderTable(){
-    return <Table responsive>
-      <thead className="text-primary">
-        <tr>
-          {thead.map((prop, key) => {
-            if (key === thead.length - 1)
-              return (
-                <th key={key} className="text-left">
-                  {prop}
-                </th>
-              );
-            return <th key={key}>{prop}</th>;
-          })}
-        </tr>
-      </thead>
-      <tbody className="games-striped">{this.renderGameRows()}</tbody>
-    </Table>
+  renderTable() {
+    return (
+      <Table responsive>
+        <thead className="text-primary">
+          <tr>
+            {thead.map((prop, key) => {
+              if (key === thead.length - 1)
+                return (
+                  <th key={key} className="text-left">
+                    {prop}
+                  </th>
+                );
+              return <th key={key}>{prop}</th>;
+            })}
+          </tr>
+        </thead>
+        <tbody className="games-striped">{this.renderGameRows()}</tbody>
+      </Table>
+    );
   }
 
   getFormattedDate(dateString) {
@@ -175,12 +199,18 @@ class RegularTables extends React.Component {
       return (
         <Form>
           <Form.Label>Select Week</Form.Label>
-          <Form.Control as="select" defaultValue={this.getDefaultDateSelect()} onChange={this.handleWeekChange.bind(this)} >
+          <Form.Control
+            as="select"
+            defaultValue={this.getDefaultDateSelect()}
+            onChange={this.handleWeekChange.bind(this)}
+          >
             <option value="12/31/2020-01/05/2021">Week 17</option>
             <option value="1/07/2021-01/11/2021">Wildcard Weekend</option>
             <option value="01/15/2021-01/18/2021">Divisional Round</option>
-            <option value="01/23/2021-01/25/2021">Conference Championships</option>
-            <option value="02/06/2021-02/08/2021">Super Bowl</option>            
+            <option value="01/23/2021-01/25/2021">
+              Conference Championships
+            </option>
+            <option value="02/06/2021-02/08/2021">Super Bowl</option>
           </Form.Control>
         </Form>
       );
@@ -198,11 +228,10 @@ class RegularTables extends React.Component {
     }
   }
 
-  handleDateChange = date => {
-    if(date.getDate() > new Date().getDate())
-      date.setHours(0,0,0);
+  handleDateChange = (date) => {
+    if (date.getDate() > new Date().getDate()) date.setHours(0, 0, 0);
     this.setState({
-      startDate: date
+      startDate: date,
     });
 
     ReactGA.event({
@@ -213,15 +242,14 @@ class RegularTables extends React.Component {
   };
 
   handleWeekChange(event) {
-    var dateRange = event.target.value.split('-');
+    var dateRange = event.target.value.split("-");
     var now = new Date();
     var startDate = new Date(dateRange[0]);
-    if(now > startDate)
-      startDate = now;
+    if (now > startDate) startDate = now;
     var endDate = new Date(dateRange[1]);
     this.setState({
-      startDate : startDate,
-      endDate : endDate
+      startDate: startDate,
+      endDate: endDate,
     });
   }
 
@@ -234,49 +262,37 @@ class RegularTables extends React.Component {
       if (currentMonth === 8) {
         if (currentDay >= 10 && currentDay <= 14) {
           return "9/10/2020-9/15/2020";
-        }
-        else if (currentDay >= 15 && currentDay <= 21) {
+        } else if (currentDay >= 15 && currentDay <= 21) {
           return "9/17/2020-9/22/2020";
-        }
-        else if (currentDay >= 22 && currentDay <= 28) {
+        } else if (currentDay >= 22 && currentDay <= 28) {
           return "9/24/2020-9/29/2020";
-        }
-        else if (currentDay >= 29) {
+        } else if (currentDay >= 29) {
           return "10/01/2020-10/06/2020";
         }
       } else if (currentMonth === 9) {
         if (currentDay >= 1 && currentDay <= 5) {
           return "10/01/2020-10/06/2020";
-        }
-        else if (currentDay >= 6 && currentDay <= 12) {
+        } else if (currentDay >= 6 && currentDay <= 12) {
           return "10/08/2020-10/13/2020";
-        }
-        else if (currentDay >= 13 && currentDay <= 19) {
+        } else if (currentDay >= 13 && currentDay <= 19) {
           return "10/15/2020-10/20/2020";
-        }
-        else if (currentDay >= 20 && currentDay <= 26) {
+        } else if (currentDay >= 20 && currentDay <= 26) {
           return "10/22/2020-10/27/2020";
-        }
-        else if (currentDay >= 27) {
+        } else if (currentDay >= 27) {
           return "10/29/2020-11/03/2020";
         }
       } else if (currentMonth === 10) {
         if (currentDay <= 2) {
           return "10/29/2020-11/03/2020";
-        }
-        else if (currentDay >= 3 && currentDay <= 9) {
+        } else if (currentDay >= 3 && currentDay <= 9) {
           return "11/05/2020-11/10/2020";
-        }
-        else if (currentDay >= 10 && currentDay <= 16) {
+        } else if (currentDay >= 10 && currentDay <= 16) {
           return "11/12/2020-11/17/2020";
-        }
-        else if (currentDay >= 17 && currentDay <= 23) {
+        } else if (currentDay >= 17 && currentDay <= 23) {
           return "11/19/2020-11/24/2020";
-        }
-        else if (currentDay >= 24 && currentDay <= 30) {
+        } else if (currentDay >= 24 && currentDay <= 30) {
           return "11/26/2020-12/01/2020";
-        }
-        else if (currentDay >= 31) {
+        } else if (currentDay >= 31) {
           return "12/03/2020-12/08/2020";
         }
       } else if (currentMonth === 11) {
@@ -295,21 +311,20 @@ class RegularTables extends React.Component {
         if (currentDay <= 4) {
           return "12/31/2020-01/05/2021";
         }
-        if(currentDay <= 10) {
-          return "1/07/2021-01/11/2021"
+        if (currentDay <= 10) {
+          return "1/07/2021-01/11/2021";
         }
-        if(currentDay <= 17) {
-          return "01/15/2021-01/18/2021"
+        if (currentDay <= 17) {
+          return "01/15/2021-01/18/2021";
         }
-        if(currentDay <= 24) {
-          return "01/23/2021-01/25/2021"
+        if (currentDay <= 24) {
+          return "01/23/2021-01/25/2021";
         }
-        return "02/06/2021-02/08/2021"
+        return "02/06/2021-02/08/2021";
+      } else if (currentMonth === 1) {
+        return "02/06/2021-02/08/2021";
       }
-      else if(currentMonth === 1) {
-        return "02/06/2021-02/08/2021"
-      }
-    }     
+    }
     return "9/10/2020-9/15/2020";
   }
 
@@ -321,21 +336,21 @@ class RegularTables extends React.Component {
     )
       return;
 
-    if(prevProps.sport !== this.props.sport) {
-      if(this.props.sport != "NFL")
-        this.setState({ startDate: new Date() })
+    if (prevProps.sport !== this.props.sport) {
+      if (this.props.sport != "NFL") this.setState({ startDate: new Date() });
       else {
-        var dateRange = this.getDefaultDateSelect().split('-');
+        var dateRange = this.getDefaultDateSelect().split("-");
         var startDate = new Date();
         var endDate = new Date(dateRange[1]);
-        this.setState({startDate : startDate, endDate : endDate});
+        this.setState({ startDate: startDate, endDate: endDate });
       }
     }
 
-    if(prevState.startDate !== this.state.startDate){
-      if(this.state.startDate.getDate() < new Date().getDate()) // Don't show games in the past
-        this.setState({games : []});
-      else if(this.props.sport != "NFL")
+    if (prevState.startDate !== this.state.startDate) {
+      if (this.state.startDate.getDate() < new Date().getDate())
+        // Don't show games in the past
+        this.setState({ games: [] });
+      else if (this.props.sport != "NFL")
         this.fetchGamesOnDay(this.state.startDate);
       else {
         this.fetchGamesInRange(this.state.startDate, this.state.endDate);
@@ -345,12 +360,11 @@ class RegularTables extends React.Component {
 
   componentWillMount() {
     if (this.props.sport === "NFL") {
-      var dateRange = this.getDefaultDateSelect().split('-');
+      var dateRange = this.getDefaultDateSelect().split("-");
       var startDate = new Date();
       var endDate = new Date(dateRange[1]);
       this.fetchGamesInRange(startDate, endDate);
-    }
-    else {
+    } else {
       this.fetchGamesOnDay(new Date());
     }
 
@@ -362,12 +376,18 @@ class RegularTables extends React.Component {
   }
 
   fetchGamesInRange(startDate, endDate) {
-    endDate.setHours(23,59,59,999);
-    fetch(apiUrl + '/games?start=' + startDate.toISOString() +
-      '&end=' + endDate.toISOString() +
-      '&sport=' + this.props.sport)
-      .then(res => res.json())
-      .then(data => this.setState({ games: data }))
+    endDate.setHours(23, 59, 59, 999);
+    fetch(
+      apiUrl +
+        "/games?start=" +
+        startDate.toISOString() +
+        "&end=" +
+        endDate.toISOString() +
+        "&sport=" +
+        this.props.sport
+    )
+      .then((res) => res.json())
+      .then((data) => this.setState({ games: data }));
   }
 
   fetchGamesOnDay(date) {

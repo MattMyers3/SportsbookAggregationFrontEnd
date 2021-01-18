@@ -14,7 +14,7 @@ import {
 } from "reactstrap";
 
 import "react-datepicker/dist/react-datepicker.css";
-import { apiUrl } from "variables/constants.js";
+import { apiUrl } from "common/variables/constants";
 import { Form, Jumbotron } from "react-bootstrap";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
