@@ -25,7 +25,7 @@ import {
   faQuestion,
   faRocket,
 } from "@fortawesome/free-solid-svg-icons";
-import FAQ from "views/Faq.js";
+import FAQ from "views/Faq";
 
 var dashRoutes = [
   {
