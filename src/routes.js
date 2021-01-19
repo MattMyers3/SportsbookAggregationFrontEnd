@@ -15,7 +15,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import TableList from "views/TableList.js";
+import TableList from "views/TableList";
 import GameSpecificProps from "views/GameSpecificProps";
 import BoostRegularTables from "views/OddsBoostTableList";
 import {

@@ -25,7 +25,7 @@ import { Route, Switch, Redirect } from "react-router-dom";
 // core components
 import DemoNavbar from "components/Navbars/DemoNavbar.js";
 import Sidebar from "components/Sidebar/Sidebar.js";
-import RegularTable from "views/TableList.js";
+import RegularTable from "views/TableList";
 import { apiUrl } from "common/variables/constants";
 import Login from "components/Login.js";
 import routes from "routes.js";

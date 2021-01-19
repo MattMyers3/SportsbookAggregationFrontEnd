@@ -44,12 +44,30 @@ import ReactGA from "react-ga";
 import { Form, Jumbotron } from "react-bootstrap";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
+import { Game } from "common/models/Game";
+import { Book } from "common/models/Book";
 
 const animatedComponents = makeAnimated();
 
-class RegularTables extends React.Component {
+interface TableListProps {
+  sport: string;
+  allBooks: Book[];
+  checkedBooks: Book[];
+  handleSportsbookChange: Function;
+  isLoggedIn: string;
+  setUserDefaults: Function;
+}
+
+interface TableListState {
+  endDate: Date;
+  startDate: Date;
+  lastRefreshTime: Date;
+  games: Game[];
+}
+
+class RegularTables extends React.Component<TableListProps, TableListState> {
   state = {
-    games: [],
+    games: [] as Game[],
     startDate: new Date(),
     endDate: new Date(),
     lastRefreshTime: new Date(),
@@ -113,7 +131,9 @@ class RegularTables extends React.Component {
   renderGameRows() {
     var sortGames = this.state.games;
     sortGames.sort(function (a, b) {
-      return new Date(a.timeStamp) - new Date(b.timeStamp);
+      return Math.abs(
+        new Date(a.timeStamp).getTime() - new Date(b.timeStamp).getTime()
+      );
     });
     return sortGames.map((game, key) => {
       return (
