@@ -28,16 +28,29 @@ import Sidebar from "components/Sidebar/Sidebar.js";
 import RegularTable from "views/TableList";
 import { apiUrl } from "common/variables/constants";
 import Login from "components/Login.js";
-import routes from "routes.js";
+import routes from "routes";
 import PanelHeader from "components/PanelHeader/PanelHeader.js";
 import { withOktaAuth } from "@okta/okta-react";
 import LoginButton from "components/LoginButton.js";
 import GameSpecificProps from "views/GameSpecificProps";
+import { Book } from "common/models/Book";
 
 var ps;
+interface DashboardProps {
+  authService: any;
+  authState: any;
+  history: any;
+  baseUrl: string;
+}
 
+interface DashboardState {
+  userInfo: any;
+  allBooks: Book[];
+  checkedBooks: Book[];
+  backgroundColor: string;
+}
 export default withOktaAuth(
-  class Dashboard extends React.Component {
+  class Dashboard extends React.Component<DashboardProps, DashboardState> {
     constructor(props) {
       super(props);
       this.state = {
@@ -50,7 +63,7 @@ export default withOktaAuth(
       this.checkUser = this.checkUser.bind(this);
       this.checkUser();
     }
-    mainPanel = React.createRef();
+    mainPanel: any = React.createRef();
 
     componentDidMount() {
       if (navigator.platform.indexOf("Win") > -1) {
@@ -97,7 +110,7 @@ export default withOktaAuth(
 
       if (prevProps.history.action === "PUSH") {
         document.documentElement.scrollTop = 0;
-        document.scrollingElement.scrollTop = 0;
+        document.scrollingElement!.scrollTop = 0;
         this.mainPanel.current.scrollTop = 0;
       }
     }

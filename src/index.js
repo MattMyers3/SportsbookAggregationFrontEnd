@@ -26,7 +26,7 @@ import "bootstrap/dist/css/bootstrap.css";
 import "assets/scss/now-ui-dashboard.scss?v1.4.0";
 import "assets/css/demo.css";
 
-import AdminLayout from "layouts/Admin.js";
+import AdminLayout from "layouts/Admin";
 import Login from "components/Login.js";
 
 const hist = createBrowserHistory();

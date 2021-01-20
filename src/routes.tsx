@@ -24,10 +24,21 @@ import {
   faFootballBall,
   faQuestion,
   faRocket,
+  IconDefinition,
 } from "@fortawesome/free-solid-svg-icons";
 import FAQ from "views/Faq";
 
-var dashRoutes = [
+type route = {
+  path: string;
+  sport?: string;
+  name: string;
+  icon: IconDefinition;
+  component: any;
+  layout: string;
+  pro?: boolean;
+};
+
+var dashRoutes: route[] = [
   {
     path: "/OddsBoosts",
     sport: "Odds Boosts",

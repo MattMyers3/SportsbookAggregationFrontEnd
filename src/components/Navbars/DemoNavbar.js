@@ -21,10 +21,10 @@ import {
   Navbar,
   NavbarToggler,
   NavbarBrand,
-  Container
+  Container,
 } from "reactstrap";
 
-import routes from "routes.js";
+import routes from "routes";
 
 class Header extends React.Component {
   state = {
@@ -143,8 +143,7 @@ class Header extends React.Component {
             isOpen={this.state.isOpen}
             navbar
             className="justify-content-end"
-          >
-          </Collapse>
+          ></Collapse>
         </Container>
       </Navbar>
     );
