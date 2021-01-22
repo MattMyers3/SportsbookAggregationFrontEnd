@@ -15,13 +15,10 @@ import {
 } from "reactstrap";
 
 import "react-datepicker/dist/react-datepicker.css";
-import PropRow from "components/GameProps/SimpleProps/PropRow";
-import PropRowWithOptions from "components/GameProps/OverUnderProps/PropRowWithOptions";
 import { apiUrl } from "variables/constants.js";
 import { Form, Jumbotron } from "react-bootstrap";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
-import { theadProps, theadPropsOverUnder } from "variables/general";
 import GamePropSimpleTable from "components/GameProps/SimpleProps/GamePropSimpleTable";
 import GamePropTableWithOptions from "components/GameProps/OverUnderProps/GamePropTableWithOptions";
 

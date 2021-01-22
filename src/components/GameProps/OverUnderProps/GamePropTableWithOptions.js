@@ -28,6 +28,9 @@ class GamePropTableWithOptions extends React.Component {
   renderGamePropRowsOverUnder(props) {
     let propsGroupedByName = this.groupBy(props, "playerName");
     return propsGroupedByName.map((props) => {
+      if (
+        props.groupList[0].playerName.toLowerCase().includes(this.props.searchTerm)
+      )
       return <PropRowWithOptions propList={props.groupList} />;
     });
   }
