@@ -4,8 +4,6 @@ export class PropRowWithOptions extends React.Component {
     render() {
         let under = this.props.propList.find(prop => prop.propDescription == "Under");
         let over = this.props.propList.find(prop => prop.propDescription == "Over");
-        console.log(over);
-        console.log(under);
         return (
             <React.Fragment>
                 <tr className="d-flex">
