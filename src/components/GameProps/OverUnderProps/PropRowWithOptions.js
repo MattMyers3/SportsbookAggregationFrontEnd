@@ -11,18 +11,19 @@ export class PropRowWithOptions extends React.Component {
                     <td className="col-6" scope="row">
                         {under.playerName}
                     </td>
+
+                    <td className="col-3">
+                    <b>{over.propValue}</b>
+                    <sup>({over.currentPayout})</sup>
+                    <br></br>
+                    {over.currentSite}
+                    </td>
                     <td className="col-3">
                         <b>{under.propValue}</b>
                         <sup>({under.currentPayout})</sup>
                         <br></br>
                         {under.currentSite}
                     </td>
-                    <td className="col-3">
-                    <b>{over.propValue}</b>
-                    <sup>({over.currentPayout})</sup>
-                    <br></br>
-                    {over.currentSite}
-                </td>
                 </tr>
             </React.Fragment>
         );
