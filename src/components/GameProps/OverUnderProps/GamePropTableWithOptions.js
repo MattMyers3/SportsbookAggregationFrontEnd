@@ -39,7 +39,7 @@ class GamePropTableWithOptions extends React.Component {
     let groupedArr = [];
     props.forEach(function (e) {
       //look for an existent group
-      let group = groupedArr.find((g) => fuzz.ratio(g["field"], e[field]) > 76);
+      let group = groupedArr.find((g) => fuzz.ratio(g["field"], e[field]) > 79);
       if (group == undefined) {
         //add new group if it doesn't exist
         group = { field: e[field], groupList: [] };
@@ -49,7 +49,6 @@ class GamePropTableWithOptions extends React.Component {
       //add the element to the group
       group.groupList.push(e);
     });
-
     return groupedArr;
   }
 }
