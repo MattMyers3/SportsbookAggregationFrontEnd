@@ -39,7 +39,7 @@ class GamePropTableWithOptions extends React.Component {
     let groupedArr = [];
     props.forEach(function (e) {
       //look for an existent group
-      let group = groupedArr.find((g) => fuzz.ratio(g["field"], e[field]) > 70);
+      let group = groupedArr.find((g) => fuzz.ratio(g["field"], e[field]) > 76);
       if (group == undefined) {
         //add new group if it doesn't exist
         group = { field: e[field], groupList: [] };
