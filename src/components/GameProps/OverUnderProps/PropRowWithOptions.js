@@ -4,9 +4,12 @@ export class PropRowWithOptions extends React.Component {
     render() {
         let under = this.props.propList.find(prop => prop.propDescription == "Under");
         let over = this.props.propList.find(prop => prop.propDescription == "Over");
+        let style = {};
+        if(over.currentPayout + under.currentPayout > 0)
+            style = {backgroundColor: 'lightgreen'};
         return (
             <React.Fragment>
-                <tr className="d-flex">
+                <tr className="d-flex" style={style}>
                     <td className="col-6" scope="row">
                         {under.playerName}
                     </td>
