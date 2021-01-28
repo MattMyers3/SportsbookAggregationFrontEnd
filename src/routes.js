@@ -17,7 +17,7 @@
 */
 import TableList from "views/TableList.js";
 import BoostRegularTables from "views/OddsBoostTableList.js";
-import { faBaseballBall, faBasketballBall, faFootballBall, faQuestion, faRocket } from '@fortawesome/free-solid-svg-icons';
+import { faBaseballBall, faBasketballBall, faFootballBall, faQuestion, faRocket, faHockeyPuck } from '@fortawesome/free-solid-svg-icons';
 import FAQ from "views/Faq.js";
 
 
@@ -51,6 +51,14 @@ var dashRoutes = [
     sport: "NCAAB",
     name: "NCAAB",
     icon: faBasketballBall,
+    component: TableList,
+    layout: "/sports",
+  },
+  {
+    path: "/NHL",
+    sport: "NHL",
+    name: "NHL",
+    icon: faHockeyPuck,
     component: TableList,
     layout: "/sports",
   },
