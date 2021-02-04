@@ -2,8 +2,18 @@ import React from "react";
 import { Table } from "reactstrap";
 import { theadPropsOverUnder } from "common/variables/general";
 import PropRowWithOptions from "components/GameProps/OverUnderProps/PropRowWithOptions";
+interface GamePropTableWithOptionsProps {
+  propType: any;
+  propsForPropType: any;
+  searchTerm: String;
+}
 
-class GamePropTableWithOptions extends React.Component {
+interface GamePropTableWithOptionsState {}
+
+class GamePropTableWithOptions extends React.Component<
+  GamePropTableWithOptionsProps,
+  GamePropTableWithOptionsState
+> {
   render() {
     return (
       <div>
@@ -23,7 +33,7 @@ class GamePropTableWithOptions extends React.Component {
       </div>
     );
   }
-  renderGamePropRowsOverUnder(props) {
+  renderGamePropRowsOverUnder(props: any) {
     let propsGroupedByName = this.groupBy(props, "playerName");
     return propsGroupedByName.map((props) => {
       return <PropRowWithOptions propList={props.groupList} />;
@@ -31,7 +41,7 @@ class GamePropTableWithOptions extends React.Component {
   }
 
   groupBy(props, field) {
-    let groupedArr = [];
+    let groupedArr = [] as any;
     props.forEach(function (e) {
       //look for an existent group
       let group = groupedArr.find((g) => g["field"] === e[field]);
