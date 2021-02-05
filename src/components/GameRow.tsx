@@ -64,13 +64,18 @@ class GameRow extends React.Component<GameRowProps, GameRowState> {
             </small>
             <br></br>
             <small>
-              <a
-                href={
-                  "/sports/" + this.props.sport + "/games/" + this.props.gameId
-                }
-              >
-                More Wagers
-              </a>
+              <b>
+                <a
+                  href={
+                    "/sports/" +
+                    this.props.sport +
+                    "/games/" +
+                    this.props.gameId
+                  }
+                >
+                  More Wagers
+                </a>
+              </b>
             </small>
           </th>
           {this.getDisplayCell(

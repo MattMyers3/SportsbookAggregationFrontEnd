@@ -1,6 +1,7 @@
 import React from "react";
 import { Table } from "reactstrap";
 import { theadPropsOverUnder } from "common/variables/general";
+import fuzz from "fuzzball";
 import PropRowWithOptions from "components/GameProps/OverUnderProps/PropRowWithOptions";
 interface GamePropTableWithOptionsProps {
   propType: any;
@@ -36,7 +37,12 @@ class GamePropTableWithOptions extends React.Component<
   renderGamePropRowsOverUnder(props: any) {
     let propsGroupedByName = this.groupBy(props, "playerName");
     return propsGroupedByName.map((props) => {
-      return <PropRowWithOptions propList={props.groupList} />;
+      if (
+        props.groupList[0].playerName
+          .toLowerCase()
+          .includes(this.props.searchTerm)
+      )
+        return <PropRowWithOptions propList={props.groupList} />;
     });
   }
 
@@ -44,7 +50,7 @@ class GamePropTableWithOptions extends React.Component<
     let groupedArr = [] as any;
     props.forEach(function (e) {
       //look for an existent group
-      let group = groupedArr.find((g) => g["field"] === e[field]);
+      let group = groupedArr.find((g) => fuzz.ratio(g["field"], e[field]) > 79);
       if (group == undefined) {
         //add new group if it doesn't exist
         group = { field: e[field], groupList: [] };
@@ -54,7 +60,6 @@ class GamePropTableWithOptions extends React.Component<
       //add the element to the group
       group.groupList.push(e);
     });
-
     return groupedArr;
   }
 }

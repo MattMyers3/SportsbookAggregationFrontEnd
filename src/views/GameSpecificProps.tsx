@@ -20,15 +20,15 @@ import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import GamePropSimpleTable from "components/GameProps/SimpleProps/GamePropSimpleTable";
 import GamePropTableWithOptions from "components/GameProps/OverUnderProps/GamePropTableWithOptions";
-import {GameProp} from "common/models/GameProp";
+import { GameProp } from "common/models/GameProp";
 
 const animatedComponents = makeAnimated();
 
 interface GameSpecificPropsProps {
-  allBooks:any;
-  handleSportsbookChange:any;
-  checkedBooks:any;
-  match:any;
+  allBooks: any;
+  handleSportsbookChange: any;
+  checkedBooks: any;
+  match: any;
 }
 
 interface GameSpecificPropsState {
@@ -158,7 +158,7 @@ class GameSpecificProps extends React.Component<
     }
 
     if (prevState.GameProps != this.state.GameProps) {
-      let propTypes:any = [];
+      let propTypes: any = [];
       if (this.state.GameProps.length > 0) {
         for (let gameProp of this.state.GameProps) {
           let tableTitle = this.getPropTableTitle(gameProp);
@@ -199,7 +199,7 @@ class GameSpecificProps extends React.Component<
   renderTable(propType) {
     if (this.state.GameProps == null) return;
 
-    let propsForPropType:any = this.state.GameProps.filter(
+    let propsForPropType: any = this.state.GameProps.filter(
       (singleProp) => this.getPropTableTitle(singleProp) == propType
     );
     if (propsForPropType.length == 0) return;

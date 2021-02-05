@@ -28,7 +28,6 @@ import {
   Row,
   Col,
   CardText,
-  Container,
 } from "reactstrap";
 
 // core components
