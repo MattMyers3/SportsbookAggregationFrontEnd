@@ -1,21 +1,21 @@
 import React from "react";
-import { Table, FormGroup, Input } from "reactstrap";
+import { Table } from "reactstrap";
 import { theadProps } from "common/variables/general";
 import { GameProp } from "common/models/GameProp";
 import PropRow from "./PropRow";
 
 interface GamePropSimpleTableProps {
-  propType: string,
-  propsForPropType:GameProp[],
-  searchTerm:string
+  propType: string;
+  propsForPropType: GameProp[];
+  searchTerm: string;
 }
 
-interface GamePropSimpleTableState {
-}
+interface GamePropSimpleTableState {}
 
-class GamePropSimpleTable extends React.Component<GamePropSimpleTableProps,GamePropSimpleTableState> {
-  
-
+class GamePropSimpleTable extends React.Component<
+  GamePropSimpleTableProps,
+  GamePropSimpleTableState
+> {
   render() {
     return (
       <div>
@@ -35,7 +35,7 @@ class GamePropSimpleTable extends React.Component<GamePropSimpleTableProps,GameP
       </div>
     );
   }
-  renderGamePropRows(props : GameProp[]) {
+  renderGamePropRows(props: GameProp[]) {
     return props
       .sort(function (a, b) {
         return a.currentPayout - b.currentPayout;

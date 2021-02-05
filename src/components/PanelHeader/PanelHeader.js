@@ -17,10 +17,6 @@
 */
 import React from "react";
 import LoginButton from "components/LoginButton.js";
-import {
-  Row,
-  Col
-} from "reactstrap";
 
 class PanelHeader extends React.Component {
   render() {
@@ -33,9 +29,8 @@ class PanelHeader extends React.Component {
             : "")
         }
       >
-
         <div className="loginButton">
-            <LoginButton history={this.props.history}/>
+          <LoginButton history={this.props.history} />
         </div>
         {this.props.content}
       </div>

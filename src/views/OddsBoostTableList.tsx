@@ -19,7 +19,6 @@ import React from "react";
 
 // reactstrap components
 import {
-  Button,
   Card,
   CardBody,
   CardHeader,
@@ -115,7 +114,7 @@ class BoostRegularTables extends React.Component<
     var bookBoosts =
       this.state.oddsBoosts != null
         ? this.state.oddsBoosts.filter(
-            (boost) => boost.siteName == sportsbook.value
+            (boost) => boost.siteName === sportsbook.value
           )
         : null;
     if (bookBoosts == null) return;
@@ -148,8 +147,8 @@ class BoostRegularTables extends React.Component<
     if (
       this.state.oddsBoosts == null ||
       this.state.oddsBoosts.filter(
-        (boost) => boost.siteName == sportsbook.value
-      ).length == 0
+        (boost) => boost.siteName === sportsbook.value
+      ).length === 0
     )
       return;
 

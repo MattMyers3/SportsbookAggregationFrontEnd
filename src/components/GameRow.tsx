@@ -1,5 +1,4 @@
 import React from "react";
-import { apiUrl } from "common/variables/constants";
 import GameLinesService from "common/services/GameLinesService";
 import { GameLines } from "common/models/GameLines";
 import TeamService from "common/services/TeamService";
@@ -107,7 +106,7 @@ class GameRow extends React.Component<GameRowProps, GameRowState> {
       minute: "2-digit",
     };
 
-    if (this.props.sport == "NFL") options["weekday"] = "short";
+    if (this.props.sport === "NFL") options["weekday"] = "short";
 
     return new Date(dateString + "Z").toLocaleTimeString("en-us", options);
   }

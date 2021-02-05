@@ -21,24 +21,24 @@ import makeAnimated from "react-select/animated";
 import GamePropSimpleTable from "components/GameProps/SimpleProps/GamePropSimpleTable";
 import GamePropTableWithOptions from "components/GameProps/OverUnderProps/GamePropTableWithOptions";
 import { GameProp } from "common/models/GameProp";
+import { Book } from "common/models/Book";
 
 const animatedComponents = makeAnimated();
 
 interface GameSpecificPropsProps {
-  allBooks: any;
-  handleSportsbookChange: any;
-  checkedBooks: any;
+  allBooks: Book[];
+  handleSportsbookChange: Function;
+  checkedBooks: Book[];
   match: any;
 }
 
 interface GameSpecificPropsState {
-  GameTime: any;
   HomeTeamName: string;
   HomeTeamId: string;
   AwayTeamName: string;
   AwayTeamId: string;
   GameProps: GameProp[];
-  PropTypes: any;
+  PropTypes: String[];
   searchTerm: string;
 }
 
@@ -47,12 +47,11 @@ class GameSpecificProps extends React.Component<
   GameSpecificPropsState
 > {
   state = {
-    GameTime: null,
     HomeTeamName: "",
     HomeTeamId: "",
     AwayTeamName: "",
     AwayTeamId: "",
-    GameProps: [],
+    GameProps: [] as GameProp[],
     PropTypes: [],
     searchTerm: "",
   };
@@ -140,7 +139,7 @@ class GameSpecificProps extends React.Component<
       else this.getGameLines();
     }
 
-    if (prevState.HomeTeamId == "" && this.state.HomeTeamId != "") {
+    if (prevState.HomeTeamId === "" && this.state.HomeTeamId !== "") {
       fetch(apiUrl + "/teams/" + this.state.HomeTeamId)
         .then((res) => res.json())
         .then((data) =>
@@ -157,7 +156,7 @@ class GameSpecificProps extends React.Component<
         );
     }
 
-    if (prevState.GameProps != this.state.GameProps) {
+    if (prevState.GameProps !== this.state.GameProps) {
       let propTypes: any = [];
       if (this.state.GameProps.length > 0) {
         for (let gameProp of this.state.GameProps) {
@@ -178,7 +177,7 @@ class GameSpecificProps extends React.Component<
   }
 
   renderErrorMessage() {
-    if (this.props.checkedBooks == null || this.props.checkedBooks.length == 0)
+    if (!this.props.checkedBooks || this.props.checkedBooks.length === 0)
       return (
         <Jumbotron>
           <h1>No books!</h1>
@@ -197,12 +196,12 @@ class GameSpecificProps extends React.Component<
       );
   }
   renderTable(propType) {
-    if (this.state.GameProps == null) return;
+    if (!this.state.GameProps) return;
 
     let propsForPropType: any = this.state.GameProps.filter(
-      (singleProp) => this.getPropTableTitle(singleProp) == propType
+      (singleProp) => this.getPropTableTitle(singleProp) === propType
     );
-    if (propsForPropType.length == 0) return;
+    if (propsForPropType.length === 0) return;
 
     const first = propsForPropType[0];
     if (first.propValue !== null) {

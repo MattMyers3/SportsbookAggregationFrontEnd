@@ -18,7 +18,6 @@
 import TableList from "views/TableList";
 import BoostRegularTables from "views/OddsBoostTableList";
 import {
-  faBaseballBall,
   faBasketballBall,
   faFootballBall,
   faQuestion,

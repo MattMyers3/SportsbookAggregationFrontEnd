@@ -30,9 +30,6 @@ import {
   CardText,
 } from "reactstrap";
 
-// core components
-import PanelHeader from "components/PanelHeader/PanelHeader.js";
-
 import { thead } from "common/variables/general";
 
 import DatePicker from "react-datepicker";
@@ -356,7 +353,7 @@ class RegularTables extends React.Component<TableListProps, TableListState> {
       return;
 
     if (prevProps.sport !== this.props.sport) {
-      if (this.props.sport != "NFL") this.setState({ startDate: new Date() });
+      if (this.props.sport !== "NFL") this.setState({ startDate: new Date() });
       else {
         var dateRange = this.getDefaultDateSelect().split("-");
         var startDate = new Date();
@@ -369,7 +366,7 @@ class RegularTables extends React.Component<TableListProps, TableListState> {
       if (this.state.startDate.getDate() < new Date().getDate())
         // Don't show games in the past
         this.setState({ games: [] });
-      else if (this.props.sport != "NFL")
+      else if (this.props.sport !== "NFL")
         this.fetchGamesOnDay(this.state.startDate);
       else {
         this.fetchGamesInRange(this.state.startDate, this.state.endDate);

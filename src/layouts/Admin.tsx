@@ -20,18 +20,16 @@ import React from "react";
 import PerfectScrollbar from "perfect-scrollbar";
 
 // reactstrap components
-import { Route, Switch, Redirect } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 
 // core components
 import DemoNavbar from "components/Navbars/DemoNavbar.js";
 import Sidebar from "components/Sidebar/Sidebar.js";
-import RegularTable from "views/TableList";
 import { apiUrl } from "common/variables/constants";
 import Login from "components/Login.js";
 import routes from "routes";
 import PanelHeader from "components/PanelHeader/PanelHeader.js";
 import { withOktaAuth } from "@okta/okta-react";
-import LoginButton from "components/LoginButton.js";
 import GameSpecificProps from "views/GameSpecificProps";
 import { Book } from "common/models/Book";
 
@@ -104,7 +102,7 @@ export default withOktaAuth(
     componentDidUpdate(prevProps, prevState) {
       this.checkUser();
 
-      if (prevState.userInfo != this.state.userInfo) {
+      if (prevState.userInfo !== this.state.userInfo) {
         this.fetchUserDefaults();
       }
 
@@ -205,7 +203,7 @@ export default withOktaAuth(
                 return (
                   <Route
                     path={prop.layout + prop.path}
-                    render={(props) => (
+                    render={() => (
                       <prop.component
                         {...prop}
                         isLoggedIn={this.props.authState.isAuthenticated}
