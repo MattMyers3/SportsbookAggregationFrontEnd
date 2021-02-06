@@ -42,6 +42,8 @@ import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import { Game } from "common/models/Game";
 import { Book } from "common/models/Book";
+import LastRefreshTimeService from "common/services/LastRefreshTimeService";
+import GamesService from "common/services/GamesService";
 
 const animatedComponents = makeAnimated();
 
@@ -374,7 +376,7 @@ class RegularTables extends React.Component<TableListProps, TableListState> {
     }
   }
 
-  componentWillMount() {
+  async componentWillMount() {
     if (this.props.sport === "NFL") {
       var dateRange = this.getDefaultDateSelect().split("-");
       var startDate = new Date();
@@ -383,27 +385,18 @@ class RegularTables extends React.Component<TableListProps, TableListState> {
     } else {
       this.fetchGamesOnDay(new Date());
     }
-
-    fetch(apiUrl + "/GameLines/LastRefreshTime")
-      .then((res) => res.json())
-      .then((data) => {
-        this.setState({ lastRefreshTime: data.lastRefreshTime });
-      });
+    let refreshTime = await LastRefreshTimeService.getRefreshTime("GameLines");
+    this.setState({ lastRefreshTime: refreshTime });
   }
 
-  fetchGamesInRange(startDate, endDate) {
+  async fetchGamesInRange(startDate: Date, endDate: Date) {
     endDate.setHours(23, 59, 59, 999);
-    fetch(
-      apiUrl +
-        "/games?start=" +
-        startDate.toISOString() +
-        "&end=" +
-        endDate.toISOString() +
-        "&sport=" +
-        this.props.sport
-    )
-      .then((res) => res.json())
-      .then((data) => this.setState({ games: data }));
+    const games = await GamesService.getGamesByDateRange(
+      startDate,
+      endDate,
+      this.props.sport
+    );
+    this.setState({ games: games });
   }
 
   fetchGamesOnDay(date) {

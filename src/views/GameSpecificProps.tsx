@@ -22,6 +22,9 @@ import GamePropSimpleTable from "components/GameProps/SimpleProps/GamePropSimple
 import GamePropTableWithOptions from "components/GameProps/OverUnderProps/GamePropTableWithOptions";
 import { GameProp } from "common/models/GameProp";
 import { Book } from "common/models/Book";
+import TeamService from "common/services/TeamService";
+import GamePropsService from "common/services/GamePropsService";
+import GamesService from "common/services/GamesService";
 
 const animatedComponents = makeAnimated();
 
@@ -105,34 +108,25 @@ class GameSpecificProps extends React.Component<
     );
   }
 
-  componentWillMount() {
-    fetch(apiUrl + "/games/" + this.props.match.params.gameId)
-      .then((res) => res.json())
-      .then((data) =>
-        this.setState({
-          HomeTeamId: data.homeTeamId,
-          AwayTeamId: data.awayTeamId,
-        })
-      );
+  async componentWillMount() {
+    const game = await GamesService.getGameById(this.props.match.params.gameId);
+    this.setState({
+      HomeTeamId: game.homeTeamId,
+      AwayTeamId: game.awayTeamId,
+    });
   }
 
-  getGameLines() {
-    fetch(
-      apiUrl +
-        "/games/" +
-        this.props.match.params.gameId +
-        "/bestprops?sportsbooks=" +
-        this.props.checkedBooks.map((book) => book.value).join()
-    )
-      .then((res) => res.json())
-      .then((data) =>
-        this.setState({
-          GameProps: data,
-        })
-      );
+  async getGameLines() {
+    const props = await GamePropsService.getProps(
+      this.props.match.params.gameId,
+      this.props.checkedBooks
+    );
+    this.setState({
+      GameProps: props,
+    });
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  async componentDidUpdate(prevProps, prevState) {
     if (prevProps.checkedBooks !== this.props.checkedBooks) {
       if (this.props.checkedBooks == null)
         this.setState({ GameProps: [], PropTypes: [] });
@@ -140,20 +134,14 @@ class GameSpecificProps extends React.Component<
     }
 
     if (prevState.HomeTeamId === "" && this.state.HomeTeamId !== "") {
-      fetch(apiUrl + "/teams/" + this.state.HomeTeamId)
-        .then((res) => res.json())
-        .then((data) =>
-          this.setState({
-            HomeTeamName: data.location + " " + data.mascot,
-          })
-        );
-      fetch(apiUrl + "/teams/" + this.state.AwayTeamId)
-        .then((res) => res.json())
-        .then((data) =>
-          this.setState({
-            AwayTeamName: data.location + " " + data.mascot,
-          })
-        );
+      const homeTeam = await TeamService.getTeam(this.state.HomeTeamId);
+      this.setState({
+        HomeTeamName: homeTeam.location + " " + homeTeam.mascot,
+      });
+      const awayTeam = await TeamService.getTeam(this.state.AwayTeamId);
+      this.setState({
+        AwayTeamName: awayTeam.location + " " + awayTeam.mascot,
+      });
     }
 
     if (prevState.GameProps !== this.state.GameProps) {

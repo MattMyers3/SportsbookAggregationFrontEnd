@@ -40,6 +40,8 @@ import { Form, Jumbotron } from "react-bootstrap";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import { OddsBoost } from "common/models/OddsBoost";
+import LastRefreshTimeService from "common/services/LastRefreshTimeService";
+import OddsBoostService from "common/services/OddsBoostService";
 
 const animatedComponents = makeAnimated();
 
@@ -188,18 +190,14 @@ class BoostRegularTables extends React.Component<
     return new Date(dateString + "Z").toLocaleTimeString("en-us", options);
   }
 
-  componentWillMount() {
-    fetch(apiUrl + "/oddsboosts")
-      .then((res) => res.json())
-      .then((data) => {
-        this.setState({ oddsBoosts: data });
-      });
+  async componentWillMount() {
+    const oddsBoosts = await OddsBoostService.getOddsBoosts();
+    this.setState({ oddsBoosts: oddsBoosts });
 
-    fetch(apiUrl + "/OddsBoosts/LastRefreshTime")
-      .then((res) => res.json())
-      .then((data) => {
-        this.setState({ lastRefreshTime: data.lastRefreshTime });
-      });
+    const lastRefreshTime = await LastRefreshTimeService.getRefreshTime(
+      "OddsBoosts"
+    );
+    this.setState({ lastRefreshTime: lastRefreshTime });
   }
 }
 
