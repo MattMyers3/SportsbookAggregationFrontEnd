@@ -1,5 +1,4 @@
 import { Book } from "common/models/Book";
-import { GameLines } from "common/models/GameLines";
 import { GameProp } from "common/models/GameProp";
 import { apiUrl } from "common/variables/constants";
 

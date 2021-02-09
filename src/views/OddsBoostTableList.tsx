@@ -35,7 +35,6 @@ import { theadOddsBoosts } from "common/variables/general";
 
 import "react-datepicker/dist/react-datepicker.css";
 import BoostRow from "components/BoostRow";
-import { apiUrl } from "common/variables/constants";
 import { Form, Jumbotron } from "react-bootstrap";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";

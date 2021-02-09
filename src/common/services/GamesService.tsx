@@ -1,5 +1,4 @@
 import { Game } from "common/models/Game";
-import { Team } from "common/models/Team";
 import { apiUrl } from "common/variables/constants";
 
 export default class GamesService {

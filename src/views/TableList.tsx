@@ -35,7 +35,6 @@ import { thead } from "common/variables/general";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import GameRow from "components/GameRow";
-import { apiUrl } from "common/variables/constants";
 import ReactGA from "react-ga";
 import { Form, Jumbotron } from "react-bootstrap";
 import Select from "react-select";
@@ -133,7 +132,7 @@ class RegularTables extends React.Component<TableListProps, TableListState> {
         new Date(a.timeStamp).getTime() - new Date(b.timeStamp).getTime()
       );
     });
-    return sortGames.map((game, key) => {
+    return sortGames.map((game) => {
       return (
         <GameRow
           key={game.gameId}

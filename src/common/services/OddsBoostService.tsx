@@ -1,4 +1,3 @@
-import { GameLines } from "common/models/GameLines";
 import { OddsBoost } from "common/models/OddsBoost";
 import { apiUrl } from "common/variables/constants";
 

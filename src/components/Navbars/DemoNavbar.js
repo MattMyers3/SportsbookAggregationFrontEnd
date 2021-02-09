@@ -16,13 +16,7 @@
 
 */
 import React from "react";
-import {
-  Collapse,
-  Navbar,
-  NavbarToggler,
-  NavbarBrand,
-  Container,
-} from "reactstrap";
+import { Collapse, Navbar, NavbarBrand, Container } from "reactstrap";
 
 import routes from "routes";
 
@@ -47,16 +41,16 @@ class Header extends React.Component {
       isOpen: !this.state.isOpen,
     });
   };
-  dropdownToggle = (e) => {
+  dropdownToggle = () => {
     this.setState({
       dropdownOpen: !this.state.dropdownOpen,
     });
   };
   getBrand = () => {
     var name;
-    routes.map((prop, key) => {
+    routes.map((prop) => {
       if (prop.collapse) {
-        prop.views.map((prop, key) => {
+        prop.views.map((prop) => {
           if (prop.path === this.props.location.pathname) {
             name = prop.name;
           }
