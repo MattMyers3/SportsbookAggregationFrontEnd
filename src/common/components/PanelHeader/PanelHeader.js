@@ -16,7 +16,7 @@
 
 */
 import React from "react";
-import LoginButton from "components/LoginButton.js";
+import LoginButton from "common/components/LoginButton/LoginButton.js";
 
 class PanelHeader extends React.Component {
   render() {

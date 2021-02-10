@@ -2,9 +2,15 @@ import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
 import OktaSignInWidget from "./OktaSignInWidget";
 import { withOktaAuth } from "@okta/okta-react";
+interface LoginProps {
+  authService: any;
+  authState: any;
+  baseUrl: any;
+}
 
+interface LoginState {}
 export default withOktaAuth(
-  class Login extends Component {
+  class Login extends Component<LoginProps, LoginState> {
     constructor(props) {
       super(props);
       this.onSuccess = this.onSuccess.bind(this);

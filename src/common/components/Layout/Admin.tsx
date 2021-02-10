@@ -26,7 +26,7 @@ import { Route, Switch } from "react-router-dom";
 import DemoNavbar from "common/components/Navbars/Navbar.js";
 import Sidebar from "common/components/Sidebar/Sidebar.js";
 import { apiUrl } from "common/variables/constants";
-import Login from "components/Login.js";
+import Login from "app/Login/Login";
 import routes from "routes";
 import PanelHeader from "common/components/PanelHeader/PanelHeader.js";
 import { withOktaAuth } from "@okta/okta-react";
