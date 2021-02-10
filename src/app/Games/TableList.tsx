@@ -34,7 +34,7 @@ import { thead } from "common/variables/general";
 
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import GameRow from "components/GameRow";
+import GameRow from "app/Games/GameRow";
 import ReactGA from "react-ga";
 import { Form, Jumbotron } from "react-bootstrap";
 import Select from "react-select";

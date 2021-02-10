@@ -15,8 +15,8 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import TableList from "views/TableList";
-import BoostRegularTables from "views/OddsBoostTableList";
+import TableList from "app/Games/TableList";
+import BoostRegularTables from "app/OddsBoosts/OddsBoostTableList";
 import {
   faBasketballBall,
   faFootballBall,
@@ -25,7 +25,7 @@ import {
   faHockeyPuck,
   IconDefinition,
 } from "@fortawesome/free-solid-svg-icons";
-import FAQ from "views/Faq";
+import FAQ from "app/Faq/Faq";
 
 type route = {
   path: string;

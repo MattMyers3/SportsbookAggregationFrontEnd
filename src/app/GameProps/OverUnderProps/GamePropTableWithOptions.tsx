@@ -2,7 +2,7 @@ import React from "react";
 import { Table } from "reactstrap";
 import { theadPropsOverUnder } from "common/variables/general";
 import fuzz from "fuzzball";
-import PropRowWithOptions from "components/GameProps/OverUnderProps/PropRowWithOptions";
+import PropRowWithOptions from "app/GameProps/OverUnderProps/PropRowWithOptions";
 interface GamePropTableWithOptionsProps {
   propType: any;
   propsForPropType: any;

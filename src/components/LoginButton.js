@@ -16,75 +16,77 @@
 
 */
 import React from "react";
-import { withOktaAuth } from '@okta/okta-react';
+import { withOktaAuth } from "@okta/okta-react";
 import { Button } from "react-bootstrap";
 
 async function checkUser() {
-    if (this.props.authState.isAuthenticated && !this.state.userInfo) {
-      const userInfo = await this.props.authService.getUser();
-      if (this._isMounted) {
-        this.setState({ userInfo });
-      }
+  if (this.props.authState.isAuthenticated && !this.state.userInfo) {
+    const userInfo = await this.props.authService.getUser();
+    if (this._isMounted) {
+      this.setState({ userInfo });
     }
   }
+}
 
-export default withOktaAuth(class LoginButton extends React.Component {
+export default withOktaAuth(
+  class LoginButton extends React.Component {
     _isMounted = false;
 
-  constructor(props) {
-    super(props);
-    this.state = { userInfo: null };
-    this.login = this.login.bind(this);
-    this.logout = this.logout.bind(this);
-    this.checkUser = checkUser.bind(this);
-  }
-
-  async login() {
-    this.props.history.push('/login');
-  }
-
-  async logout() {
-    this.props.authService.logout('/');
-  }
-
-  async componentDidMount() {
-    this._isMounted = true;
-    this.checkUser();
-  }
-
-  async componentDidUpdate() {
-    this._isMounted = true;
-    this.checkUser();
-  }
-
-  async componentWillUnmount() {
-    this._isMounted = false;
-  }
-
-  GetLoginDisplay() {
-    if(this.state.userInfo != null) {
-      return (
-        <Button variant="secondary" onClick={this.logout} active><i className={"now-ui-icons users_circle-08"} /> {this.state.userInfo.name}</Button>
-      )
+    constructor(props) {
+      super(props);
+      this.state = { userInfo: null };
+      this.login = this.login.bind(this);
+      this.logout = this.logout.bind(this);
+      this.checkUser = checkUser.bind(this);
     }
-    if(this.props.authState.isPending) {
-      return (
-        <div>Loading authentication...</div>
-      );
-    } else if( !this.props.authState.isAuthenticated ) {
-      return (
-        <div>
-         <Button variant="secondary" onClick={this.login} active> <i className={"now-ui-icons users_single-02"} /> Login</Button>
-        </div>
-      );
+
+    async login() {
+      this.props.history.push("/login");
+    }
+
+    async logout() {
+      this.props.authService.logout("/");
+    }
+
+    async componentDidMount() {
+      this._isMounted = true;
+      this.checkUser();
+    }
+
+    async componentDidUpdate() {
+      this._isMounted = true;
+      this.checkUser();
+    }
+
+    async componentWillUnmount() {
+      this._isMounted = false;
+    }
+
+    GetLoginDisplay() {
+      if (this.state.userInfo != null) {
+        return (
+          <Button variant="secondary" onClick={this.logout} active>
+            <i className={"now-ui-icons users_circle-08"} />{" "}
+            {this.state.userInfo.name}
+          </Button>
+        );
+      }
+      if (this.props.authState.isPending) {
+        return <div>Loading authentication...</div>;
+      } else if (!this.props.authState.isAuthenticated) {
+        return (
+          <div>
+            <Button variant="secondary" onClick={this.login} active>
+              {" "}
+              <i className={"now-ui-icons users_single-02"} /> Login
+            </Button>
+          </div>
+        );
+      }
+    }
+
+    render() {
+      return <div>{this.GetLoginDisplay()}</div>;
     }
   }
-
-  render() {
-    return (
-      <div>
-        {this.GetLoginDisplay()}  
-      </div>
-    );
-  }
-})
+);

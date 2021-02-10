@@ -23,7 +23,7 @@ import { Nav } from "reactstrap";
 import PerfectScrollbar from "perfect-scrollbar";
 
 import logo from "OlLogo.png";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 var ps;
 
@@ -55,12 +55,10 @@ class Sidebar extends React.Component {
         <div className="logo">
           <a className="simple-text logo-mini">
             <div className="logo-img">
-              <img src={logo}/>
+              <img src={logo} />
             </div>
           </a>
-          <div className="simple-text logo-normal" >
-            Odds Library
-          </div>
+          <div className="simple-text logo-normal">Odds Library</div>
         </div>
         <div className="sidebar-wrapper" ref="sidebar">
           <Nav>
@@ -80,7 +78,9 @@ class Sidebar extends React.Component {
                     activeClassName="active"
                   >
                     <FontAwesomeIcon icon={prop.icon} size="2x" />
-                    <p style={{display: 'inline', fontSize: 'large'}}>&nbsp;&nbsp;&nbsp;{prop.name}</p>
+                    <p style={{ display: "inline", fontSize: "large" }}>
+                      &nbsp;&nbsp;&nbsp;{prop.name}
+                    </p>
                   </NavLink>
                 </li>
               );

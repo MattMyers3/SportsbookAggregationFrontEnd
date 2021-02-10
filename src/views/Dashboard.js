@@ -41,7 +41,7 @@ import {
 } from "reactstrap";
 
 // core components
-import PanelHeader from "components/PanelHeader/PanelHeader.js";
+import PanelHeader from "common/components/PanelHeader/PanelHeader.js";
 
 import {
   dashboardPanelChart,

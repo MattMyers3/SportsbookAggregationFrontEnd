@@ -23,14 +23,14 @@ import PerfectScrollbar from "perfect-scrollbar";
 import { Route, Switch } from "react-router-dom";
 
 // core components
-import DemoNavbar from "components/Navbars/DemoNavbar.js";
-import Sidebar from "components/Sidebar/Sidebar.js";
+import DemoNavbar from "common/components/Navbars/Navbar.js";
+import Sidebar from "common/components/Sidebar/Sidebar.js";
 import { apiUrl } from "common/variables/constants";
 import Login from "components/Login.js";
 import routes from "routes";
-import PanelHeader from "components/PanelHeader/PanelHeader.js";
+import PanelHeader from "common/components/PanelHeader/PanelHeader.js";
 import { withOktaAuth } from "@okta/okta-react";
-import GameSpecificProps from "views/GameSpecificProps";
+import GameSpecificProps from "app/GameProps/GameSpecificProps";
 import { Book } from "common/models/Book";
 
 var ps;
