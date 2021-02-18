@@ -31,6 +31,10 @@ class GameRow extends React.Component<GameRowProps, GameRowState> {
     if (!this.state.isLoaded) {
       return <React.Fragment></React.Fragment>;
     }
+    if(this.state.gameLines.currentAwaySpread == null && this.state.gameLines.currentAwayMoneyLine == null && this.state.gameLines.currentOver == null &&
+      this.state.gameLines.currentHomeSpread == null && this.state.gameLines.currentHomeMoneyLine == null && this.state.gameLines.currentUnder == null){
+          return(<React.Fragment></React.Fragment>);
+      }
     return (
       <React.Fragment>
         <tr>
@@ -65,6 +69,8 @@ class GameRow extends React.Component<GameRowProps, GameRowState> {
             <small>
               <b>
                 <a
+                  aria-colspan={2}
+                  className="text-primary"
                   href={
                     "/sports/" +
                     this.props.sport +
