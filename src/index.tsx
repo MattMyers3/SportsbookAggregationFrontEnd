@@ -65,7 +65,7 @@ ReactDOM.render(
             <AdminLayout baseUrl="https://dev-5862712.okta.com" {...props} />
           )}
         />
-        <Redirect to="/sports/nfl" />
+        <Redirect to="/sports/nba" />
       </Switch>
     </Security>
   </Router>,
