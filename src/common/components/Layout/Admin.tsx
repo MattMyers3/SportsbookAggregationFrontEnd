@@ -32,8 +32,10 @@ import PanelHeader from "common/components/PanelHeader/PanelHeader.js";
 import { withOktaAuth } from "@okta/okta-react";
 import GameSpecificProps from "app/GameProps/GameSpecificProps";
 import { Book } from "common/models/Book";
+import MaterialMenu from "../MaterialMenu/MaterialMenu";
+import { ThemeProvider } from "@material-ui/styles";
+import mainTheme from "common/variables/theme";
 
-var ps;
 interface DashboardProps {
   authService: any;
   authState: any;
@@ -64,11 +66,6 @@ export default withOktaAuth(
     mainPanel: any = React.createRef();
 
     componentDidMount() {
-      if (navigator.platform.indexOf("Win") > -1) {
-        ps = new PerfectScrollbar(this.mainPanel.current);
-        document.body.classList.toggle("perfect-scrollbar-on");
-      }
-
       fetch(apiUrl + "/gamblingsite")
         .then((res) => res.json())
         .then((data) => {
@@ -89,13 +86,6 @@ export default withOktaAuth(
 
       if (this.state.userInfo) {
         this.fetchUserDefaults();
-      }
-    }
-
-    componentWillUnmount() {
-      if (navigator.platform.indexOf("Win") > -1) {
-        ps.destroy();
-        document.body.classList.toggle("perfect-scrollbar-on");
       }
     }
 
@@ -171,54 +161,50 @@ export default withOktaAuth(
     render() {
       return (
         <div className="wrapper">
-          <Sidebar
-            {...this.props}
-            routes={routes}
-            backgroundColor={this.state.backgroundColor}
-          />
-          <div className="main-panel" ref={this.mainPanel}>
-            <DemoNavbar {...this.props} />
-            <PanelHeader size="sm" history={this.props.history} />
-            <Switch>
-              <Route
-                path="/login"
-                render={(props) => (
-                  <Login baseUrl={this.props.baseUrl} {...props} />
-                )}
-              />
-              <Route
-                path="/sports/:sport/games/:gameId"
-                render={(props) => (
-                  <GameSpecificProps
-                    {...props}
-                    isLoggedIn={this.props.authState.isAuthenticated}
-                    setUserDefaults={this.setUserDefaults}
-                    allBooks={this.state.allBooks}
-                    checkedBooks={this.state.checkedBooks}
-                    handleSportsbookChange={this.handleCheck}
-                  />
-                )}
-              />
-              {routes.map((prop, key) => {
-                return (
-                  <Route
-                    path={prop.layout + prop.path}
-                    render={() => (
-                      <prop.component
-                        {...prop}
-                        isLoggedIn={this.props.authState.isAuthenticated}
-                        setUserDefaults={this.setUserDefaults}
-                        allBooks={this.state.allBooks}
-                        checkedBooks={this.state.checkedBooks}
-                        handleSportsbookChange={this.handleCheck}
-                      />
-                    )}
-                    key={key}
-                  />
-                );
-              })}
-            </Switch>
-          </div>
+          <ThemeProvider theme={mainTheme}>
+            <MaterialMenu history={this.props.history}>
+              <Switch>
+                <Route
+                  path="/login"
+                  render={(props) => (
+                    <Login baseUrl={this.props.baseUrl} {...props} />
+                  )}
+                />
+                <Route
+                  path="/sports/:sport/games/:gameId"
+                  render={(props) => (
+                    <GameSpecificProps
+                      {...props}
+                      isLoggedIn={this.props.authState.isAuthenticated}
+                      setUserDefaults={this.setUserDefaults}
+                      allBooks={this.state.allBooks}
+                      checkedBooks={this.state.checkedBooks}
+                      handleSportsbookChange={this.handleCheck}
+                    />
+                  )}
+                />
+                {routes.map((prop, key) => {
+                  return (
+                    <Route
+                      path={prop.layout + prop.path}
+                      render={() => (
+                        <prop.component
+                          {...prop}
+                          isLoggedIn={this.props.authState.isAuthenticated}
+                          setUserDefaults={this.setUserDefaults}
+                          allBooks={this.state.allBooks}
+                          checkedBooks={this.state.checkedBooks}
+                          handleSportsbookChange={this.handleCheck}
+                        />
+                      )}
+                      key={key}
+                    />
+                  );
+                })}
+              </Switch>
+            </MaterialMenu>
+            <div className="main-panel" ref={this.mainPanel}></div>
+          </ThemeProvider>
         </div>
       );
     }
