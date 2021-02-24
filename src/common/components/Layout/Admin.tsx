@@ -63,7 +63,6 @@ export default withOktaAuth(
       this.checkUser = this.checkUser.bind(this);
       this.checkUser();
     }
-    mainPanel: any = React.createRef();
 
     componentDidMount() {
       fetch(apiUrl + "/gamblingsite")
@@ -89,17 +88,11 @@ export default withOktaAuth(
       }
     }
 
-    componentDidUpdate(prevProps, prevState) {
+    componentDidUpdate(_prevProps: DashboardProps, prevState: DashboardState) {
       this.checkUser();
 
       if (prevState.userInfo !== this.state.userInfo) {
         this.fetchUserDefaults();
-      }
-
-      if (prevProps.history.action === "PUSH") {
-        document.documentElement.scrollTop = 0;
-        document.scrollingElement!.scrollTop = 0;
-        this.mainPanel.current.scrollTop = 0;
       }
     }
 
@@ -203,7 +196,6 @@ export default withOktaAuth(
                 })}
               </Switch>
             </MaterialMenu>
-            <div className="main-panel" ref={this.mainPanel}></div>
           </ThemeProvider>
         </div>
       );

@@ -73,18 +73,31 @@ export default function MaterialMenu({ children, ...props }) {
         <Divider />
         <List>
           {dashRoutes.map((route) => {
+            const routePath = route.layout + route.path;
+            const isCurrentPath = props.history.location.pathname === routePath;
             return (
-              <ListItem button component={Link} to={route.layout + route.path}>
+              <ListItem
+                button
+                component={Link}
+                to={route.layout + route.path}
+                className={clsx(isCurrentPath && classes.optionIsSelected)}
+              >
                 <ListItemIcon>
                   <FontAwesomeIcon
                     icon={route.icon}
                     size="2x"
-                    className={classes.whiteText}
+                    className={clsx(
+                      isCurrentPath && classes.blackText,
+                      !isCurrentPath && classes.whiteText
+                    )}
                   />
                 </ListItemIcon>
                 <ListItemText
                   primary={route.name}
-                  className={classes.whiteText}
+                  className={clsx(
+                    isCurrentPath && classes.blackText,
+                    !isCurrentPath && classes.whiteText
+                  )}
                 ></ListItemText>
               </ListItem>
             );

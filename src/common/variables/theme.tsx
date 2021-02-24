@@ -7,13 +7,25 @@ interface PaletteColor {
   contrastText?: string;
 }
 
+declare module "@material-ui/core/styles/createPalette" {
+  interface Palette {
+    tertiary: Palette["primary"];
+  }
+  interface PaletteOptions {
+    tertiary: PaletteOptions["primary"];
+  }
+}
+
 const mainTheme = createMuiTheme({
   palette: {
     primary: {
-      main: "#28a745",
+      main: "#39b54a",
     },
     secondary: {
       main: "#ffffff",
+    },
+    tertiary: {
+      main: "#f9e609",
     },
   },
 });

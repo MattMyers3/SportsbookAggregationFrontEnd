@@ -1,6 +1,6 @@
 import { makeStyles } from "@material-ui/core";
 
-const drawerWidth = 240;
+const drawerWidth = 200;
 
 const useStylesMenu = makeStyles((theme) => ({
   root: {
@@ -71,6 +71,15 @@ const useStylesMenu = makeStyles((theme) => ({
   },
   whiteText: {
     color: theme.palette.secondary.main,
+  },
+  blackText: {
+    color: "#000000",
+  },
+  optionIsSelected: {
+    backgroundColor: theme.palette.tertiary.main,
+    "&:hover": {
+      backgroundColor: theme.palette.tertiary.main,
+    },
   },
 }));
 export default useStylesMenu;
