@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import OddsFormater from "common/services/odds-formater";
+import OddsFormater from "common/helpers/OddsFormater";
 import { GameProp } from "common/models/GameProp";
 interface PropRowProps {
   playerProp: GameProp;
