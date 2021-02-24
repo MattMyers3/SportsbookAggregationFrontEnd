@@ -48,7 +48,7 @@ export default function MaterialMenu({ children, ...props }) {
           </IconButton>
           <Typography
             component="h1"
-            variant="h6"
+            variant="h5"
             color="inherit"
             noWrap
             className={classes.title}

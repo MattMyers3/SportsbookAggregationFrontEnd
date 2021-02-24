@@ -1,34 +1,13 @@
-/*!
-
-=========================================================
-* Now UI Dashboard React - v1.4.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/now-ui-dashboard-react
-* Copyright 2020 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://github.com/creativetimofficial/now-ui-dashboard-react/blob/master/LICENSE.md)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
 import React from "react";
 // javascript plugin used to create scrollbars on windows
-import PerfectScrollbar from "perfect-scrollbar";
 
 // reactstrap components
 import { Route, Switch } from "react-router-dom";
 
 // core components
-import DemoNavbar from "common/components/Navbars/Navbar.js";
-import Sidebar from "common/components/Sidebar/Sidebar.js";
 import { apiUrl } from "common/variables/constants";
 import Login from "app/Login/Login";
 import routes from "routes";
-import PanelHeader from "common/components/PanelHeader/PanelHeader.js";
 import { withOktaAuth } from "@okta/okta-react";
 import GameSpecificProps from "app/GameProps/GameSpecificProps";
 import { Book } from "common/models/Book";
