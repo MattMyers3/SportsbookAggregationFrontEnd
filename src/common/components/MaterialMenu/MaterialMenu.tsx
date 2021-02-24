@@ -16,7 +16,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import LoginButton from "../LoginButton/LoginButton";
 import useStylesMenu from "./MaterialMenuStyles";
 
-export default function MaterialMenu({ children, ...props }) {
+interface MaterialMenuProps {
+  children: React.ReactNode;
+  history: any;
+}
+
+const MaterialMenu = ({ children, history }: MaterialMenuProps) => {
   const classes = useStylesMenu();
   const [open, setOpen] = React.useState(true);
   const handleDrawerOpen = () => {
@@ -55,7 +60,7 @@ export default function MaterialMenu({ children, ...props }) {
           >
             Odds Library
           </Typography>
-          <LoginButton history={props.history}></LoginButton>
+          <LoginButton history={history}></LoginButton>
         </Toolbar>
       </AppBar>
       <Drawer
@@ -74,7 +79,7 @@ export default function MaterialMenu({ children, ...props }) {
         <List>
           {dashRoutes.map((route) => {
             const routePath = route.layout + route.path;
-            const isCurrentPath = props.history.location.pathname === routePath;
+            const isCurrentPath = history.location.pathname === routePath;
             return (
               <ListItem
                 button
@@ -110,4 +115,5 @@ export default function MaterialMenu({ children, ...props }) {
       </main>
     </div>
   );
-}
+};
+export default MaterialMenu;
