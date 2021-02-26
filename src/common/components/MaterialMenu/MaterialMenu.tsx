@@ -79,7 +79,9 @@ const MaterialMenu = ({ children, history }: MaterialMenuProps) => {
         <List>
           {dashRoutes.map((route) => {
             const routePath = route.layout + route.path;
-            const isCurrentPath = history.location.pathname === routePath;
+            const isCurrentPath =
+              history.location.pathname.toLowerCase() ===
+              routePath.toLowerCase();
             return (
               <ListItem
                 button

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 // reactstrap components
 import {
@@ -34,137 +34,77 @@ interface GameSpecificPropsProps {
   match: any;
 }
 
-interface GameSpecificPropsState {
-  HomeTeamName: string;
-  HomeTeamId: string;
-  AwayTeamName: string;
-  AwayTeamId: string;
-  GameProps: GameProp[];
-  PropTypes: String[];
-  searchTerm: string;
-}
+const GameSpecificProps = ({
+  allBooks,
+  handleSportsbookChange,
+  checkedBooks,
+  match,
+}: GameSpecificPropsProps) => {
+  const [HomeTeamName, setHomeTeamName] = useState("");
+  const [HomeTeamId, setHomeTeamId] = useState("");
+  const [AwayTeamName, setAwayTeamName] = useState("");
+  const [AwayTeamId, setAwayTeamId] = useState("");
+  const [GameProps, setGameProps] = useState<GameProp[]>([]);
+  const [PropTypes, setPropTypes] = useState<String[]>([]);
+  const [searchTerm, setSearchTerm] = useState("");
 
-class GameSpecificProps extends React.Component<
-  GameSpecificPropsProps,
-  GameSpecificPropsState
-> {
-  state = {
-    HomeTeamName: "",
-    HomeTeamId: "",
-    AwayTeamName: "",
-    AwayTeamId: "",
-    GameProps: [] as GameProp[],
-    PropTypes: [],
-    searchTerm: "",
-  };
-  render() {
-    return (
-      <>
-        <div className="content">
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-primary" tag="h3">
-                {this.state.AwayTeamName} @ {this.state.HomeTeamName}
-              </CardTitle>
-              Player Props
-              <br />
-              <br />
-              <CardText>
-                <Row>
-                  <Col lg={true} s={true} xs={true}>
-                    <Form.Label>Select Sportsbooks</Form.Label>
-                    <br></br>
-                    <Select
-                      isSearchable={false}
-                      isMulti={true}
-                      options={this.props.allBooks}
-                      components={animatedComponents}
-                      onChange={this.props.handleSportsbookChange}
-                      placeholderButtonLabel="Sportsbooks..."
-                      value={this.props.checkedBooks}
-                    />
-                  </Col>
-                </Row>
-              </CardText>
-              <FormGroup>
-                <Input
-                  onChange={this.handleSearch.bind(this)}
-                  type="search"
-                  placeholder="Player Search"
-                ></Input>
-              </FormGroup>
-            </CardHeader>
-            <CardBody>
-              {this.state.PropTypes == null || this.state.PropTypes.length === 0
-                ? this.renderErrorMessage()
-                : this.state.PropTypes.map((propType) =>
-                    this.renderTable(propType)
-                  )}
-            </CardBody>
-          </Card>
-        </div>
-      </>
-    );
-  }
+  useEffect(() => {
+    const getTeamIdsFromGameId = async () => {
+      const game = await GamesService.getGameById(match.params.gameId);
+      setHomeTeamId(game.homeTeamId);
+      setAwayTeamId(game.awayTeamId);
+    };
+    getTeamIdsFromGameId();
+  }, [match.params.gameId]);
 
-  async componentWillMount() {
-    const game = await GamesService.getGameById(this.props.match.params.gameId);
-    this.setState({
-      HomeTeamId: game.homeTeamId,
-      AwayTeamId: game.awayTeamId,
-    });
-  }
+  useEffect(() => {
+    const getTeamNames = async () => {
+      const homeTeam = await TeamService.getTeam(HomeTeamId);
+      const awayTeam = await TeamService.getTeam(AwayTeamId);
 
-  async getGameLines() {
-    const props = await GamePropsService.getProps(
-      this.props.match.params.gameId,
-      this.props.checkedBooks
-    );
-    this.setState({
-      GameProps: props,
-    });
-  }
+      setHomeTeamName(homeTeam.location + " " + homeTeam.mascot);
+      setAwayTeamName(awayTeam.location + " " + awayTeam.mascot);
+    };
 
-  async componentDidUpdate(prevProps, prevState) {
-    if (prevProps.checkedBooks !== this.props.checkedBooks) {
-      if (this.props.checkedBooks == null)
-        this.setState({ GameProps: [], PropTypes: [] });
-      else this.getGameLines();
+    if (AwayTeamId !== "" && HomeTeamId !== "") getTeamNames();
+  }, [AwayTeamId, HomeTeamId]);
+
+  useEffect(() => {
+    const getGameLines = async () => {
+      const props = await GamePropsService.getProps(
+        match.params.gameId,
+        checkedBooks
+      );
+      setGameProps(props);
+    };
+    if (!checkedBooks) {
+      setGameProps([]);
+      setPropTypes([]);
+    } else {
+      getGameLines();
     }
+  }, [checkedBooks, match.params.gameId]);
 
-    if (prevState.HomeTeamId === "" && this.state.HomeTeamId !== "") {
-      const homeTeam = await TeamService.getTeam(this.state.HomeTeamId);
-      this.setState({
-        HomeTeamName: homeTeam.location + " " + homeTeam.mascot,
-      });
-      const awayTeam = await TeamService.getTeam(this.state.AwayTeamId);
-      this.setState({
-        AwayTeamName: awayTeam.location + " " + awayTeam.mascot,
-      });
-    }
-
-    if (prevState.GameProps !== this.state.GameProps) {
-      let propTypes: any = [];
-      if (this.state.GameProps.length > 0) {
-        for (let gameProp of this.state.GameProps) {
-          let tableTitle = this.getPropTableTitle(gameProp);
-          if (!propTypes.includes(tableTitle)) {
-            propTypes.push(tableTitle);
-          }
+  useEffect(() => {
+    let propTypes: any = [];
+    if (GameProps.length > 0) {
+      for (let gameProp of GameProps) {
+        let tableTitle = getPropTableTitle(gameProp);
+        if (!propTypes.includes(tableTitle)) {
+          propTypes.push(tableTitle);
         }
       }
-      this.setState({ PropTypes: propTypes });
     }
-  }
+    setPropTypes(propTypes);
+  }, [GameProps]);
 
-  getPropTableTitle(prop) {
+  const getPropTableTitle = (prop: GameProp) => {
     return prop.propValue === null
       ? prop.propDescription + " " + prop.propTypeDescription
       : prop.propTypeDescription;
-  }
-
-  renderErrorMessage() {
-    if (!this.props.checkedBooks || this.props.checkedBooks.length === 0)
+  };
+  const renderErrorMessage = () => {
+    if (!checkedBooks || checkedBooks.length === 0)
       return (
         <Jumbotron>
           <h1>No books!</h1>
@@ -181,12 +121,17 @@ class GameSpecificProps extends React.Component<
           <p>There are no props available for this game at this time.</p>
         </Jumbotron>
       );
-  }
-  renderTable(propType) {
-    if (!this.state.GameProps) return;
+  };
 
-    let propsForPropType: any = this.state.GameProps.filter(
-      (singleProp) => this.getPropTableTitle(singleProp) === propType
+  const handleSearch = (event: any) => {
+    setSearchTerm(event.target.value.toLowerCase());
+  };
+
+  const renderTable = (propType) => {
+    if (!GameProps) return;
+
+    let propsForPropType: any = GameProps.filter(
+      (singleProp) => getPropTableTitle(singleProp) === propType
     );
     if (propsForPropType.length === 0) return;
 
@@ -196,7 +141,7 @@ class GameSpecificProps extends React.Component<
         <GamePropTableWithOptions
           propsForPropType={propsForPropType}
           propType={propType}
-          searchTerm={this.state.searchTerm}
+          searchTerm={searchTerm}
         ></GamePropTableWithOptions>
       );
     } else {
@@ -204,14 +149,56 @@ class GameSpecificProps extends React.Component<
         <GamePropSimpleTable
           propsForPropType={propsForPropType}
           propType={propType}
-          searchTerm={this.state.searchTerm}
+          searchTerm={searchTerm}
         ></GamePropSimpleTable>
       );
     }
-  }
+  };
 
-  handleSearch(event) {
-    this.setState({ searchTerm: event.target.value.toLowerCase() });
-  }
-}
+  return (
+    <>
+      <div className="content">
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-primary" tag="h3">
+              {AwayTeamName} @ {HomeTeamName}
+            </CardTitle>
+            Player Props
+            <br />
+            <br />
+            <CardText>
+              <Row>
+                <Col lg={true} s={true} xs={true}>
+                  <Form.Label>Select Sportsbooks</Form.Label>
+                  <br></br>
+                  <Select
+                    isSearchable={false}
+                    isMulti={true}
+                    options={allBooks}
+                    components={animatedComponents}
+                    onChange={handleSportsbookChange}
+                    placeholderButtonLabel="Sportsbooks..."
+                    value={checkedBooks}
+                  />
+                </Col>
+              </Row>
+            </CardText>
+            <FormGroup>
+              <Input
+                onChange={handleSearch}
+                type="search"
+                placeholder="Player Search"
+              ></Input>
+            </FormGroup>
+          </CardHeader>
+          <CardBody>
+            {PropTypes == null || PropTypes.length === 0
+              ? renderErrorMessage()
+              : PropTypes.map((propType) => renderTable(propType))}
+          </CardBody>
+        </Card>
+      </div>
+    </>
+  );
+};
 export default GameSpecificProps;
