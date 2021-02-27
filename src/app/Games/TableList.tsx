@@ -15,9 +15,8 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import React, {useEffect, useState} from "react";
 
-// reactstrap components
 import {
   Button,
   Card,
@@ -55,78 +54,15 @@ interface TableListProps {
   setUserDefaults: Function;
 }
 
-interface TableListState {
-  endDate: Date;
-  startDate: Date;
-  lastRefreshTime: Date;
-  games: Game[];
-}
+const RegularTables = ({sport, allBooks, checkedBooks, handleSportsbookChange, isLoggedIn, setUserDefaults} : TableListProps) => {
 
-class RegularTables extends React.Component<TableListProps, TableListState> {
-  state = {
-    games: [] as Game[],
-    startDate: new Date(),
-    endDate: new Date(),
-    lastRefreshTime: new Date(),
-  };
+  const [EndDate, setEndDate] = useState<Date>(new Date());
+  const [StartDate, setStartDate] = useState<Date>(new Date());
+  const [LastRefreshTime, setLastRefreshTime] = useState<Date>(new Date());
+  const [Games, setGames] = useState<Game[]>([]);
 
-  render() {
-    return (
-      <>
-        <div className="content">
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-primary" tag="h3">
-                {this.props.sport} Best Lines (PA)
-              </CardTitle>
-              <CardText>
-                <div className="text-muted">
-                  Last Refresh Time:{" "}
-                  {this.getFormattedDate(this.state.lastRefreshTime)}
-                </div>
-                <br />
-                <Row>
-                  <Col lg={2}>{this.getDateSelector()}</Col>
-                  <br />
-                  <Col lg={{ span: 2, offset: 6 }} s={true} xs={true}>
-                    <Form.Label>Select Sportsbooks</Form.Label>
-                    <br></br>
-                    <Select
-                      isSearchable={false}
-                      isMulti={true}
-                      options={this.props.allBooks}
-                      components={animatedComponents}
-                      onChange={this.props.handleSportsbookChange}
-                      placeholderButtonLabel="Sportsbooks..."
-                      value={this.props.checkedBooks}
-                    />
-                    {this.props.isLoggedIn && (
-                      <Button onClick={this.props.setUserDefaults}>
-                        Save Selections
-                      </Button>
-                    )}
-                  </Col>
-                </Row>
-              </CardText>
-            </CardHeader>
-            <CardBody>
-              {this.state.games.length === 0
-                ? this.props.sport === "NFL"
-                  ? this.renderNoGamesWeekMessage()
-                  : this.renderNoGamesTodayMessage()
-                : this.props.checkedBooks == null ||
-                  this.props.checkedBooks.length === 0
-                ? this.renderNoBooksCheckedMessage()
-                : this.renderTable()}
-            </CardBody>
-          </Card>
-        </div>
-      </>
-    );
-  }
-
-  renderGameRows() {
-    var sortGames = this.state.games;
+  const renderGameRows = () => {
+    var sortGames = Games;
     sortGames.sort(function (a, b) {
       return Math.abs(
         new Date(a.timeStamp).getTime() - new Date(b.timeStamp).getTime()
@@ -136,40 +72,40 @@ class RegularTables extends React.Component<TableListProps, TableListState> {
       return (
         <GameRow
           key={game.gameId}
-          sport={this.props.sport}
+          sport={sport}
           homeTeamId={game.homeTeamId}
           awayTeamId={game.awayTeamId}
           gameId={game.gameId}
           checkedBooks={
-            this.props.checkedBooks != null
-              ? this.props.checkedBooks.map((book) => book.value)
+            checkedBooks != null
+              ? checkedBooks.map((book) => book.value)
               : []
           }
           gameTime={game.timeStamp}
         />
       );
     });
-  }
+  };
 
-  renderNoGamesWeekMessage() {
+  const renderNoGamesWeekMessage = () => {
     return (
       <Jumbotron>
         <h1>Lines not available!</h1>
         <p>Please select a different week</p>
       </Jumbotron>
     );
-  }
+  };
 
-  renderNoGamesTodayMessage() {
+  const renderNoGamesTodayMessage = () => {
     return (
       <Jumbotron>
         <h1>No Games Today!</h1>
         <p>Please use the calendar to select a new date</p>
       </Jumbotron>
     );
-  }
+  };
 
-  renderNoBooksCheckedMessage() {
+  const renderNoBooksCheckedMessage = () => {
     return (
       <Jumbotron>
         <h1>No books!</h1>
@@ -179,9 +115,9 @@ class RegularTables extends React.Component<TableListProps, TableListState> {
         </p>
       </Jumbotron>
     );
-  }
+  };
 
-  renderTable() {
+  const renderTable = () => {
     return (
       <Table responsive>
         <thead className="text-primary">
@@ -197,29 +133,29 @@ class RegularTables extends React.Component<TableListProps, TableListState> {
             })}
           </tr>
         </thead>
-        <tbody className="games-striped">{this.renderGameRows()}</tbody>
+        <tbody className="games-striped">{renderGameRows()}</tbody>
       </Table>
     );
   }
 
-  getFormattedDate(dateString) {
+  const getFormattedDate = (dateString) => {
     let options = {
       hour: "numeric",
       minute: "2-digit",
     };
 
     return new Date(dateString + "Z").toLocaleTimeString("en-us", options);
-  }
+  };
 
-  getDateSelector() {
-    if (this.props.sport === "NFL") {
+  const getDateSelector = () => {
+    if (sport === "NFL") {
       return (
         <Form>
           <Form.Label>Select Week</Form.Label>
           <Form.Control
             as="select"
-            defaultValue={this.getDefaultDateSelect()}
-            onChange={this.handleWeekChange.bind(this)}
+            defaultValue={getDefaultDateSelect()}
+            onChange={handleWeekChange}
           >
             <option value="12/31/2020-01/05/2021">Week 17</option>
             <option value="1/07/2021-01/11/2021">Wildcard Weekend</option>
@@ -237,19 +173,17 @@ class RegularTables extends React.Component<TableListProps, TableListState> {
           <Form.Label>Select Date</Form.Label>
           <br></br>
           <DatePicker
-            selected={this.state.startDate}
-            onChange={this.handleDateChange}
+            selected={StartDate}
+            onChange={handleDateChange}
           />
         </div>
       );
     }
   }
 
-  handleDateChange = (date) => {
+  const handleDateChange = (date) => {
     if (date.getDate() > new Date().getDate()) date.setHours(0, 0, 0);
-    this.setState({
-      startDate: date,
-    });
+    setStartDate(date);
 
     ReactGA.event({
       category: "User",
@@ -258,19 +192,17 @@ class RegularTables extends React.Component<TableListProps, TableListState> {
     });
   };
 
-  handleWeekChange(event) {
+  const handleWeekChange = (event) => {
     var dateRange = event.target.value.split("-");
     var now = new Date();
     var startDate = new Date(dateRange[0]);
     if (now > startDate) startDate = now;
     var endDate = new Date(dateRange[1]);
-    this.setState({
-      startDate: startDate,
-      endDate: endDate,
-    });
-  }
+    setStartDate(startDate);
+    setEndDate(endDate);
+  };
 
-  getDefaultDateSelect() {
+  const getDefaultDateSelect = () => {
     var currentDate = new Date();
     var currentDay = currentDate.getDate();
     var currentMonth = currentDate.getMonth();
@@ -345,63 +277,129 @@ class RegularTables extends React.Component<TableListProps, TableListState> {
     return "9/10/2020-9/15/2020";
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  const componentDidUpdate = (prevProps, prevState) => {
     if (
-      prevState.startDate === this.state.startDate &&
-      prevState.endDate === this.state.endDate &&
-      prevProps.sport === this.props.sport
+      prevState.startDate === StartDate &&
+      prevState.endDate === EndDate &&
+      prevProps.sport === sport
     )
       return;
 
-    if (prevProps.sport !== this.props.sport) {
-      if (this.props.sport !== "NFL") this.setState({ startDate: new Date() });
+    if (prevProps.sport !== sport) {
+      if (sport !== "NFL") setStartDate(new Date());
       else {
-        var dateRange = this.getDefaultDateSelect().split("-");
+        var dateRange = getDefaultDateSelect().split("-");
         var startDate = new Date();
         var endDate = new Date(dateRange[1]);
-        this.setState({ startDate: startDate, endDate: endDate });
+        setStartDate(startDate);
+        setEndDate(endDate);
       }
     }
 
-    if (prevState.startDate !== this.state.startDate) {
-      if (this.state.startDate.getDate() < new Date().getDate())
+    if (prevState.startDate !== StartDate) {
+      if (StartDate.getDate() < new Date().getDate())
         // Don't show games in the past
-        this.setState({ games: [] });
-      else if (this.props.sport !== "NFL")
-        this.fetchGamesOnDay(this.state.startDate);
+        setGames([]);
+      else if (sport !== "NFL")
+        fetchGamesOnDay(StartDate);
       else {
-        this.fetchGamesInRange(this.state.startDate, this.state.endDate);
+        fetchGamesInRange(StartDate, EndDate);
       }
     }
   }
 
-  async componentWillMount() {
-    if (this.props.sport === "NFL") {
-      var dateRange = this.getDefaultDateSelect().split("-");
-      var startDate = new Date();
-      var endDate = new Date(dateRange[1]);
-      this.fetchGamesInRange(startDate, endDate);
-    } else {
-      this.fetchGamesOnDay(new Date());
+  useEffect(() => {
+    if(sport === "NFL")
+    {
+      var dateRange = getDefaultDateSelect().split("-");
+      setEndDate(new Date(dateRange[1]))
     }
-    let refreshTime = await LastRefreshTimeService.getRefreshTime("GameLines");
-    this.setState({ lastRefreshTime: refreshTime });
-  }
+  },[]);
 
-  async fetchGamesInRange(startDate: Date, endDate: Date) {
+  useEffect(() => {
+    if (sport === "NFL") {
+      fetchGamesInRange(StartDate, EndDate);
+    } else {
+      fetchGamesOnDay(StartDate);
+    }
+  },[StartDate, EndDate]);
+
+  useEffect(() => {
+    const asyncWrapper = async() => {
+      let refreshTime = await LastRefreshTimeService.getRefreshTime("GameLines");
+      setLastRefreshTime(refreshTime);
+    };
+    
+    asyncWrapper();
+  },[Games]);
+
+  const fetchGamesInRange = async (startDate: Date, endDate: Date) => {
     endDate.setHours(23, 59, 59, 999);
     const games = await GamesService.getGamesByDateRange(
       startDate,
       endDate,
-      this.props.sport
+      sport
     );
-    this.setState({ games: games });
+    setGames(games);
   }
 
-  fetchGamesOnDay(date) {
+  const fetchGamesOnDay = (date) => {
     var endTime = new Date(date);
-    this.fetchGamesInRange(date, endTime);
+    fetchGamesInRange(date, endTime);
   }
-}
+
+    return (
+      <>
+        <div className="content">
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-primary" tag="h3">
+                {sport} Best Lines (PA)
+              </CardTitle>
+              <CardText>
+                <div className="text-muted">
+                  Last Refresh Time:{" "}
+                  {getFormattedDate(LastRefreshTime)}
+                </div>
+                <br />
+                <Row>
+                  <Col lg={2}>{getDateSelector()}</Col>
+                  <br />
+                  <Col lg={{ span: 2, offset: 6 }} s={true} xs={true}>
+                    <Form.Label>Select Sportsbooks</Form.Label>
+                    <br></br>
+                    <Select
+                      isSearchable={false}
+                      isMulti={true}
+                      options={allBooks}
+                      components={animatedComponents}
+                      onChange={handleSportsbookChange}
+                      placeholderButtonLabel="Sportsbooks..."
+                      value={checkedBooks}
+                    />
+                    {isLoggedIn && (
+                      <Button onClick={setUserDefaults}>
+                        Save Selections
+                      </Button>
+                    )}
+                  </Col>
+                </Row>
+              </CardText>
+            </CardHeader>
+            <CardBody>
+              {Games.length === 0
+                ? sport === "NFL"
+                  ? renderNoGamesWeekMessage()
+                  : renderNoGamesTodayMessage()
+                : checkedBooks == null ||
+                  checkedBooks.length === 0
+                ? renderNoBooksCheckedMessage()
+                : renderTable()}
+            </CardBody>
+          </Card>
+        </div>
+      </>
+    );
+};
 
 export default RegularTables;
