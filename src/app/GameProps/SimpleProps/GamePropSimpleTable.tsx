@@ -10,44 +10,38 @@ interface GamePropSimpleTableProps {
   searchTerm: string;
 }
 
-interface GamePropSimpleTableState {}
-
-class GamePropSimpleTable extends React.Component<
-  GamePropSimpleTableProps,
-  GamePropSimpleTableState
-> {
-  render() {
-    return (
-      <div>
-        <Table responsive>
-          <thead className="text-primary">
-            <tr className="d-flex">
-              <th className="col-6">{this.props.propType}</th>
-              {theadProps.map((head) => {
-                return <th className="col-3">{head}</th>;
-              })}
-            </tr>
-          </thead>
-          <tbody className="boosts-striped">
-            {this.renderGamePropRows(this.props.propsForPropType)}
-          </tbody>
-        </Table>
-      </div>
-    );
-  }
-  renderGamePropRows(props: GameProp[]) {
+const GamePropSimpleTable = ({propType, propsForPropType, searchTerm}: GamePropSimpleTableProps) => {
+  const renderGamePropRows = (props: GameProp[]) => {
     return props
       .sort(function (a, b) {
         return a.currentPayout - b.currentPayout;
       })
       .map((singleProp) => {
         if (
-          singleProp.playerName.toLowerCase().includes(this.props.searchTerm)
+          singleProp.playerName.toLowerCase().includes(searchTerm)
         ) {
           return <PropRow playerProp={singleProp} />;
         }
       });
   }
+
+  return (
+    <div>
+      <Table responsive>
+        <thead className="text-primary">
+          <tr className="d-flex">
+            <th className="col-6">{propType}</th>
+            {theadProps.map((head) => {
+              return <th className="col-3">{head}</th>;
+            })}
+          </tr>
+        </thead>
+        <tbody className="boosts-striped">
+          {renderGamePropRows(propsForPropType)}
+        </tbody>
+      </Table>
+    </div>
+  );
 }
 
 export default GamePropSimpleTable;
