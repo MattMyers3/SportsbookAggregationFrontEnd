@@ -76,7 +76,7 @@ const GameRow = ({key, sport, homeTeamId, awayTeamId, gameId, checkedBooks, game
       setCurrentGameLines(lines);
   };
 
-  const  getTeamNames = async () => {
+  const getTeamNames = async () => {
     var homeTeam = await TeamService.getTeam(homeTeamId);
     var awayTeam = await TeamService.getTeam(awayTeamId);
     setHomeTeamName(homeTeam.location + " " + homeTeam.mascot);

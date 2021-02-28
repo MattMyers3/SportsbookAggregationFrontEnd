@@ -8,7 +8,7 @@ export default class TeamService {
   }
   private static async getResponse(teamId: string) {
     var response = await fetch(apiUrl + "/teams/" + teamId);
-    if (response.status >= 400) {
+    if (response.status != 200) {
       throw "Could Not Fetch Team";
     }
     return response.json();
