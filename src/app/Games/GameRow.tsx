@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import GameLinesService from "common/services/GameLinesService";
 import { GameLines } from "common/models/GameLines";
 import TeamService from "common/services/TeamService";
@@ -13,9 +13,18 @@ interface GameRowProps {
   gameTime: string;
 }
 
-const GameRow = ({key, sport, homeTeamId, awayTeamId, gameId, checkedBooks, gameTime}: GameRowProps) => {
-
-  const [CurrentGameLines, setCurrentGameLines] = useState<GameLines>({} as GameLines);
+const GameRow = ({
+  key,
+  sport,
+  homeTeamId,
+  awayTeamId,
+  gameId,
+  checkedBooks,
+  gameTime,
+}: GameRowProps) => {
+  const [CurrentGameLines, setCurrentGameLines] = useState<GameLines>(
+    {} as GameLines
+  );
   const [HomeTeamName, setHomeTeamName] = useState("");
   const [AwayTeamName, setAwayTeamName] = useState("");
   const [IsLoaded, setIsLoaded] = useState(false);
@@ -31,7 +40,12 @@ const GameRow = ({key, sport, homeTeamId, awayTeamId, gameId, checkedBooks, game
     return new Date(dateString + "Z").toLocaleTimeString("en-us", options);
   };
 
-  const getDisplayCell = (val: number, odds : number | null, site : string, appendedLetters : string | null) => {
+  const getDisplayCell = (
+    val: number,
+    odds: number | null,
+    site: string,
+    appendedLetters: string | null
+  ) => {
     if (val == null)
       return (
         <td>
@@ -59,21 +73,19 @@ const GameRow = ({key, sport, homeTeamId, awayTeamId, gameId, checkedBooks, game
     );
   };
 
-  const getDisplayValue = (val : number) => {
+  const getDisplayValue = (val: number) => {
     if (val > 0) return "+" + val;
-      return val;
-  }
+    return val;
+  };
 
-  const getOddsDisplayValue = (val : number) => {
+  const getOddsDisplayValue = (val: number) => {
     return "(" + getDisplayValue(val) + ")";
-  }
+  };
 
   const getGameLines = async () => {
-    var lines = await GameLinesService.getLines(
-      gameId,
-      checkedBooks);
+    var lines = await GameLinesService.getLines(gameId, checkedBooks);
 
-      setCurrentGameLines(lines);
+    setCurrentGameLines(lines);
   };
 
   const getTeamNames = async () => {
@@ -81,16 +93,16 @@ const GameRow = ({key, sport, homeTeamId, awayTeamId, gameId, checkedBooks, game
     var awayTeam = await TeamService.getTeam(awayTeamId);
     setHomeTeamName(homeTeam.location + " " + homeTeam.mascot);
     setAwayTeamName(awayTeam.location + " " + awayTeam.mascot);
-  }
+  };
 
   useEffect(() => {
-   const asyncWrapper = async () => {
-     await getGameLines();
-     await getTeamNames();
-   }
+    const asyncWrapper = async () => {
+      await getGameLines();
+      await getTeamNames();
+    };
 
-   asyncWrapper();
-   setIsLoaded(true);
+    asyncWrapper();
+    setIsLoaded(true);
   }, []);
 
   useEffect(() => {
@@ -99,9 +111,18 @@ const GameRow = ({key, sport, homeTeamId, awayTeamId, gameId, checkedBooks, game
 
   if (!IsLoaded) {
     return <React.Fragment></React.Fragment>;
-  }   
+  } else if (
+    !CurrentGameLines.awayMoneyLineSite &&
+    !CurrentGameLines.awaySpreadSite &&
+    !CurrentGameLines.underSite &&
+    !CurrentGameLines.homeMoneyLineSite &&
+    !CurrentGameLines.homeSpreadSite &&
+    !CurrentGameLines.overSite
+  ) {
+    return <React.Fragment></React.Fragment>;
+  }
 
- return (
+  return (
     <React.Fragment>
       <tr>
         <th scope="row">{AwayTeamName}</th>
@@ -134,16 +155,7 @@ const GameRow = ({key, sport, homeTeamId, awayTeamId, gameId, checkedBooks, game
           <br></br>
           <small>
             <b>
-              <a
-                href={
-                  "/sports/" +
-                  sport +
-                  "/games/" +
-                  gameId
-                }
-              >
-                More Wagers
-              </a>
+              <a href={"/sports/" + sport + "/games/" + gameId}>More Wagers</a>
             </b>
           </small>
         </th>
@@ -167,6 +179,6 @@ const GameRow = ({key, sport, homeTeamId, awayTeamId, gameId, checkedBooks, game
         )}
       </tr>
     </React.Fragment>
- );
-}
+  );
+};
 export default GameRow;
