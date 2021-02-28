@@ -27,23 +27,24 @@ import "assets/scss/now-ui-dashboard.scss?v1.4.0";
 import "assets/css/demo.css";
 
 import AdminLayout from "common/components/Layout/Admin";
+import { config } from 'common/variables/constants';
 
 const hist = createBrowserHistory();
 
 ReactGA.initialize("UA-178359906-1");
 ReactGA.pageview(window.location.pathname + window.location.search);
 
-const config = {
+const oktaConfig = {
   clientId: "0oa19xhlo9NYrl4tP5d6",
   issuer: "https://dev-5862712.okta.com/oauth2/default",
-  redirectUri: "https://www.oddslibrary.com/login/callback",
+  redirectUri: config.redirectUrl,
   scopes: ["openid", "profile", "email"],
   pkce: true,
 };
 
 ReactDOM.render(
   <Router history={hist}>
-    <Security {...config}>
+    <Security {...oktaConfig}>
       <Switch>
         <Route
           path="/sports/:sport/games/:gameId"
