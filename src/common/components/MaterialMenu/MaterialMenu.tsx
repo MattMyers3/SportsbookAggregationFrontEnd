@@ -49,7 +49,7 @@ const MaterialMenu = ({ children, history }: MaterialMenuProps) => {
               open && classes.menuButtonHidden
             )}
           >
-            <MenuIcon />
+            <MenuIcon className={classes.blackText} />
           </IconButton>
           <Typography
             component="h1"

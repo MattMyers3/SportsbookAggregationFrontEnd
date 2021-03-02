@@ -41,6 +41,7 @@ const useStylesMenu = makeStyles((theme) => ({
   },
   title: {
     flexGrow: 1,
+    color: "black",
   },
   drawerPaper: {
     borderRight: "none",
