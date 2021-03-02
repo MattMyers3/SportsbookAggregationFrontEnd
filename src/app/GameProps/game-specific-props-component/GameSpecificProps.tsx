@@ -1,18 +1,4 @@
 import React, { useEffect, useState } from "react";
-
-// reactstrap components
-import {
-  Card,
-  CardBody,
-  CardHeader,
-  CardTitle,
-  Row,
-  Col,
-  CardText,
-  FormGroup,
-  Input,
-} from "reactstrap";
-
 import "react-datepicker/dist/react-datepicker.css";
 import { Form, Jumbotron } from "react-bootstrap";
 import Select from "react-select";
@@ -24,6 +10,17 @@ import { Book } from "common/models/Book";
 import TeamService from "common/services/TeamService";
 import GamePropsService from "common/services/GamePropsService";
 import GamesService from "common/services/GamesService";
+import useStyles from "./GameSpecificPropsStyles";
+import {
+  InputAdornment,
+  TextField,
+  Typography,
+  Grid,
+  Card,
+  CardContent,
+  Container,
+} from "@material-ui/core";
+import { Search } from "@material-ui/icons";
 
 const animatedComponents = makeAnimated();
 
@@ -40,6 +37,7 @@ const GameSpecificProps = ({
   checkedBooks,
   match,
 }: GameSpecificPropsProps) => {
+  const classes = useStyles();
   const [HomeTeamName, setHomeTeamName] = useState("");
   const [HomeTeamId, setHomeTeamId] = useState("");
   const [AwayTeamName, setAwayTeamName] = useState("");
@@ -156,49 +154,64 @@ const GameSpecificProps = ({
   };
 
   return (
-    <>
-      <div className="content">
+    <div className={classes.root}>
+      <Container>
+        <Typography className={classes.heading}>
+          {AwayTeamName} @ {HomeTeamName}
+        </Typography>
+        <Typography className={classes.subheading}>Player Props</Typography>
         <Card>
-          <CardHeader>
-            <CardTitle className="text-primary" tag="h3">
-              {AwayTeamName} @ {HomeTeamName}
-            </CardTitle>
-            Player Props
-            <br />
-            <br />
-            <CardText>
-              <Row>
-                <Col lg={true} s={true} xs={true}>
-                  <Form.Label>Select Sportsbooks</Form.Label>
-                  <br></br>
-                  <Select
-                    isSearchable={false}
-                    isMulti={true}
-                    options={allBooks}
-                    components={animatedComponents}
-                    onChange={handleSportsbookChange}
-                    placeholderButtonLabel="Sportsbooks..."
-                    value={checkedBooks}
-                  />
-                </Col>
-              </Row>
-            </CardText>
-            <FormGroup>
-              <Input
-                onChange={handleSearch}
-                type="search"
-                placeholder="Player Search"
-              ></Input>
-            </FormGroup>
-          </CardHeader>
-          <CardBody>
+          <CardContent>
+            <Grid
+              container
+              spacing={2}
+              justify="space-between"
+              alignItems="flex-end"
+              direction="row-reverse"
+            >
+              <Grid item xs={12} md={8}>
+                <Typography className={classes.selectSportsBook}>
+                  Select Sportsbooks
+                </Typography>
+                <br></br>
+                <Select
+                  isSearchable={false}
+                  isMulti={true}
+                  options={allBooks}
+                  components={animatedComponents}
+                  onChange={handleSportsbookChange}
+                  placeholderButtonLabel="Sportsbooks..."
+                  value={checkedBooks}
+                />
+              </Grid>
+              <Grid item xs={12} md={4}>
+                <TextField
+                  onChange={handleSearch}
+                  type="search"
+                  label="Player Search"
+                  variant="outlined"
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment
+                        position="end"
+                        className={classes.iconColor}
+                      >
+                        <Search />
+                      </InputAdornment>
+                    ),
+                  }}
+                ></TextField>
+              </Grid>
+            </Grid>
+          </CardContent>
+          <CardContent>
             {PropTypes == null || PropTypes.length === 0
               ? renderErrorMessage()
               : PropTypes.map((propType) => renderTable(propType))}
-          </CardBody>
+          </CardContent>
         </Card>
-      </div>
-    </>
+      </Container>
+    </div>
   );
 };
 export default GameSpecificProps;
