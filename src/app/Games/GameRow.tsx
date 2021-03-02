@@ -2,6 +2,29 @@ import React, { useEffect, useState } from "react";
 import GameLinesService from "common/services/GameLinesService";
 import { GameLines } from "common/models/GameLines";
 import TeamService from "common/services/TeamService";
+import { TableRow, TableCell, withStyles, createStyles, makeStyles } from "@material-ui/core";
+import { SlowMotionVideoOutlined } from "@material-ui/icons";
+
+const StyledTableRow = withStyles((theme) =>
+  createStyles({
+    root: {
+      '&:nth-of-type(4n+1)': {
+        backgroundColor: theme.palette.action.hover,
+      },
+      '&:nth-of-type(4n+2)': {
+        backgroundColor: theme.palette.action.hover,
+      },
+      border: 'solid 1px #d8d8d8',
+    },
+  }),
+)(TableRow);
+
+const StyledTableCell = withStyles((theme) =>
+  createStyles({
+    root: {
+    },
+  }),
+)(TableCell);
 
 interface GameRowProps {
   key: string;
@@ -48,28 +71,28 @@ const GameRow = ({
   ) => {
     if (val == null)
       return (
-        <td>
+        <StyledTableCell>
           <b>_</b>
-        </td>
+        </StyledTableCell>
       );
     if (odds == null)
       //Moneyline
       return (
-        <td>
+        <StyledTableCell>
           <b>{getDisplayValue(val)}</b>
           <br />
           {site}
-        </td>
+        </StyledTableCell>
       );
 
     return (
-      <td>
+      <StyledTableCell>
         {appendedLetters}
         <b>{appendedLetters == null ? getDisplayValue(val) : val}</b>
         <sup>{getOddsDisplayValue(odds)}</sup>
         <br />
         {site}
-      </td>
+      </StyledTableCell>
     );
   };
 
@@ -124,7 +147,7 @@ const GameRow = ({
 
   return (
     <React.Fragment>
-      <tr>
+      <StyledTableRow>
         <th scope="row">{AwayTeamName}</th>
         {getDisplayCell(
           CurrentGameLines.currentAwaySpread,
@@ -144,8 +167,8 @@ const GameRow = ({
           CurrentGameLines.overSite,
           "o"
         )}
-      </tr>
-      <tr>
+      </StyledTableRow>
+      <StyledTableRow>
         <th scope="row">
           {HomeTeamName}
           <br></br>
@@ -177,7 +200,7 @@ const GameRow = ({
           CurrentGameLines.underSite,
           "u"
         )}
-      </tr>
+      </StyledTableRow>
     </React.Fragment>
   );
 };

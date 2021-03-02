@@ -23,13 +23,12 @@ import {
   CardBody,
   CardHeader,
   CardTitle,
-  Table,
   Row,
   Col,
   CardText,
 } from "reactstrap";
 
-import { thead } from "common/variables/general";
+import { GamesTableHeader } from "common/variables/general";
 
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -42,6 +41,14 @@ import { Game } from "common/models/Game";
 import { Book } from "common/models/Book";
 import LastRefreshTimeService from "common/services/LastRefreshTimeService";
 import GamesService from "common/services/GamesService";
+import { Table, TableContainer, TableHead, TableRow, TableCell, TableBody, withStyles, createStyles, makeStyles } from "@material-ui/core";
+
+const StyledTable = withStyles((theme) =>
+  createStyles({
+    root: {
+    },
+  }),
+)(Table);
 
 const animatedComponents = makeAnimated();
 
@@ -119,22 +126,18 @@ const RegularTables = ({sport, allBooks, checkedBooks, handleSportsbookChange, i
 
   const renderTable = () => {
     return (
-      <Table responsive>
-        <thead className="text-primary">
-          <tr>
-            {thead.map((prop, key) => {
-              if (key === thead.length - 1)
-                return (
-                  <th key={key} className="text-left">
-                    {prop}
-                  </th>
-                );
-              return <th key={key}>{prop}</th>;
-            })}
-          </tr>
-        </thead>
-        <tbody className="games-striped">{renderGameRows()}</tbody>
-      </Table>
+      <TableContainer>
+        <StyledTable>
+          <TableHead className="text-primary">
+            <TableRow>
+              {GamesTableHeader.map((prop, key) => {
+                return <TableCell key={key}>{prop}</TableCell>
+              })}
+            </TableRow>
+          </TableHead>
+          <TableBody>{renderGameRows()}</TableBody>
+        </StyledTable>
+      </TableContainer>
     );
   }
 
