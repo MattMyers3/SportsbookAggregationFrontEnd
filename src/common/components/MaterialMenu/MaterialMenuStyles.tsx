@@ -43,7 +43,8 @@ const useStylesMenu = makeStyles((theme) => ({
     flexGrow: 1,
   },
   drawerPaper: {
-    backgroundColor: theme.palette.primary.main,
+    borderRight: "none",
+    background: "linear-gradient(225deg, #39B54A, #006838)",
     position: "relative",
     whiteSpace: "nowrap",
     width: drawerWidth,
@@ -76,9 +77,9 @@ const useStylesMenu = makeStyles((theme) => ({
     color: "#000000",
   },
   optionIsSelected: {
-    backgroundColor: theme.palette.tertiary.main,
+    background: "linear-gradient(224deg, #FFD047, #FFB347)",
     "&:hover": {
-      backgroundColor: theme.palette.tertiary.main,
+      background: "linear-gradient(224deg, #FFD047, #FFB347);",
     },
   },
 }));
