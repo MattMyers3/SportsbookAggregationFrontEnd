@@ -21,6 +21,7 @@ import {
   Container,
 } from "@material-ui/core";
 import { Search } from "@material-ui/icons";
+import SportsbookSelector from "common/components/SportsbookSelector/SportsbookSelector";
 
 const animatedComponents = makeAnimated();
 
@@ -170,19 +171,11 @@ const GameSpecificProps = ({
               direction="row-reverse"
             >
               <Grid item xs={12} md={8}>
-                <Typography className={classes.selectSportsBook}>
-                  Select Sportsbooks
-                </Typography>
-                <br></br>
-                <Select
-                  isSearchable={false}
-                  isMulti={true}
-                  options={allBooks}
-                  components={animatedComponents}
-                  onChange={handleSportsbookChange}
-                  placeholderButtonLabel="Sportsbooks..."
-                  value={checkedBooks}
-                />
+                <SportsbookSelector
+                  allBooks={allBooks}
+                  checkedBooks={checkedBooks}
+                  handleSportsBookChange={handleSportsbookChange}
+                ></SportsbookSelector>
               </Grid>
               <Grid item xs={12} md={4}>
                 <TextField
