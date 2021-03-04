@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
-import { Form, Jumbotron } from "react-bootstrap";
-import Select from "react-select";
+import { Jumbotron } from "react-bootstrap";
 import makeAnimated from "react-select/animated";
 import GamePropSimpleTable from "app/GameProps/SimpleProps/GamePropSimpleTable";
 import GamePropTableWithOptions from "app/GameProps/OverUnderProps/GamePropTableWithOptions";
@@ -12,18 +11,14 @@ import GamePropsService from "common/services/GamePropsService";
 import GamesService from "common/services/GamesService";
 import useStyles from "./GameSpecificPropsStyles";
 import {
-  InputAdornment,
-  TextField,
   Typography,
   Grid,
   Card,
   CardContent,
   Container,
 } from "@material-ui/core";
-import { Search } from "@material-ui/icons";
 import SportsbookSelector from "common/components/SportsbookSelector/SportsbookSelector";
-
-const animatedComponents = makeAnimated();
+import SearchBox from "common/components/SearchBox/SearchBox";
 
 interface GameSpecificPropsProps {
   allBooks: Book[];
@@ -122,8 +117,8 @@ const GameSpecificProps = ({
       );
   };
 
-  const handleSearch = (event: any) => {
-    setSearchTerm(event.target.value.toLowerCase());
+  const handleSearch = (value: string) => {
+    setSearchTerm(value.toLowerCase());
   };
 
   const renderTable = (propType) => {
@@ -167,8 +162,8 @@ const GameSpecificProps = ({
               container
               spacing={2}
               justify="space-between"
-              alignItems="flex-end"
-              direction="row-reverse"
+              alignItems="flex-start"
+              direction="row"
             >
               <Grid item xs={12} md={8}>
                 <SportsbookSelector
@@ -178,22 +173,10 @@ const GameSpecificProps = ({
                 ></SportsbookSelector>
               </Grid>
               <Grid item xs={12} md={4}>
-                <TextField
-                  onChange={handleSearch}
-                  type="search"
-                  label="Player Search"
-                  variant="outlined"
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment
-                        position="end"
-                        className={classes.iconColor}
-                      >
-                        <Search />
-                      </InputAdornment>
-                    ),
-                  }}
-                ></TextField>
+                <SearchBox
+                  handleSearch={handleSearch}
+                  placeholder={"Search player"}
+                ></SearchBox>
               </Grid>
             </Grid>
           </CardContent>

@@ -12,6 +12,7 @@ import {
   Grid,
 } from "@material-ui/core";
 import { Book } from "common/models/Book";
+import { ExpandMore } from "@material-ui/icons";
 
 const BootstrapInput = withStyles((theme) =>
   createStyles({
@@ -24,8 +25,9 @@ const BootstrapInput = withStyles((theme) =>
       borderRadius: 4,
       position: "relative",
       backgroundColor: theme.palette.background.paper,
-      border: "1px solid #ced4da",
-      fontSize: 16,
+      border: "1px solid #e4e4e4",
+      fontSize: "1rem",
+      color: "#ababab",
       padding: "10px 26px 10px 12px",
       boxShadow: " 0px 2px 4px rgba(0,0,0,0.05)",
       minWidth: "100px",
@@ -50,6 +52,9 @@ const useStyles = makeStyles((theme) =>
         flexWrap: "nowrap",
         paddingBottom: "0.5rem",
       },
+    },
+    dropdownIcon: {
+      color: theme.palette.primary.dark,
     },
   })
 );
@@ -85,9 +90,9 @@ const SportsBookSelector = ({
 
   const getPlaceHolderText = () => {
     if (allBooks.length === checkedBooks.length) {
-      return <em>All Sportsbooks Selected</em>;
+      return <span>All Sportsbooks Selected</span>;
     } else {
-      return <em>Select a Sportsbook</em>;
+      return <span>Select a Sportsbook</span>;
     }
   };
 
@@ -107,22 +112,28 @@ const SportsBookSelector = ({
     });
   };
 
+  const coloredExpandMore = (props) => {
+    return (
+      <ExpandMore
+        className={props.className + " " + classes.dropdownIcon}
+      ></ExpandMore>
+    );
+  };
+
   return (
     <div>
       <Grid container direction="column" alignItems="flex-start">
         <Grid item>
           <FormControl className={classes.margin}>
-            <InputLabel id="demo-customized-select-label">
-              Add a Sportsbook
-            </InputLabel>
+            <InputLabel>Add a Sportsbook</InputLabel>
             <Select
-              labelId="demo-customized-select-label"
               id="demo-customized-select"
               onChange={handleChange}
               input={<BootstrapInput />}
-              value={"Add a SportsBook"}
+              value={"1"}
+              IconComponent={coloredExpandMore}
             >
-              <MenuItem disabled={true} value="Add a SportsBook">
+              <MenuItem disabled={true} value="1">
                 {getPlaceHolderText()}
               </MenuItem>
               {generateOptions()}
