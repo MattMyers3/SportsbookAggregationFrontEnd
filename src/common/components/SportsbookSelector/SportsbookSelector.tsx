@@ -44,6 +44,13 @@ const useStyles = makeStyles((theme) =>
     margin: {
       marginBottom: theme.spacing(1),
     },
+    chipOrganization: {
+      [theme.breakpoints.down("sm")]: {
+        overflow: "auto",
+        flexWrap: "nowrap",
+        paddingBottom: "0.5rem",
+      },
+    },
   })
 );
 
@@ -122,7 +129,13 @@ const SportsBookSelector = ({
             </Select>
           </FormControl>
         </Grid>
-        <Grid container item direction="row" spacing={1}>
+        <Grid
+          container
+          item
+          direction="row"
+          spacing={1}
+          className={classes.chipOrganization}
+        >
           {checkedBooks.map((book) => {
             return (
               <Grid item>
