@@ -46,9 +46,18 @@ import { Table, TableContainer, TableHead, TableRow, TableCell, TableBody, withS
 const StyledTable = withStyles((theme) =>
   createStyles({
     root: {
+      borderCollapse: 'separate',
     },
   }),
 )(Table);
+
+const StyledTableCellHeader = withStyles((theme) =>
+  createStyles({
+    root: {
+      
+    },
+  }),
+)(TableCell);
 
 const animatedComponents = makeAnimated();
 
@@ -77,6 +86,7 @@ const RegularTables = ({sport, allBooks, checkedBooks, handleSportsbookChange, i
     });
     return sortGames.map((game) => {
       return (
+        <React.Fragment>
         <GameRow
           key={game.gameId}
           sport={sport}
@@ -90,6 +100,8 @@ const RegularTables = ({sport, allBooks, checkedBooks, handleSportsbookChange, i
           }
           gameTime={game.timeStamp}
         />
+        <TableRow><StyledTableCellHeader></StyledTableCellHeader></TableRow>
+        </React.Fragment>
       );
     });
   };
@@ -131,7 +143,7 @@ const RegularTables = ({sport, allBooks, checkedBooks, handleSportsbookChange, i
           <TableHead className="text-primary">
             <TableRow>
               {GamesTableHeader.map((prop, key) => {
-                return <TableCell key={key}>{prop}</TableCell>
+                return <TableCell align='center' key={key}>{prop}</TableCell>
               })}
             </TableRow>
           </TableHead>
@@ -278,37 +290,6 @@ const RegularTables = ({sport, allBooks, checkedBooks, handleSportsbookChange, i
       }
     }
     return "9/10/2020-9/15/2020";
-  }
-
-  const componentDidUpdate = (prevProps, prevState) => {
-    if (
-      prevState.startDate === StartDate &&
-      prevState.endDate === EndDate &&
-      prevProps.sport === sport
-    )
-      return;
-
-    if (prevProps.sport !== sport) {
-      if (sport !== "NFL") setStartDate(new Date());
-      else {
-        var dateRange = getDefaultDateSelect().split("-");
-        var startDate = new Date();
-        var endDate = new Date(dateRange[1]);
-        setStartDate(startDate);
-        setEndDate(endDate);
-      }
-    }
-
-    if (prevState.startDate !== StartDate) {
-      if (StartDate.getDate() < new Date().getDate())
-        // Don't show games in the past
-        setGames([]);
-      else if (sport !== "NFL")
-        fetchGamesOnDay(StartDate);
-      else {
-        fetchGamesInRange(StartDate, EndDate);
-      }
-    }
   }
 
   useEffect(() => {

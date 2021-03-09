@@ -2,29 +2,42 @@ import React, { useEffect, useState } from "react";
 import GameLinesService from "common/services/GameLinesService";
 import { GameLines } from "common/models/GameLines";
 import TeamService from "common/services/TeamService";
-import { TableRow, TableCell, withStyles, createStyles, makeStyles } from "@material-ui/core";
-import { SlowMotionVideoOutlined } from "@material-ui/icons";
+import { TableRow, TableCell, withStyles, createStyles, makeStyles, Typography } from "@material-ui/core";
 
 const StyledTableRow = withStyles((theme) =>
   createStyles({
     root: {
       '&:nth-of-type(4n+1)': {
-        backgroundColor: theme.palette.action.hover,
+        //backgroundColor: theme.palette.action.hover,
       },
       '&:nth-of-type(4n+2)': {
-        backgroundColor: theme.palette.action.hover,
-      },
-      border: 'solid 1px #d8d8d8',
+        //backgroundColor: theme.palette.action.hover,
+      }
     },
   }),
 )(TableRow);
 
-const StyledTableCell = withStyles((theme) =>
+const StyledTableCellData = withStyles((theme) =>
   createStyles({
     root: {
+      border: 'solid 1px #d8d8d8',
+      padding: '5px 7px',
+      textAlign: 'center'
     },
   }),
 )(TableCell);
+
+const useStyles = makeStyles((theme) => ({
+  oddsDisplay: {
+    whiteSpace: 'nowrap',
+    color: '#20b33c',
+    fontWeight: 'bold',
+  },
+  betValueDisplay: {
+    fontWeight: 'bold',
+    paddingRight: '5px'
+  },
+}));
 
 interface GameRowProps {
   key: string;
@@ -45,6 +58,8 @@ const GameRow = ({
   checkedBooks,
   gameTime,
 }: GameRowProps) => {
+  const classes = useStyles();
+
   const [CurrentGameLines, setCurrentGameLines] = useState<GameLines>(
     {} as GameLines
   );
@@ -71,38 +86,33 @@ const GameRow = ({
   ) => {
     if (val == null)
       return (
-        <StyledTableCell>
+        <StyledTableCellData>
           <b>_</b>
-        </StyledTableCell>
+        </StyledTableCellData>
       );
     if (odds == null)
       //Moneyline
       return (
-        <StyledTableCell>
-          <b>{getDisplayValue(val)}</b>
-          <br />
+        <StyledTableCellData>
+          <Typography className={classes.oddsDisplay}>{getDisplayValue(val)}</Typography>
           {site}
-        </StyledTableCell>
+        </StyledTableCellData>
       );
 
     return (
-      <StyledTableCell>
+      <StyledTableCellData>
         {appendedLetters}
-        <b>{appendedLetters == null ? getDisplayValue(val) : val}</b>
-        <sup>{getOddsDisplayValue(odds)}</sup>
+        <Typography style={{display: 'inline-block'}} className={classes.betValueDisplay}>{appendedLetters == null ? getDisplayValue(val) : val}</Typography>
+        <Typography style={{display: 'inline-block'}} className={classes.oddsDisplay}>{getDisplayValue(odds)}</Typography>
         <br />
         {site}
-      </StyledTableCell>
+      </StyledTableCellData>
     );
   };
 
   const getDisplayValue = (val: number) => {
     if (val > 0) return "+" + val;
     return val;
-  };
-
-  const getOddsDisplayValue = (val: number) => {
-    return "(" + getDisplayValue(val) + ")";
   };
 
   const getGameLines = async () => {
@@ -148,7 +158,7 @@ const GameRow = ({
   return (
     <React.Fragment>
       <StyledTableRow>
-        <th scope="row">{AwayTeamName}</th>
+        <StyledTableCellData component="th" scope="row">{AwayTeamName}</StyledTableCellData>
         {getDisplayCell(
           CurrentGameLines.currentAwaySpread,
           CurrentGameLines.currentAwaySpreadPayout,
@@ -169,19 +179,13 @@ const GameRow = ({
         )}
       </StyledTableRow>
       <StyledTableRow>
-        <th scope="row">
+        <StyledTableCellData component="th" scope="row">
           {HomeTeamName}
           <br></br>
-          <small style={{ margin: "0px" }} className="text-muted">
+          <small className="text-muted">
             {getFormattedDate(gameTime)}
           </small>
-          <br></br>
-          <small>
-            <b>
-              <a href={"/sports/" + sport + "/games/" + gameId}>More Wagers</a>
-            </b>
-          </small>
-        </th>
+        </StyledTableCellData>
         {getDisplayCell(
           CurrentGameLines.currentHomeSpread,
           CurrentGameLines.currentHomeSpreadPayout,
