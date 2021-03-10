@@ -15,7 +15,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 
 import {
   Button,
@@ -29,7 +29,7 @@ import {
   CardText,
 } from "reactstrap";
 
-import { thead } from "common/variables/general";
+import { thead } from "common/variables/headerNames";
 
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -54,8 +54,14 @@ interface TableListProps {
   setUserDefaults: Function;
 }
 
-const RegularTables = ({sport, allBooks, checkedBooks, handleSportsbookChange, isLoggedIn, setUserDefaults} : TableListProps) => {
-
+const RegularTables = ({
+  sport,
+  allBooks,
+  checkedBooks,
+  handleSportsbookChange,
+  isLoggedIn,
+  setUserDefaults,
+}: TableListProps) => {
   const [EndDate, setEndDate] = useState<Date>(new Date());
   const [StartDate, setStartDate] = useState<Date>(new Date());
   const [LastRefreshTime, setLastRefreshTime] = useState<Date>(new Date());
@@ -77,9 +83,7 @@ const RegularTables = ({sport, allBooks, checkedBooks, handleSportsbookChange, i
           awayTeamId={game.awayTeamId}
           gameId={game.gameId}
           checkedBooks={
-            checkedBooks != null
-              ? checkedBooks.map((book) => book.value)
-              : []
+            checkedBooks != null ? checkedBooks.map((book) => book.value) : []
           }
           gameTime={game.timeStamp}
         />
@@ -136,7 +140,7 @@ const RegularTables = ({sport, allBooks, checkedBooks, handleSportsbookChange, i
         <tbody className="games-striped">{renderGameRows()}</tbody>
       </Table>
     );
-  }
+  };
 
   const getFormattedDate = (dateString) => {
     let options = {
@@ -172,14 +176,11 @@ const RegularTables = ({sport, allBooks, checkedBooks, handleSportsbookChange, i
         <div>
           <Form.Label>Select Date</Form.Label>
           <br></br>
-          <DatePicker
-            selected={StartDate}
-            onChange={handleDateChange}
-          />
+          <DatePicker selected={StartDate} onChange={handleDateChange} />
         </div>
       );
     }
-  }
+  };
 
   const handleDateChange = (date) => {
     if (date.getDate() > new Date().getDate()) date.setHours(0, 0, 0);
@@ -275,7 +276,7 @@ const RegularTables = ({sport, allBooks, checkedBooks, handleSportsbookChange, i
       }
     }
     return "9/10/2020-9/15/2020";
-  }
+  };
 
   const componentDidUpdate = (prevProps, prevState) => {
     if (
@@ -300,21 +301,19 @@ const RegularTables = ({sport, allBooks, checkedBooks, handleSportsbookChange, i
       if (StartDate.getDate() < new Date().getDate())
         // Don't show games in the past
         setGames([]);
-      else if (sport !== "NFL")
-        fetchGamesOnDay(StartDate);
+      else if (sport !== "NFL") fetchGamesOnDay(StartDate);
       else {
         fetchGamesInRange(StartDate, EndDate);
       }
     }
-  }
+  };
 
   useEffect(() => {
-    if(sport === "NFL")
-    {
+    if (sport === "NFL") {
       var dateRange = getDefaultDateSelect().split("-");
-      setEndDate(new Date(dateRange[1]))
+      setEndDate(new Date(dateRange[1]));
     }
-  },[]);
+  }, []);
 
   useEffect(() => {
     if (sport === "NFL") {
@@ -322,16 +321,18 @@ const RegularTables = ({sport, allBooks, checkedBooks, handleSportsbookChange, i
     } else {
       fetchGamesOnDay(StartDate);
     }
-  },[StartDate, EndDate]);
+  }, [StartDate, EndDate]);
 
   useEffect(() => {
-    const asyncWrapper = async() => {
-      let refreshTime = await LastRefreshTimeService.getRefreshTime("GameLines");
+    const asyncWrapper = async () => {
+      let refreshTime = await LastRefreshTimeService.getRefreshTime(
+        "GameLines"
+      );
       setLastRefreshTime(refreshTime);
     };
-    
+
     asyncWrapper();
-  },[Games]);
+  }, [Games]);
 
   const fetchGamesInRange = async (startDate: Date, endDate: Date) => {
     endDate.setHours(23, 59, 59, 999);
@@ -341,65 +342,61 @@ const RegularTables = ({sport, allBooks, checkedBooks, handleSportsbookChange, i
       sport
     );
     setGames(games);
-  }
+  };
 
   const fetchGamesOnDay = (date) => {
     var endTime = new Date(date);
     fetchGamesInRange(date, endTime);
-  }
+  };
 
-    return (
-      <>
-        <div className="content">
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-primary" tag="h3">
-                {sport} Best Lines (PA)
-              </CardTitle>
-              <CardText>
-                <div className="text-muted">
-                  Last Refresh Time:{" "}
-                  {getFormattedDate(LastRefreshTime)}
-                </div>
+  return (
+    <>
+      <div className="content">
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-primary" tag="h3">
+              {sport} Best Lines (PA)
+            </CardTitle>
+            <CardText>
+              <div className="text-muted">
+                Last Refresh Time: {getFormattedDate(LastRefreshTime)}
+              </div>
+              <br />
+              <Row>
+                <Col lg={2}>{getDateSelector()}</Col>
                 <br />
-                <Row>
-                  <Col lg={2}>{getDateSelector()}</Col>
-                  <br />
-                  <Col lg={{ span: 2, offset: 6 }} s={true} xs={true}>
-                    <Form.Label>Select Sportsbooks</Form.Label>
-                    <br></br>
-                    <Select
-                      isSearchable={false}
-                      isMulti={true}
-                      options={allBooks}
-                      components={animatedComponents}
-                      onChange={handleSportsbookChange}
-                      placeholderButtonLabel="Sportsbooks..."
-                      value={checkedBooks}
-                    />
-                    {isLoggedIn && (
-                      <Button onClick={setUserDefaults}>
-                        Save Selections
-                      </Button>
-                    )}
-                  </Col>
-                </Row>
-              </CardText>
-            </CardHeader>
-            <CardBody>
-              {Games.length === 0
-                ? sport === "NFL"
-                  ? renderNoGamesWeekMessage()
-                  : renderNoGamesTodayMessage()
-                : checkedBooks == null ||
-                  checkedBooks.length === 0
-                ? renderNoBooksCheckedMessage()
-                : renderTable()}
-            </CardBody>
-          </Card>
-        </div>
-      </>
-    );
+                <Col lg={{ span: 2, offset: 6 }} s={true} xs={true}>
+                  <Form.Label>Select Sportsbooks</Form.Label>
+                  <br></br>
+                  <Select
+                    isSearchable={false}
+                    isMulti={true}
+                    options={allBooks}
+                    components={animatedComponents}
+                    onChange={handleSportsbookChange}
+                    placeholderButtonLabel="Sportsbooks..."
+                    value={checkedBooks}
+                  />
+                  {isLoggedIn && (
+                    <Button onClick={setUserDefaults}>Save Selections</Button>
+                  )}
+                </Col>
+              </Row>
+            </CardText>
+          </CardHeader>
+          <CardBody>
+            {Games.length === 0
+              ? sport === "NFL"
+                ? renderNoGamesWeekMessage()
+                : renderNoGamesTodayMessage()
+              : checkedBooks == null || checkedBooks.length === 0
+              ? renderNoBooksCheckedMessage()
+              : renderTable()}
+          </CardBody>
+        </Card>
+      </div>
+    </>
+  );
 };
 
 export default RegularTables;

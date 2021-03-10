@@ -1,43 +1,83 @@
-import React, {useEffect, useState} from "react";
 import {
   Card,
-  CardBody,
-  CardHeader,
-  CardTitle,
-  Table,
-  Row,
-  Col,
-  CardText,
-} from "reactstrap";
-import { theadOddsBoosts } from "common/variables/general";
-import "react-datepicker/dist/react-datepicker.css";
+  CardContent,
+  Container,
+  Grid,
+  makeStyles,
+  Typography,
+  TableContainer,
+} from "@material-ui/core";
 import BoostRow from "app/OddsBoosts/BoostRow";
-import { Form, Jumbotron } from "react-bootstrap";
-import Select from "react-select";
-import makeAnimated from "react-select/animated";
+import SportsbookSelector from "common/components/SportsbookSelector/SportsbookSelector";
+import AccordionTable from "common/components/Tables/AccordionTable/AccordionTable";
+import { LoadingStatus } from "common/enums/loadingStatus";
+import { Book } from "common/models/Book";
 import { OddsBoost } from "common/models/OddsBoost";
 import LastRefreshTimeService from "common/services/LastRefreshTimeService";
 import OddsBoostService from "common/services/OddsBoostService";
+import { theadOddsBoosts } from "common/variables/headerNames";
+import React, { useEffect, useState } from "react";
+import { Jumbotron } from "react-bootstrap";
+import "react-datepicker/dist/react-datepicker.css";
 
-const animatedComponents = makeAnimated();
-
+const useStyles = makeStyles((theme) => ({
+  root: {
+    flexGrow: 1,
+  },
+  heading: {
+    fontSize: "1.5rem",
+    color: "#000000",
+    marginTop: "1rem",
+  },
+  subheading: {
+    marginBottom: "0.5rem",
+  },
+  tableContainer: {
+    overflowY: "hidden",
+  },
+}));
 interface BoostRegularTablesProps {
   sport: string;
-  allBooks: string[];
+  allBooks: Book[];
   handleSportsbookChange: Function;
-  checkedBooks: string[];
+  checkedBooks: Book[];
 }
 
-const BoostRegularTables = ({sport, allBooks, handleSportsbookChange, checkedBooks}: BoostRegularTablesProps) => {
+const BoostRegularTables = ({
+  sport,
+  allBooks,
+  handleSportsbookChange,
+  checkedBooks,
+}: BoostRegularTablesProps) => {
+  const classes = useStyles();
   const [OddsBoosts, setOddsBoosts] = useState<OddsBoost[]>([]);
   const [LastRefreshTime, setLastRefreshTime] = useState(new Date());
+  const [TableState, setTableState] = useState(LoadingStatus.LOADING);
+
+  useEffect(() => {
+    const setOddsBoostsWrapper = async () => {
+      const oddsBoosts = await OddsBoostService.getOddsBoosts();
+      setOddsBoosts(oddsBoosts);
+      setTableState(LoadingStatus.SUCCESS);
+    };
+    setOddsBoostsWrapper();
+  }, [OddsBoosts]);
+
+  useEffect(() => {
+    const setLastTime = async () => {
+      const lastRefreshTime = await LastRefreshTimeService.getRefreshTime(
+        "OddsBoosts"
+      );
+      setLastRefreshTime(lastRefreshTime);
+    };
+
+    setLastTime();
+  }, [LastRefreshTime]);
 
   const renderOddsBoostRows = (sportsbook) => {
     var bookBoosts =
       OddsBoosts != null
-        ? OddsBoosts.filter(
-            (boost) => boost.siteName === sportsbook.value
-          )
+        ? OddsBoosts.filter((boost) => boost.siteName === sportsbook.value)
         : null;
     if (bookBoosts == null) return;
 
@@ -68,41 +108,24 @@ const BoostRegularTables = ({sport, allBooks, handleSportsbookChange, checkedBoo
   const renderTable = (sportsbook) => {
     if (
       OddsBoosts == null ||
-      OddsBoosts.filter(
-        (boost) => boost.siteName === sportsbook.value
-      ).length === 0
-    )
+      OddsBoosts.filter((boost) => boost.siteName === sportsbook.value)
+        .length === 0
+    ) {
       return;
+    }
 
     return (
-      <Table responsive>
-        <thead className="text-primary">
-          <tr className="d-flex">
-            <th className="col-6">{sportsbook.value}</th>
-            {theadOddsBoosts.map((prop, key) => {
-              if (key === theadOddsBoosts.length - 1)
-                return (
-                  <th className="col-3 text-left" key={key}>
-                    {prop}
-                  </th>
-                );
-              return (
-                <th className="col-3" key={key}>
-                  {prop}
-                </th>
-              );
-            })}
-          </tr>
-        </thead>
-        <tbody className="boosts-striped">
-          {renderOddsBoostRows(sportsbook)}
-        </tbody>
-      </Table>
+      <AccordionTable
+        headers={[sportsbook.value, theadOddsBoosts[0], theadOddsBoosts[1]]}
+        widths={[60, 20, 20]}
+      >
+        {renderOddsBoostRows(sportsbook)}
+      </AccordionTable>
     );
   };
 
   const getFormattedDate = (dateString) => {
-    let options = {
+    let options: Intl.DateTimeFormatOptions = {
       hour: "numeric",
       minute: "2-digit",
     };
@@ -110,60 +133,46 @@ const BoostRegularTables = ({sport, allBooks, handleSportsbookChange, checkedBoo
     return new Date(dateString + "Z").toLocaleTimeString("en-us", options);
   };
 
-  useEffect(() => {
-    const setOddsBoostsAndLastRefresh = async () => {
-      const oddsBoosts = await OddsBoostService.getOddsBoosts();
-      setOddsBoosts(oddsBoosts);
-
-      const lastRefreshTime = await LastRefreshTimeService.getRefreshTime(
-        "OddsBoosts"
-      );
-      setLastRefreshTime(lastRefreshTime);
-    };
-    setOddsBoostsAndLastRefresh();
-  }, [OddsBoosts, LastRefreshTime]);
-
   return (
     <>
-      <div className="content">
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-primary" tag="h3">
-              {sport}
-            </CardTitle>
-            <CardText>
-              <div className="text-muted">
-                Last Refresh Time:{" "}
-                {getFormattedDate(LastRefreshTime)}
-              </div>
-              <br />
-              <Row>
-                <Col lg={true} s={true} xs={true}>
-                  <Form.Label>Select Sportsbooks</Form.Label>
-                  <br></br>
-                  <Select
-                    isSearchable={false}
-                    isMulti={true}
-                    options={allBooks}
-                    components={animatedComponents}
-                    onChange={handleSportsbookChange}
-                    placeholderButtonLabel="Sportsbooks..."
-                    value={checkedBooks}
-                  />
-                </Col>
-              </Row>
-            </CardText>
-          </CardHeader>
-          <CardBody>
-            {checkedBooks == null ||
-            checkedBooks.length === 0
-              ? renderNoBooksCheckedMessage()
-              : checkedBooks.map((book) => renderTable(book))}
-          </CardBody>
-        </Card>
+      <div className={classes.root}>
+        <Container>
+          <Typography className={classes.heading}>Odds Boosts</Typography>
+          <Typography className={classes.subheading}>
+            Last Refresh Time: {getFormattedDate(LastRefreshTime)}
+          </Typography>
+          <Card>
+            <CardContent>
+              <Grid
+                container
+                spacing={2}
+                justify="space-between"
+                alignItems="flex-start"
+                direction="row"
+              >
+                <Grid item xs={12} md={8}>
+                  <SportsbookSelector
+                    allBooks={allBooks}
+                    checkedBooks={checkedBooks}
+                    handleSportsBookChange={handleSportsbookChange}
+                  ></SportsbookSelector>
+                </Grid>
+              </Grid>
+            </CardContent>
+            <CardContent>
+              <TableContainer className={classes.tableContainer}>
+                {checkedBooks === null ||
+                checkedBooks.length === 0 ||
+                TableState === LoadingStatus.LOADING
+                  ? renderNoBooksCheckedMessage()
+                  : checkedBooks.map((book) => renderTable(book))}
+              </TableContainer>
+            </CardContent>
+          </Card>
+        </Container>
       </div>
     </>
   );
-}
+};
 
 export default BoostRegularTables;
