@@ -140,6 +140,9 @@ const MaterialMenu = ({ children, history }: MaterialMenuProps) => {
           classes={{
             paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
           }}
+          onClose={() => {
+            setOpen(!open);
+          }}
           open={open && isMobile}
         >
           {generateDrawerContent()}
