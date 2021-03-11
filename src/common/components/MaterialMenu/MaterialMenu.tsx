@@ -11,7 +11,15 @@ import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import dashRoutes from "routes";
 import { Link } from "react-router-dom";
-import { List, ListItem, ListItemIcon, ListItemText } from "@material-ui/core";
+import {
+  Hidden,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  useMediaQuery,
+  useTheme,
+} from "@material-ui/core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import LoginButton from "../LoginButton/LoginButton";
 import useStylesMenu from "./MaterialMenuStyles";
@@ -22,6 +30,8 @@ interface MaterialMenuProps {
 }
 
 const MaterialMenu = ({ children, history }: MaterialMenuProps) => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const classes = useStylesMenu();
   const [open, setOpen] = React.useState(true);
   const handleDrawerOpen = () => {
@@ -31,45 +41,9 @@ const MaterialMenu = ({ children, history }: MaterialMenuProps) => {
     setOpen(false);
   };
 
-  return (
-    <div className={classes.root}>
-      <CssBaseline />
-      <AppBar
-        position="absolute"
-        className={clsx(classes.appBar, open && classes.appBarShift)}
-      >
-        <Toolbar className={classes.toolbar}>
-          <IconButton
-            edge="start"
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            className={clsx(
-              classes.menuButton,
-              open && classes.menuButtonHidden
-            )}
-          >
-            <MenuIcon className={classes.blackText} />
-          </IconButton>
-          <Typography
-            component="h1"
-            variant="h5"
-            color="inherit"
-            noWrap
-            className={classes.title}
-          >
-            Odds Library
-          </Typography>
-          <LoginButton history={history}></LoginButton>
-        </Toolbar>
-      </AppBar>
-      <Drawer
-        variant="permanent"
-        classes={{
-          paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
-        }}
-        open={open}
-      >
+  const generateDrawerContent = () => {
+    return (
+      <>
         <div className={classes.toolbarIcon}>
           <IconButton onClick={handleDrawerClose}>
             <ChevronLeftIcon />
@@ -110,7 +84,70 @@ const MaterialMenu = ({ children, history }: MaterialMenuProps) => {
             );
           })}
         </List>
-      </Drawer>
+      </>
+    );
+  };
+
+  return (
+    <div className={classes.root}>
+      <CssBaseline />
+      <AppBar
+        position="absolute"
+        className={clsx(
+          classes.appBar,
+          open && !isMobile && classes.appBarShift
+        )}
+      >
+        <Toolbar className={classes.toolbar}>
+          <IconButton
+            edge="start"
+            color="inherit"
+            aria-label="open drawer"
+            onClick={handleDrawerOpen}
+            className={clsx(
+              classes.menuButton,
+              open && classes.menuButtonHidden
+            )}
+          >
+            <MenuIcon className={classes.blackText} />
+          </IconButton>
+          <Typography
+            component="h1"
+            variant="h5"
+            color="inherit"
+            noWrap
+            className={classes.title}
+          >
+            Odds Library
+          </Typography>
+          <LoginButton history={history}></LoginButton>
+        </Toolbar>
+      </AppBar>
+      <Hidden smDown>
+        <Drawer
+          variant="permanent"
+          classes={{
+            paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
+          }}
+          open={open && !isMobile}
+        >
+          {generateDrawerContent()}
+        </Drawer>
+      </Hidden>
+      <Hidden mdUp implementation="css">
+        <Drawer
+          variant="temporary"
+          classes={{
+            paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
+          }}
+          onClose={() => {
+            setOpen(!open);
+          }}
+          open={open && isMobile}
+        >
+          {generateDrawerContent()}
+        </Drawer>
+      </Hidden>
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
         {children}
