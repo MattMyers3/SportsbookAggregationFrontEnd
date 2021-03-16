@@ -28,6 +28,10 @@ const useStyles = makeStyles((theme) => ({
   header: {
     borderBottom: "1px solid rgba(224, 224, 224, 1);",
     borderTop: "1px solid rgba(224, 224, 224, 1);",
+    cursor: "pointer",
+  },
+  headerMain: {
+    color: theme.palette.primary.dark,
   },
   row: {
     backgroundColor: "#f3f3f3",
@@ -54,8 +58,16 @@ const AccordionTable = ({ headers, widths, children }: AccordionTableProps) => {
         })}
       </colgroup>
       <TableHead>
-        <TableRow className={classes.header}>
-          {headers.map((header) => {
+        <TableRow
+          className={classes.header}
+          onClick={() => {
+            setOpen(!open);
+          }}
+        >
+          <TableCell className={classes.headerMain}>
+            {headers[0].toUpperCase()}
+          </TableCell>
+          {headers.slice(1).map((header) => {
             return <TableCell>{header.toUpperCase()}</TableCell>;
           })}
           <TableCell>
