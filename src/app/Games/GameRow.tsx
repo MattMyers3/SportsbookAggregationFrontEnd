@@ -2,6 +2,82 @@ import React, { useEffect, useState } from "react";
 import GameLinesService from "common/services/GameLinesService";
 import { GameLines } from "common/models/GameLines";
 import TeamService from "common/services/TeamService";
+import { TableRow, TableCell, withStyles, createStyles, makeStyles, Typography, Button, Link } from "@material-ui/core";
+
+const StyledTableRow = withStyles((theme) =>
+  createStyles({
+    root: {
+      borderBottom: 'none'
+    },
+  }),
+)(TableRow);
+
+const StyledTableCellData = withStyles((theme) =>
+  createStyles({
+    root: {
+      textAlign: 'center',
+    },
+  }),
+)(TableCell);
+
+const MoreWagersButton = withStyles((theme) =>
+  createStyles({
+    root: {
+      background: 'linear-gradient(136deg, #FFD047, #FFB347)',
+      textTransform: 'uppercase',
+      fontWeight: 'bold',
+      '&:hover': {
+        color: 'black'
+      }
+    }
+  }),
+)(Button);
+
+const StyledTableCellHeader = withStyles((theme) =>
+  createStyles({
+    root: {
+      border: 'none'
+    },
+  }),
+)(TableCell);
+
+const GameTimeTypography = withStyles((theme) =>
+  createStyles({
+    root: {
+      fontSize: 'small'
+    },
+  }),
+)(Typography);
+
+const useStyles = makeStyles((theme) => ({
+  oddsDisplay: {
+    whiteSpace: 'nowrap',
+    color: '#20b33c',
+    fontWeight: 'bold',
+  },
+  betValueDisplay: {
+    fontWeight: 'bold',
+    paddingRight: '5px'
+  },
+  awayBorderDisplay: {
+    borderTop: 'solid 1px #d8d8d8',
+    '&:nth-of-type(5n+5)': {
+      borderRight: 'solid 1px #d8d8d8',
+    },
+    '&:nth-of-type(5n+1)': {
+      borderLeft: 'solid 1px #d8d8d8',
+    },
+  },
+  homeBorderDisplay: {
+    borderBottom: 'solid 1px #d8d8d8',
+    '&:nth-of-type(4n+4)': {
+      borderRight: 'solid 1px #d8d8d8',
+    },
+    '&:nth-of-type(4n+1)': {
+      borderLeft: 'solid 1px #d8d8d8',
+    },
+  }
+}));
 
 interface GameRowProps {
   key: string;
@@ -22,6 +98,8 @@ const GameRow = ({
   checkedBooks,
   gameTime,
 }: GameRowProps) => {
+  const classes = useStyles();
+
   const [CurrentGameLines, setCurrentGameLines] = useState<GameLines>(
     {} as GameLines
   );
@@ -44,42 +122,36 @@ const GameRow = ({
     val: number,
     odds: number | null,
     site: string,
-    appendedLetters: string | null
+    appendedLetters: string | null,
+    awayBorder: boolean
   ) => {
     if (val == null)
       return (
-        <td>
-          <b>_</b>
-        </td>
+        <StyledTableCellData className={awayBorder ? classes.awayBorderDisplay : classes.homeBorderDisplay}>
+          <Typography className={classes.betValueDisplay}>_</Typography>
+        </StyledTableCellData>
       );
     if (odds == null)
       //Moneyline
       return (
-        <td>
-          <b>{getDisplayValue(val)}</b>
-          <br />
-          {site}
-        </td>
+        <StyledTableCellData className={awayBorder ? classes.awayBorderDisplay : classes.homeBorderDisplay}>
+          <Typography className={classes.oddsDisplay}>{getDisplayValue(val)}</Typography>
+          <Typography>{site}</Typography>
+        </StyledTableCellData>
       );
 
     return (
-      <td>
-        {appendedLetters}
-        <b>{appendedLetters == null ? getDisplayValue(val) : val}</b>
-        <sup>{getOddsDisplayValue(odds)}</sup>
-        <br />
-        {site}
-      </td>
+      <StyledTableCellData className={awayBorder ? classes.awayBorderDisplay : classes.homeBorderDisplay}>
+        <Typography style={{display: 'inline-block'}} className={classes.betValueDisplay}>{appendedLetters}{appendedLetters == null ? getDisplayValue(val) : val}</Typography>
+        <Typography style={{display: 'inline-block'}} className={classes.oddsDisplay}>{getDisplayValue(odds)}</Typography>
+        <Typography>{site}</Typography>
+      </StyledTableCellData>
     );
   };
 
   const getDisplayValue = (val: number) => {
     if (val > 0) return "+" + val;
     return val;
-  };
-
-  const getOddsDisplayValue = (val: number) => {
-    return "(" + getDisplayValue(val) + ")";
   };
 
   const getGameLines = async () => {
@@ -111,7 +183,8 @@ const GameRow = ({
 
   if (!IsLoaded) {
     return <React.Fragment></React.Fragment>;
-  } else if (
+  } 
+  else if (
     !CurrentGameLines.awayMoneyLineSite &&
     !CurrentGameLines.awaySpreadSite &&
     !CurrentGameLines.underSite &&
@@ -120,64 +193,82 @@ const GameRow = ({
     !CurrentGameLines.overSite
   ) {
     return <React.Fragment></React.Fragment>;
+  } 
+  else if (
+    !CurrentGameLines.currentAwaySpread &&
+    !CurrentGameLines.currentAwayMoneyLine &&
+    !CurrentGameLines.currentOver &&
+    !CurrentGameLines.currentHomeSpread &&
+    !CurrentGameLines.currentHomeMoneyLine &&
+    !CurrentGameLines.currentUnder
+  ) {
+    return <React.Fragment></React.Fragment>;
   }
 
   return (
     <React.Fragment>
-      <tr>
-        <th scope="row">{AwayTeamName}</th>
+      <StyledTableRow>
+        <StyledTableCellData className={classes.awayBorderDisplay} scope="row">
+          <Typography>{AwayTeamName}</Typography>
+        </StyledTableCellData>
+        <StyledTableCellData rowSpan={2} className={classes.awayBorderDisplay}>
+          <MoreWagersButton href={"/sports/" + sport + "/games/" + gameId} variant="contained">
+            More Wagers
+          </MoreWagersButton>
+        </StyledTableCellData>
         {getDisplayCell(
           CurrentGameLines.currentAwaySpread,
           CurrentGameLines.currentAwaySpreadPayout,
           CurrentGameLines.awaySpreadSite,
-          null
+          null,
+          true
         )}
         {getDisplayCell(
           CurrentGameLines.currentAwayMoneyLine,
           null,
           CurrentGameLines.awayMoneyLineSite,
-          null
+          null,
+          true
         )}
         {getDisplayCell(
           CurrentGameLines.currentOver,
           CurrentGameLines.currentOverPayout,
           CurrentGameLines.overSite,
-          "o"
+          "o",
+          true
         )}
-      </tr>
-      <tr>
-        <th scope="row">
-          {HomeTeamName}
-          <br></br>
-          <small style={{ margin: "0px" }} className="text-muted">
+      </StyledTableRow>
+      <StyledTableRow>
+        <StyledTableCellData className={classes.homeBorderDisplay} scope="row">
+          <Typography>{HomeTeamName}</Typography>
+          <GameTimeTypography color="textSecondary">
             {getFormattedDate(gameTime)}
-          </small>
-          <br></br>
-          <small>
-            <b>
-              <a href={"/sports/" + sport + "/games/" + gameId}>More Wagers</a>
-            </b>
-          </small>
-        </th>
+          </GameTimeTypography>
+        </StyledTableCellData>
+        
         {getDisplayCell(
           CurrentGameLines.currentHomeSpread,
           CurrentGameLines.currentHomeSpreadPayout,
           CurrentGameLines.homeSpreadSite,
-          null
+          null,
+          false
         )}
         {getDisplayCell(
           CurrentGameLines.currentHomeMoneyLine,
           null,
           CurrentGameLines.homeMoneyLineSite,
-          null
+          null,
+          false
         )}
         {getDisplayCell(
           CurrentGameLines.currentUnder,
           CurrentGameLines.currentUnderPayout,
           CurrentGameLines.underSite,
-          "u"
+          "u",
+          false
         )}
-      </tr>
+      </StyledTableRow>
+      <TableRow><StyledTableCellHeader></StyledTableCellHeader></TableRow>
     </React.Fragment>
   );
 };

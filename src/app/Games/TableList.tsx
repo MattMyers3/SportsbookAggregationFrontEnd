@@ -23,7 +23,6 @@ import {
   CardBody,
   CardHeader,
   CardTitle,
-  Table,
   Row,
   Col,
   CardText,
@@ -42,6 +41,26 @@ import { Game } from "common/models/Game";
 import { Book } from "common/models/Book";
 import LastRefreshTimeService from "common/services/LastRefreshTimeService";
 import GamesService from "common/services/GamesService";
+import { Table, TableContainer, TableHead, TableRow, TableCell, TableBody, withStyles, createStyles, makeStyles } from "@material-ui/core";
+
+const StyledTable = withStyles((theme) =>
+  createStyles({
+    root: {
+      borderCollapse: 'separate'
+    },
+  }),
+)(Table);
+
+const StyledTableCellHeader = withStyles((theme) =>
+  createStyles({
+    root: {
+      border: 'none',
+      color: '#4b5258',
+      textTransform: 'uppercase',
+      fontWeight: 'bold'
+    },
+  }),
+)(TableCell);
 
 const animatedComponents = makeAnimated();
 
@@ -76,6 +95,7 @@ const RegularTables = ({
     });
     return sortGames.map((game) => {
       return (
+        <React.Fragment>
         <GameRow
           key={game.gameId}
           sport={sport}
@@ -87,6 +107,7 @@ const RegularTables = ({
           }
           gameTime={game.timeStamp}
         />
+        </React.Fragment>
       );
     });
   };
@@ -123,22 +144,18 @@ const RegularTables = ({
 
   const renderTable = () => {
     return (
-      <Table responsive>
-        <thead className="text-primary">
-          <tr>
-            {thead.map((prop, key) => {
-              if (key === thead.length - 1)
-                return (
-                  <th key={key} className="text-left">
-                    {prop}
-                  </th>
-                );
-              return <th key={key}>{prop}</th>;
-            })}
-          </tr>
-        </thead>
-        <tbody className="games-striped">{renderGameRows()}</tbody>
-      </Table>
+      <TableContainer>
+        <StyledTable>
+          <TableHead className="text-primary">
+            <TableRow>
+              {thead.map((prop, key) => {
+                return <StyledTableCellHeader align='center' key={key}>{prop}</StyledTableCellHeader>
+              })}
+            </TableRow>
+          </TableHead>
+          <TableBody>{renderGameRows()}</TableBody>
+        </StyledTable>
+      </TableContainer>
     );
   };
 
@@ -276,36 +293,6 @@ const RegularTables = ({
       }
     }
     return "9/10/2020-9/15/2020";
-  };
-
-  const componentDidUpdate = (prevProps, prevState) => {
-    if (
-      prevState.startDate === StartDate &&
-      prevState.endDate === EndDate &&
-      prevProps.sport === sport
-    )
-      return;
-
-    if (prevProps.sport !== sport) {
-      if (sport !== "NFL") setStartDate(new Date());
-      else {
-        var dateRange = getDefaultDateSelect().split("-");
-        var startDate = new Date();
-        var endDate = new Date(dateRange[1]);
-        setStartDate(startDate);
-        setEndDate(endDate);
-      }
-    }
-
-    if (prevState.startDate !== StartDate) {
-      if (StartDate.getDate() < new Date().getDate())
-        // Don't show games in the past
-        setGames([]);
-      else if (sport !== "NFL") fetchGamesOnDay(StartDate);
-      else {
-        fetchGamesInRange(StartDate, EndDate);
-      }
-    }
   };
 
   useEffect(() => {

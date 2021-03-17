@@ -15,9 +15,6 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-.games-striped tr:nth-child(4n+1), .games-striped tr:nth-child(4n+2) {
-    background: rgba(0, 0, 0, 0.05);
-}
 .boosts-striped tr:nth-child(2n+1) {
     background: rgba(0, 0, 0, 0.05);
 }
