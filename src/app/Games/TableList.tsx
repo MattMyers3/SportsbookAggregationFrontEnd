@@ -46,7 +46,7 @@ import { Table, TableContainer, TableHead, TableRow, TableCell, TableBody, withS
 const StyledTable = withStyles((theme) =>
   createStyles({
     root: {
-      borderCollapse: 'separate',
+      borderCollapse: 'separate'
     },
   }),
 )(Table);
@@ -54,7 +54,10 @@ const StyledTable = withStyles((theme) =>
 const StyledTableCellHeader = withStyles((theme) =>
   createStyles({
     root: {
-      
+      border: 'none',
+      color: '#4b5258',
+      textTransform: 'uppercase',
+      fontWeight: 'bold'
     },
   }),
 )(TableCell);
@@ -100,7 +103,6 @@ const RegularTables = ({sport, allBooks, checkedBooks, handleSportsbookChange, i
           }
           gameTime={game.timeStamp}
         />
-        <TableRow><StyledTableCellHeader></StyledTableCellHeader></TableRow>
         </React.Fragment>
       );
     });
@@ -143,7 +145,7 @@ const RegularTables = ({sport, allBooks, checkedBooks, handleSportsbookChange, i
           <TableHead className="text-primary">
             <TableRow>
               {GamesTableHeader.map((prop, key) => {
-                return <TableCell align='center' key={key}>{prop}</TableCell>
+                return <StyledTableCellHeader align='center' key={key}>{prop}</StyledTableCellHeader>
               })}
             </TableRow>
           </TableHead>

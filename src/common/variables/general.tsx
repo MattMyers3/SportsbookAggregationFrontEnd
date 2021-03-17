@@ -39,7 +39,7 @@ const tasks = [
 // // // table head data and table body data for Tables view
 // #############################
 
-const GamesTableHeader = ["Games", "Spread", "Money Line", "Total"];
+const GamesTableHeader = ["GAMES", "", "SPREAD", "MONEY LINE", "TOTAL"];
 const theadOddsBoosts = ["Boosted Odds", "Previous Odds"];
 const theadProps = ["Odds", "Book"]
 const theadPropsOverUnder = ["Over", "Under"]
