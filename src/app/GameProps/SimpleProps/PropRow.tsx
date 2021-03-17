@@ -1,27 +1,35 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import OddsFormater from "common/helpers/OddsFormater";
 import { GameProp } from "common/models/GameProp";
+import { makeStyles, TableCell, TableRow } from "@material-ui/core";
+
+const useStyles = makeStyles((theme) => ({
+  row: {
+    backgroundColor: "#f3f3f3",
+  },
+  greenText: {
+    color: theme.palette.primary.main,
+  },
+}));
 
 interface PropRowProps {
   playerProp: GameProp;
 }
 
-const PropRow = ({playerProp}: PropRowProps) => {
+const PropRow = ({ playerProp }: PropRowProps) => {
+  const classes = useStyles();
   return (
     <React.Fragment>
-      <tr className="d-flex">
-        <td className="col-6" scope="row">
-          {playerProp.playerName}
-        </td>
-        <td className="col-3">
-          {OddsFormater.americanOddSignage(
-            playerProp.currentPayout
-          )}
-        </td>
-        <td className="col-3">{playerProp.currentSite}</td>
-      </tr>
+      <TableRow className={classes.row}>
+        <TableCell>{playerProp.playerName}</TableCell>
+        <TableCell className={classes.greenText}>
+          {OddsFormater.americanOddSignage(playerProp.currentPayout)}
+        </TableCell>
+        <TableCell>{playerProp.currentSite}</TableCell>
+        <TableCell />
+      </TableRow>
     </React.Fragment>
   );
-} 
+};
 
 export default PropRow;

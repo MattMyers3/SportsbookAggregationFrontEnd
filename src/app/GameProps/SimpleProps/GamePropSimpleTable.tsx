@@ -3,6 +3,7 @@ import { Table } from "reactstrap";
 import { theadProps } from "common/variables/headerNames";
 import { GameProp } from "common/models/GameProp";
 import PropRow from "./PropRow";
+import AccordionTable from "common/components/Tables/AccordionTable/AccordionTable";
 
 interface GamePropSimpleTableProps {
   propType: string;
@@ -29,19 +30,12 @@ const GamePropSimpleTable = ({
 
   return (
     <div>
-      <Table responsive>
-        <thead className="text-primary">
-          <tr className="d-flex">
-            <th className="col-6">{propType}</th>
-            {theadProps.map((head) => {
-              return <th className="col-3">{head}</th>;
-            })}
-          </tr>
-        </thead>
-        <tbody className="boosts-striped">
-          {renderGamePropRows(propsForPropType)}
-        </tbody>
-      </Table>
+      <AccordionTable
+        headers={[propType].concat(theadProps)}
+        widths={[60, 20, 20]}
+      >
+        {renderGamePropRows(propsForPropType)}
+      </AccordionTable>
     </div>
   );
 };
