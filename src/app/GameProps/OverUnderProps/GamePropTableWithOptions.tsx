@@ -3,6 +3,7 @@ import { Table } from "reactstrap";
 import { theadPropsOverUnder } from "common/variables/headerNames";
 import fuzz from "fuzzball";
 import PropRowWithOptions from "app/GameProps/OverUnderProps/PropRowWithOptions";
+import AccordionTable from "common/components/Tables/AccordionTable/AccordionTable";
 
 interface GamePropTableWithOptionsProps {
   propType: any;
@@ -42,19 +43,12 @@ const GamePropTableWithOptions = ({
 
   return (
     <div>
-      <Table responsive>
-        <thead className="text-primary">
-          <tr className="d-flex">
-            <th className="col-6">{propType}</th>
-            {theadPropsOverUnder.map((head) => {
-              return <th className="col-3">{head}</th>;
-            })}
-          </tr>
-        </thead>
-        <tbody className="boosts-striped">
-          {renderGamePropRowsOverUnder(propsForPropType)}
-        </tbody>
-      </Table>
+      <AccordionTable
+        headers={[propType].concat(theadPropsOverUnder)}
+        widths={[60, 20, 20]}
+      >
+        {renderGamePropRowsOverUnder(propsForPropType)}
+      </AccordionTable>
     </div>
   );
 };
