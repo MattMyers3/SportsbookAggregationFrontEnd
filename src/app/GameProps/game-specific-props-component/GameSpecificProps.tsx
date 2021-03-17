@@ -1,21 +1,6 @@
 import React, { useEffect, useState } from "react";
-
-// reactstrap components
-import {
-  Card,
-  CardBody,
-  CardHeader,
-  CardTitle,
-  Row,
-  Col,
-  CardText,
-  FormGroup,
-  Input,
-} from "reactstrap";
-
 import "react-datepicker/dist/react-datepicker.css";
-import { Form, Jumbotron } from "react-bootstrap";
-import Select from "react-select";
+import { Jumbotron } from "react-bootstrap";
 import makeAnimated from "react-select/animated";
 import GamePropSimpleTable from "app/GameProps/SimpleProps/GamePropSimpleTable";
 import GamePropTableWithOptions from "app/GameProps/OverUnderProps/GamePropTableWithOptions";
@@ -24,8 +9,16 @@ import { Book } from "common/models/Book";
 import TeamService from "common/services/TeamService";
 import GamePropsService from "common/services/GamePropsService";
 import GamesService from "common/services/GamesService";
-
-const animatedComponents = makeAnimated();
+import useStyles from "./GameSpecificPropsStyles";
+import {
+  Typography,
+  Grid,
+  Card,
+  CardContent,
+  Container,
+} from "@material-ui/core";
+import SportsbookSelector from "common/components/SportsbookSelector/SportsbookSelector";
+import SearchBox from "common/components/SearchBox/SearchBox";
 
 interface GameSpecificPropsProps {
   allBooks: Book[];
@@ -40,6 +33,7 @@ const GameSpecificProps = ({
   checkedBooks,
   match,
 }: GameSpecificPropsProps) => {
+  const classes = useStyles();
   const [HomeTeamName, setHomeTeamName] = useState("");
   const [HomeTeamId, setHomeTeamId] = useState("");
   const [AwayTeamName, setAwayTeamName] = useState("");
@@ -123,8 +117,8 @@ const GameSpecificProps = ({
       );
   };
 
-  const handleSearch = (event: any) => {
-    setSearchTerm(event.target.value.toLowerCase());
+  const handleSearch = (value: string) => {
+    setSearchTerm(value.toLowerCase());
   };
 
   const renderTable = (propType) => {
@@ -156,49 +150,44 @@ const GameSpecificProps = ({
   };
 
   return (
-    <>
-      <div className="content">
+    <div className={classes.root}>
+      <Container>
+        <Typography className={classes.heading}>
+          {AwayTeamName} @ {HomeTeamName}
+        </Typography>
+        <Typography className={classes.subheading}>Player Props</Typography>
         <Card>
-          <CardHeader>
-            <CardTitle className="text-primary" tag="h3">
-              {AwayTeamName} @ {HomeTeamName}
-            </CardTitle>
-            Player Props
-            <br />
-            <br />
-            <CardText>
-              <Row>
-                <Col lg={true} s={true} xs={true}>
-                  <Form.Label>Select Sportsbooks</Form.Label>
-                  <br></br>
-                  <Select
-                    isSearchable={false}
-                    isMulti={true}
-                    options={allBooks}
-                    components={animatedComponents}
-                    onChange={handleSportsbookChange}
-                    placeholderButtonLabel="Sportsbooks..."
-                    value={checkedBooks}
-                  />
-                </Col>
-              </Row>
-            </CardText>
-            <FormGroup>
-              <Input
-                onChange={handleSearch}
-                type="search"
-                placeholder="Player Search"
-              ></Input>
-            </FormGroup>
-          </CardHeader>
-          <CardBody>
+          <CardContent>
+            <Grid
+              container
+              spacing={2}
+              justify="space-between"
+              alignItems="flex-start"
+              direction="row"
+            >
+              <Grid item xs={12} md={8}>
+                <SportsbookSelector
+                  allBooks={allBooks}
+                  checkedBooks={checkedBooks}
+                  handleSportsBookChange={handleSportsbookChange}
+                ></SportsbookSelector>
+              </Grid>
+              <Grid item xs={12} md={4}>
+                <SearchBox
+                  handleSearch={handleSearch}
+                  placeholder={"Search player"}
+                ></SearchBox>
+              </Grid>
+            </Grid>
+          </CardContent>
+          <CardContent>
             {PropTypes == null || PropTypes.length === 0
               ? renderErrorMessage()
               : PropTypes.map((propType) => renderTable(propType))}
-          </CardBody>
+          </CardContent>
         </Card>
-      </div>
-    </>
+      </Container>
+    </div>
   );
 };
 export default GameSpecificProps;

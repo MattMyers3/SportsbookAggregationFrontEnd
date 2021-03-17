@@ -1,27 +1,47 @@
 import React from "react";
-import OddsFormater from "common/services/odds-formater";
+import OddsFormater from "common/helpers/OddsFormater";
+import { TableRow, TableCell, makeStyles } from "@material-ui/core";
+import clsx from "clsx";
+
+const useStyles = makeStyles((theme) => ({
+  row: {
+    backgroundColor: "#f3f3f3",
+  },
+  greenText: {
+    color: theme.palette.primary.main,
+  },
+  strike: {
+    textDecoration: "line-through",
+  },
+}));
+
 interface BoostRowProps {
   description: string;
   boostedOdds: number;
   previousOdds: number;
 }
 
-const BoostRow = ({description, boostedOdds, previousOdds} : BoostRowProps) => {
+const BoostRow = ({
+  description,
+  boostedOdds,
+  previousOdds,
+}: BoostRowProps) => {
+  const classes = useStyles();
+  const previousIsNA = previousOdds === 0;
   return (
     <React.Fragment>
-        <tr className="d-flex">
-          <th className="col-6" scope="row">
-            {description}
-          </th>
-          <td className="col-3">
-            {OddsFormater.americanOddSignage(boostedOdds)}
-          </td>
-          <td className="col-3" style={{ textDecoration: "line-through" }}>
-            {OddsFormater.americanOddSignage(previousOdds)}
-          </td>
-        </tr>
-      </React.Fragment>
+      <TableRow className={classes.row}>
+        <TableCell>{description}</TableCell>
+        <TableCell className={classes.greenText}>
+          {OddsFormater.americanOddSignage(boostedOdds)}
+        </TableCell>
+        <TableCell className={clsx(!previousIsNA && classes.strike)}>
+          {OddsFormater.americanOddSignage(previousOdds)}
+        </TableCell>
+        <TableCell />
+      </TableRow>
+    </React.Fragment>
   );
-}
+};
 
 export default BoostRow;

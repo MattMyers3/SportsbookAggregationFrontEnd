@@ -9,7 +9,7 @@ import { apiUrl } from "common/variables/constants";
 import Login from "app/Login/Login";
 import routes from "routes";
 import { withOktaAuth } from "@okta/okta-react";
-import GameSpecificProps from "app/GameProps/GameSpecificProps";
+import GameSpecificProps from "app/GameProps/game-specific-props-component/GameSpecificProps";
 import { Book } from "common/models/Book";
 import MaterialMenu from "../MaterialMenu/MaterialMenu";
 import { ThemeProvider } from "@material-ui/styles";

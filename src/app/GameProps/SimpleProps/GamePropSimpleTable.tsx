@@ -1,6 +1,6 @@
 import React from "react";
 import { Table } from "reactstrap";
-import { theadProps } from "common/variables/general";
+import { theadProps } from "common/variables/headerNames";
 import { GameProp } from "common/models/GameProp";
 import PropRow from "./PropRow";
 
@@ -10,20 +10,22 @@ interface GamePropSimpleTableProps {
   searchTerm: string;
 }
 
-const GamePropSimpleTable = ({propType, propsForPropType, searchTerm}: GamePropSimpleTableProps) => {
+const GamePropSimpleTable = ({
+  propType,
+  propsForPropType,
+  searchTerm,
+}: GamePropSimpleTableProps) => {
   const renderGamePropRows = (props: GameProp[]) => {
     return props
       .sort(function (a, b) {
         return a.currentPayout - b.currentPayout;
       })
       .map((singleProp) => {
-        if (
-          singleProp.playerName.toLowerCase().includes(searchTerm)
-        ) {
+        if (singleProp.playerName.toLowerCase().includes(searchTerm)) {
           return <PropRow playerProp={singleProp} />;
         }
       });
-  }
+  };
 
   return (
     <div>
@@ -42,6 +44,6 @@ const GamePropSimpleTable = ({propType, propsForPropType, searchTerm}: GamePropS
       </Table>
     </div>
   );
-}
+};
 
 export default GamePropSimpleTable;

@@ -1,9 +1,8 @@
 import React from "react";
 import { Table } from "reactstrap";
-import { theadPropsOverUnder } from "common/variables/general";
+import { theadPropsOverUnder } from "common/variables/headerNames";
 import fuzz from "fuzzball";
 import PropRowWithOptions from "app/GameProps/OverUnderProps/PropRowWithOptions";
-
 
 interface GamePropTableWithOptionsProps {
   propType: any;
@@ -11,7 +10,11 @@ interface GamePropTableWithOptionsProps {
   searchTerm: String;
 }
 
-const GamePropTableWithOptions = ({propType, propsForPropType, searchTerm}: GamePropTableWithOptionsProps) => {
+const GamePropTableWithOptions = ({
+  propType,
+  propsForPropType,
+  searchTerm,
+}: GamePropTableWithOptionsProps) => {
   const groupBy = (props, field) => {
     let groupedArr = [] as any;
     props.forEach(function (e) {
@@ -32,11 +35,7 @@ const GamePropTableWithOptions = ({propType, propsForPropType, searchTerm}: Game
   const renderGamePropRowsOverUnder = (props: any) => {
     let propsGroupedByName = groupBy(props, "playerName");
     return propsGroupedByName.map((props) => {
-      if (
-        props.groupList[0].playerName
-          .toLowerCase()
-          .includes(searchTerm)
-      )
+      if (props.groupList[0].playerName.toLowerCase().includes(searchTerm))
         return <PropRowWithOptions propList={props.groupList} />;
     });
   };
@@ -58,6 +57,6 @@ const GamePropTableWithOptions = ({propType, propsForPropType, searchTerm}: Game
       </Table>
     </div>
   );
-}
+};
 
 export default GamePropTableWithOptions;
