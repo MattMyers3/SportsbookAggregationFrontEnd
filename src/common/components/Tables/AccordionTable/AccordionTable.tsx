@@ -7,6 +7,8 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  useMediaQuery,
+  useTheme,
 } from "@material-ui/core";
 import {
   KeyboardArrowDown as KeyboardArrowDownIcon,
@@ -30,6 +32,9 @@ const useStyles = makeStyles((theme) => ({
     borderTop: "1px solid rgba(224, 224, 224, 1);",
     cursor: "pointer",
   },
+  headerHidden: {
+    visibility: "hidden",
+  },
   headerMain: {
     color: theme.palette.primary.dark,
   },
@@ -48,6 +53,8 @@ interface AccordionTableProps {
 }
 
 const AccordionTable = ({ headers, widths, children }: AccordionTableProps) => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   return (
@@ -68,6 +75,9 @@ const AccordionTable = ({ headers, widths, children }: AccordionTableProps) => {
             {headers[0].toUpperCase()}
           </TableCell>
           {headers.slice(1).map((header) => {
+            if (isMobile && !open) {
+              return <TableCell />;
+            }
             return <TableCell>{header.toUpperCase()}</TableCell>;
           })}
           <TableCell>
