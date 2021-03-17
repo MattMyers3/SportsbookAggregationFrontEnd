@@ -18,5 +18,8 @@ const useStyles = makeStyles((theme) => ({
   selectSportsBook: {
     marginBottom: "-1rem",
   },
+  tableContainer: {
+    overflowY: "hidden",
+  },
 }));
 export default useStyles;

@@ -16,6 +16,7 @@ import {
   Card,
   CardContent,
   Container,
+  TableContainer,
 } from "@material-ui/core";
 import SportsbookSelector from "common/components/SportsbookSelector/SportsbookSelector";
 import SearchBox from "common/components/SearchBox/SearchBox";
@@ -181,9 +182,11 @@ const GameSpecificProps = ({
             </Grid>
           </CardContent>
           <CardContent>
-            {PropTypes == null || PropTypes.length === 0
-              ? renderErrorMessage()
-              : PropTypes.map((propType) => renderTable(propType))}
+            <TableContainer className={classes.tableContainer}>
+              {PropTypes == null || PropTypes.length === 0
+                ? renderErrorMessage()
+                : PropTypes.map((propType) => renderTable(propType))}
+            </TableContainer>
           </CardContent>
         </Card>
       </Container>
