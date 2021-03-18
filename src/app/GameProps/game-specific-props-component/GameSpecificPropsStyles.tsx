@@ -21,5 +21,11 @@ const useStyles = makeStyles((theme) => ({
   tableContainer: {
     overflowY: "hidden",
   },
+  card: {
+    [theme.breakpoints.down("sm")]: {
+      marginLeft: "-1rem",
+      marginRight: "-1rem",
+    },
+  },
 }));
 export default useStyles;

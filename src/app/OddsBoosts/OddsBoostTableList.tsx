@@ -35,6 +35,12 @@ const useStyles = makeStyles((theme) => ({
   tableContainer: {
     overflowY: "hidden",
   },
+  card: {
+    [theme.breakpoints.down("sm")]: {
+      marginLeft: "-1rem",
+      marginRight: "-1rem",
+    },
+  },
 }));
 interface BoostRegularTablesProps {
   sport: string;
@@ -141,7 +147,7 @@ const BoostRegularTables = ({
           <Typography className={classes.subheading}>
             Last Refresh Time: {getFormattedDate(LastRefreshTime)}
           </Typography>
-          <Card>
+          <Card className={classes.card}>
             <CardContent>
               <Grid
                 container

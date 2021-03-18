@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
   collapsed: {
     visibility: "collapse",
   },
-  header: {
+  headerRow: {
     borderBottom: "1px solid rgba(224, 224, 224, 1);",
     borderTop: "1px solid rgba(224, 224, 224, 1);",
     cursor: "pointer",
@@ -37,6 +37,14 @@ const useStyles = makeStyles((theme) => ({
   },
   headerMain: {
     color: theme.palette.primary.dark,
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "0.775rem",
+    },
+  },
+  headerSecondary: {
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "0.675rem",
+    },
   },
   row: {
     backgroundColor: "#f3f3f3",
@@ -66,7 +74,7 @@ const AccordionTable = ({ headers, widths, children }: AccordionTableProps) => {
       </colgroup>
       <TableHead>
         <TableRow
-          className={classes.header}
+          className={classes.headerRow}
           onClick={() => {
             setOpen(!open);
           }}
@@ -78,7 +86,11 @@ const AccordionTable = ({ headers, widths, children }: AccordionTableProps) => {
             if (isMobile && !open) {
               return <TableCell />;
             }
-            return <TableCell>{header.toUpperCase()}</TableCell>;
+            return (
+              <TableCell className={classes.headerSecondary}>
+                {header.toUpperCase()}
+              </TableCell>
+            );
           })}
           <TableCell>
             <IconButton
