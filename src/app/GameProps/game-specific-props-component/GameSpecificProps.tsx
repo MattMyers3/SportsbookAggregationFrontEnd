@@ -157,7 +157,7 @@ const GameSpecificProps = ({
           {AwayTeamName} @ {HomeTeamName}
         </Typography>
         <Typography className={classes.subheading}>Player Props</Typography>
-        <Card>
+        <Card className={classes.card}>
           <CardContent>
             <Grid
               container

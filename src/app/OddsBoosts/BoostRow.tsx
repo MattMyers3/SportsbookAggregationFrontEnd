@@ -13,6 +13,11 @@ const useStyles = makeStyles((theme) => ({
   strike: {
     textDecoration: "line-through",
   },
+  cells: {
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "0.675rem",
+    },
+  },
 }));
 
 interface BoostRowProps {
@@ -31,7 +36,7 @@ const BoostRow = ({
   return (
     <React.Fragment>
       <TableRow className={classes.row}>
-        <TableCell>{description}</TableCell>
+        <TableCell className={classes.cells}>{description}</TableCell>
         <TableCell className={classes.greenText}>
           {OddsFormater.americanOddSignage(boostedOdds)}
         </TableCell>

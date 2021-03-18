@@ -2,6 +2,7 @@ import React, { Component, useState } from "react";
 import OddsFormater from "common/helpers/OddsFormater";
 import { GameProp } from "common/models/GameProp";
 import { makeStyles, TableCell, TableRow } from "@material-ui/core";
+import clsx from "clsx";
 
 const useStyles = makeStyles((theme) => ({
   row: {
@@ -9,6 +10,11 @@ const useStyles = makeStyles((theme) => ({
   },
   greenText: {
     color: theme.palette.primary.main,
+  },
+  cells: {
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "0.775rem",
+    },
   },
 }));
 
@@ -21,11 +27,13 @@ const PropRow = ({ playerProp }: PropRowProps) => {
   return (
     <React.Fragment>
       <TableRow className={classes.row}>
-        <TableCell>{playerProp.playerName}</TableCell>
-        <TableCell className={classes.greenText}>
+        <TableCell className={classes.cells}>{playerProp.playerName}</TableCell>
+        <TableCell className={clsx(classes.cells, classes.greenText)}>
           {OddsFormater.americanOddSignage(playerProp.currentPayout)}
         </TableCell>
-        <TableCell>{playerProp.currentSite}</TableCell>
+        <TableCell className={classes.cells}>
+          {playerProp.currentSite}
+        </TableCell>
         <TableCell />
       </TableRow>
     </React.Fragment>

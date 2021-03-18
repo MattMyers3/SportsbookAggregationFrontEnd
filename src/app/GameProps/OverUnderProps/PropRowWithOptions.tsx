@@ -13,6 +13,11 @@ const useStyles = makeStyles((theme) => ({
   freeMoney: {
     backgroundColor: theme.palette.tertiary.main,
   },
+  cells: {
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "0.675rem",
+    },
+  },
 }));
 
 interface PropRowWithOptionsProps {
@@ -30,15 +35,15 @@ const PropRowWithOptions = ({ propList }: PropRowWithOptionsProps) => {
         <TableRow
           className={clsx(classes.row, isFreeMoney && classes.freeMoney)}
         >
-          <TableCell>{under.playerName}</TableCell>
+          <TableCell className={classes.cells}>{under.playerName}</TableCell>
 
-          <TableCell>
+          <TableCell className={classes.cells}>
             <b>{over.propValue}</b>
             <sup className={classes.greenText}>{over.currentPayout}</sup>
             <br></br>
             {over.currentSite}
           </TableCell>
-          <TableCell>
+          <TableCell className={classes.cells}>
             <b>{under.propValue}</b>
             <sup className={classes.greenText}>{under.currentPayout}</sup>
             <br></br>
