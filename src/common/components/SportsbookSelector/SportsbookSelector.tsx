@@ -10,6 +10,7 @@ import {
   withStyles,
   Chip,
   Grid,
+  NativeSelect,
 } from "@material-ui/core";
 import { Book } from "common/models/Book";
 import { ExpandMore } from "@material-ui/icons";
@@ -56,6 +57,9 @@ const useStyles = makeStyles((theme) =>
     dropdownIcon: {
       color: theme.palette.primary.dark,
     },
+    optionFont: {
+      color: "#000000",
+    },
   })
 );
 
@@ -90,9 +94,9 @@ const SportsBookSelector = ({
 
   const getPlaceHolderText = () => {
     if (allBooks.length === checkedBooks.length) {
-      return <span>All Sportsbooks Selected</span>;
+      return "All Sportsbooks Selected";
     } else {
-      return <span>Select a Sportsbook</span>;
+      return "Select a Sportsbook";
     }
   };
 
@@ -107,7 +111,9 @@ const SportsBookSelector = ({
     }
     return unSelected.map((unSelectedBook) => {
       return (
-        <MenuItem value={unSelectedBook.value}>{unSelectedBook.label}</MenuItem>
+        <option className={classes.optionFont} value={unSelectedBook.value}>
+          {unSelectedBook.label}
+        </option>
       );
     });
   };
@@ -126,18 +132,18 @@ const SportsBookSelector = ({
         <Grid item>
           <FormControl className={classes.margin}>
             <InputLabel>Add a Sportsbook</InputLabel>
-            <Select
+            <NativeSelect
               id="demo-customized-select"
               onChange={handleChange}
               input={<BootstrapInput />}
               value={"1"}
               IconComponent={coloredExpandMore}
             >
-              <MenuItem disabled={true} value="1">
+              <option disabled={true} value="1">
                 {getPlaceHolderText()}
-              </MenuItem>
+              </option>
               {generateOptions()}
-            </Select>
+            </NativeSelect>
           </FormControl>
         </Grid>
         <Grid
