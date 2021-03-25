@@ -319,13 +319,15 @@ const GameRow = ({
           false
         )}
       </StyledTableRow>
-      <TableRow>
-        <MoreWagersTableCell align="center" colSpan={4}>
-          <MoreWagersButton href={"/sports/" + sport + "/games/" + gameId} variant="contained">
-                  More Wagers
-          </MoreWagersButton>
-        </MoreWagersTableCell>
-      </TableRow>
+      {isMobile &&
+        <TableRow>
+          <MoreWagersTableCell align="center" colSpan={4}>
+            <MoreWagersButton href={"/sports/" + sport + "/games/" + gameId} variant="contained">
+                    More Wagers
+            </MoreWagersButton>
+          </MoreWagersTableCell>
+        </TableRow>
+      }
       <TableRow><StyledTableCellHeader></StyledTableCellHeader></TableRow>
     </React.Fragment>
   );
