@@ -51,7 +51,7 @@ const SearchBox = ({
     handleSearch(String(value));
   };
   return (
-    <Paper component="form" className={classes.root}>
+    <Paper className={classes.root}>
       <InputBase
         className={classes.input}
         placeholder={placeholder}
