@@ -2,12 +2,22 @@ import React, { useEffect, useState } from "react";
 import GameLinesService from "common/services/GameLinesService";
 import { GameLines } from "common/models/GameLines";
 import TeamService from "common/services/TeamService";
-import { TableRow, TableCell, withStyles, createStyles, makeStyles, Typography, Button, Link } from "@material-ui/core";
+import { 
+  TableRow, 
+  TableCell, 
+  withStyles, 
+  createStyles, 
+  makeStyles, 
+  Typography, 
+  Button,
+  useMediaQuery,
+  useTheme } from "@material-ui/core";
+  import clsx from "clsx";
 
 const StyledTableRow = withStyles((theme) =>
   createStyles({
     root: {
-      borderBottom: 'none'
+      borderBottom: 'none',
     },
   }),
 )(TableRow);
@@ -28,7 +38,12 @@ const MoreWagersButton = withStyles((theme) =>
       fontWeight: 'bold',
       '&:hover': {
         color: 'black'
-      }
+      },
+      [theme.breakpoints.down("sm")]: {
+        fontSize: '0.675rem',
+        whiteSpace: 'nowrap',
+        marginTop: '-2em'
+      },
     }
   }),
 )(Button);
@@ -36,7 +51,16 @@ const MoreWagersButton = withStyles((theme) =>
 const StyledTableCellHeader = withStyles((theme) =>
   createStyles({
     root: {
-      border: 'none'
+      border: 'none',
+    },
+  }),
+)(TableCell);
+
+const MoreWagersTableCell = withStyles((theme) =>
+  createStyles({
+    root: {
+      border: 'none',
+      padding: 0
     },
   }),
 )(TableCell);
@@ -44,27 +68,50 @@ const StyledTableCellHeader = withStyles((theme) =>
 const GameTimeTypography = withStyles((theme) =>
   createStyles({
     root: {
-      fontSize: 'small'
+      fontSize: 'small',
+      [theme.breakpoints.down("sm")]: {
+        fontSize: "0.675rem",
+      },
     },
   }),
 )(Typography);
 
 const useStyles = makeStyles((theme) => ({
+  fontDisplayMobile: {
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "0.675rem",
+    },
+  },
   oddsDisplay: {
     whiteSpace: 'nowrap',
     color: '#20b33c',
     fontWeight: 'bold',
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "0.675rem",
+    },
   },
   betValueDisplay: {
     fontWeight: 'bold',
-    paddingRight: '5px'
+    paddingRight: '5px',
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "0.675rem",
+    },
   },
-  awayBorderDisplay: {
+  awayBorderDisplayDesktop: {
     borderTop: 'solid 1px #d8d8d8',
     '&:nth-of-type(5n+5)': {
       borderRight: 'solid 1px #d8d8d8',
     },
     '&:nth-of-type(5n+1)': {
+      borderLeft: 'solid 1px #d8d8d8',
+    },
+  },
+  awayBorderDisplayMobile: {
+    borderTop: 'solid 1px #d8d8d8',
+    '&:nth-of-type(4n+4)': {
+      borderRight: 'solid 1px #d8d8d8',
+    },
+    '&:nth-of-type(4n+1)': {
       borderLeft: 'solid 1px #d8d8d8',
     },
   },
@@ -99,6 +146,8 @@ const GameRow = ({
   gameTime,
 }: GameRowProps) => {
   const classes = useStyles();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   const [CurrentGameLines, setCurrentGameLines] = useState<GameLines>(
     {} as GameLines
@@ -127,24 +176,24 @@ const GameRow = ({
   ) => {
     if (val == null)
       return (
-        <StyledTableCellData className={awayBorder ? classes.awayBorderDisplay : classes.homeBorderDisplay}>
+        <StyledTableCellData className={awayBorder ? clsx(!isMobile && classes.awayBorderDisplayDesktop, isMobile && classes.awayBorderDisplayMobile) : classes.homeBorderDisplay}>
           <Typography className={classes.betValueDisplay}>_</Typography>
         </StyledTableCellData>
       );
     if (odds == null)
       //Moneyline
       return (
-        <StyledTableCellData className={awayBorder ? classes.awayBorderDisplay : classes.homeBorderDisplay}>
+        <StyledTableCellData className={awayBorder ? clsx(!isMobile && classes.awayBorderDisplayDesktop, isMobile && classes.awayBorderDisplayMobile) : classes.homeBorderDisplay}>
           <Typography className={classes.oddsDisplay}>{getDisplayValue(val)}</Typography>
-          <Typography>{site}</Typography>
+          <Typography className={classes.fontDisplayMobile}>{site}</Typography>
         </StyledTableCellData>
       );
 
     return (
-      <StyledTableCellData className={awayBorder ? classes.awayBorderDisplay : classes.homeBorderDisplay}>
+      <StyledTableCellData className={awayBorder ? clsx(!isMobile && classes.awayBorderDisplayDesktop, isMobile && classes.awayBorderDisplayMobile) : classes.homeBorderDisplay}>
         <Typography style={{display: 'inline-block'}} className={classes.betValueDisplay}>{appendedLetters}{appendedLetters == null ? getDisplayValue(val) : val}</Typography>
         <Typography style={{display: 'inline-block'}} className={classes.oddsDisplay}>{getDisplayValue(odds)}</Typography>
-        <Typography>{site}</Typography>
+        <Typography className={classes.fontDisplayMobile}>{site}</Typography>
       </StyledTableCellData>
     );
   };
@@ -208,14 +257,16 @@ const GameRow = ({
   return (
     <React.Fragment>
       <StyledTableRow>
-        <StyledTableCellData className={classes.awayBorderDisplay} scope="row">
-          <Typography>{AwayTeamName}</Typography>
+        <StyledTableCellData className={clsx(!isMobile && classes.awayBorderDisplayDesktop, isMobile && classes.awayBorderDisplayMobile)} scope="row">
+          <Typography className={classes.fontDisplayMobile}>{AwayTeamName}</Typography>
         </StyledTableCellData>
-        <StyledTableCellData rowSpan={2} className={classes.awayBorderDisplay}>
-          <MoreWagersButton href={"/sports/" + sport + "/games/" + gameId} variant="contained">
-            More Wagers
-          </MoreWagersButton>
-        </StyledTableCellData>
+        {!isMobile &&
+          <StyledTableCellData rowSpan={2} className={clsx(!isMobile && classes.awayBorderDisplayDesktop, isMobile && classes.awayBorderDisplayMobile)}>
+            <MoreWagersButton href={"/sports/" + sport + "/games/" + gameId} variant="contained">
+              More Wagers
+            </MoreWagersButton>
+          </StyledTableCellData> 
+        }
         {getDisplayCell(
           CurrentGameLines.currentAwaySpread,
           CurrentGameLines.currentAwaySpreadPayout,
@@ -240,7 +291,7 @@ const GameRow = ({
       </StyledTableRow>
       <StyledTableRow>
         <StyledTableCellData className={classes.homeBorderDisplay} scope="row">
-          <Typography>{HomeTeamName}</Typography>
+          <Typography className={classes.fontDisplayMobile}>{HomeTeamName}</Typography>
           <GameTimeTypography color="textSecondary">
             {getFormattedDate(gameTime)}
           </GameTimeTypography>
@@ -268,6 +319,13 @@ const GameRow = ({
           false
         )}
       </StyledTableRow>
+      <TableRow>
+        <MoreWagersTableCell align="center" colSpan={4}>
+          <MoreWagersButton href={"/sports/" + sport + "/games/" + gameId} variant="contained">
+                  More Wagers
+          </MoreWagersButton>
+        </MoreWagersTableCell>
+      </TableRow>
       <TableRow><StyledTableCellHeader></StyledTableCellHeader></TableRow>
     </React.Fragment>
   );

@@ -17,36 +17,50 @@
 */
 import React, { useEffect, useState } from "react";
 
-import {
-  Button,
-  Card,
-  CardBody,
-  CardHeader,
-  CardTitle,
-  Row,
-  Col,
-  CardText,
-} from "reactstrap";
-
-import { thead } from "common/variables/headerNames";
+import { theadDesktop, theadMobile } from "common/variables/headerNames";
 
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import GameRow from "app/Games/GameRow";
 import ReactGA from "react-ga";
 import { Form, Jumbotron } from "react-bootstrap";
-import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import { Game } from "common/models/Game";
 import { Book } from "common/models/Book";
 import LastRefreshTimeService from "common/services/LastRefreshTimeService";
 import GamesService from "common/services/GamesService";
-import { Table, TableContainer, TableHead, TableRow, TableCell, TableBody, withStyles, createStyles, makeStyles } from "@material-ui/core";
+import { faSyncAlt } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import useStyles from "./GameTableSpecificStyles";
+import { 
+  Table, 
+  TableContainer, 
+  TableHead, 
+  TableRow, 
+  TableCell,
+  TableBody, 
+  withStyles, 
+  createStyles, 
+  Container, 
+  Typography, 
+  Grid, 
+  useMediaQuery,
+  useTheme,
+  CardContent,
+  Card
+} from "@material-ui/core";
+import clsx from "clsx";
+import SportsbookSelector from "common/components/SportsbookSelector/SportsbookSelector";
+import SearchBox from "common/components/SearchBox/SearchBox";
 
 const StyledTable = withStyles((theme) =>
   createStyles({
     root: {
-      borderCollapse: 'separate'
+      borderCollapse: 'separate',
+      [theme.breakpoints.down("sm")]: {
+        tableLayout: 'fixed',
+        width: '100%'
+      },
     },
   }),
 )(Table);
@@ -57,7 +71,7 @@ const StyledTableCellHeader = withStyles((theme) =>
       border: 'none',
       color: '#4b5258',
       textTransform: 'uppercase',
-      fontWeight: 'bold'
+      fontWeight: 'bold',
     },
   }),
 )(TableCell);
@@ -81,6 +95,9 @@ const RegularTables = ({
   isLoggedIn,
   setUserDefaults,
 }: TableListProps) => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const classes = useStyles();
   const [EndDate, setEndDate] = useState<Date>(new Date());
   const [StartDate, setStartDate] = useState<Date>(new Date());
   const [LastRefreshTime, setLastRefreshTime] = useState<Date>(new Date());
@@ -148,7 +165,10 @@ const RegularTables = ({
         <StyledTable>
           <TableHead className="text-primary">
             <TableRow>
-              {thead.map((prop, key) => {
+              {!isMobile && theadDesktop.map((prop, key) => {
+                return <StyledTableCellHeader align='center' key={key}>{prop}</StyledTableCellHeader>
+              })}
+              {isMobile && theadMobile.map((prop, key) => {
                 return <StyledTableCellHeader align='center' key={key}>{prop}</StyledTableCellHeader>
               })}
             </TableRow>
@@ -337,52 +357,72 @@ const RegularTables = ({
   };
 
   return (
-    <>
-      <div className="content">
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-primary" tag="h3">
+    <div className={classes.root}>
+      <Container>
+        <Grid
+          container
+          spacing={2}
+          justify="space-between"
+          alignItems="flex-start"
+          direction="row"
+        >
+          <Grid item xs={12} md={8}>
+            <Typography className={classes.heading}>
               {sport} Best Lines (PA)
-            </CardTitle>
-            <CardText>
-              <div className="text-muted">
-                Last Refresh Time: {getFormattedDate(LastRefreshTime)}
-              </div>
-              <br />
-              <Row>
-                <Col lg={2}>{getDateSelector()}</Col>
-                <br />
-                <Col lg={{ span: 2, offset: 6 }} s={true} xs={true}>
-                  <Form.Label>Select Sportsbooks</Form.Label>
-                  <br></br>
-                  <Select
-                    isSearchable={false}
-                    isMulti={true}
-                    options={allBooks}
-                    components={animatedComponents}
-                    onChange={handleSportsbookChange}
-                    placeholderButtonLabel="Sportsbooks..."
-                    value={checkedBooks}
-                  />
-                  {isLoggedIn && (
-                    <Button onClick={setUserDefaults}>Save Selections</Button>
-                  )}
-                </Col>
-              </Row>
-            </CardText>
-          </CardHeader>
-          <CardBody>
-            {Games.length === 0
+            </Typography>
+            <Typography className={classes.subheading}>See where you should be placing your bets!</Typography>
+          </Grid>
+          <Grid item xs={12} md={4}>
+            <Typography className={clsx(
+                !isMobile && classes.lastRefreshDesktop,
+                isMobile && classes.lastRefreshMobile
+              )}>
+              <FontAwesomeIcon
+              icon={faSyncAlt} 
+              className={clsx(
+                !isMobile && classes.lastRefreshDesktop
+              )}/>   
+              &nbsp;&nbsp;Last Refresh Time: {getFormattedDate(LastRefreshTime)}
+            </Typography>
+          </Grid>
+        </Grid>
+        <Card className={classes.card}>
+          <CardContent>
+          <Grid
+              container
+              spacing={2}
+              justify="space-between"
+              alignItems="flex-start"
+              direction="row"
+            >
+              <Grid item xs={12} md={8}>
+                <SportsbookSelector
+                  allBooks={allBooks}
+                  checkedBooks={checkedBooks}
+                  handleSportsBookChange={handleSportsbookChange}
+                ></SportsbookSelector>
+              </Grid>
+              <Grid item xs={12} md={4}>
+              {getDateSelector()}
+                {/* <SearchBox
+                  handleSearch={handleSearch}
+                  placeholder={"Search player"}
+                ></SearchBox> */}
+              </Grid>
+            </Grid>
+          </CardContent>
+          <CardContent>
+          {Games.length === 0
               ? sport === "NFL"
                 ? renderNoGamesWeekMessage()
                 : renderNoGamesTodayMessage()
               : checkedBooks == null || checkedBooks.length === 0
               ? renderNoBooksCheckedMessage()
               : renderTable()}
-          </CardBody>
+          </CardContent>
         </Card>
-      </div>
-    </>
+      </Container>
+    </div>
   );
 };
 
