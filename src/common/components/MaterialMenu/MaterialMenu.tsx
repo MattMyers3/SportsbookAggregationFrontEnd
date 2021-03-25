@@ -33,7 +33,7 @@ const MaterialMenu = ({ children, history }: MaterialMenuProps) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const classes = useStylesMenu();
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = React.useState(false);
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -58,6 +58,7 @@ const MaterialMenu = ({ children, history }: MaterialMenuProps) => {
               routePath.toLowerCase();
             return (
               <ListItem
+                key={route.sport}
                 button
                 component={Link}
                 to={route.layout + route.path}

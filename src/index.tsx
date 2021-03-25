@@ -22,12 +22,8 @@ import { Router, Route, Switch, Redirect } from "react-router-dom";
 import ReactGA from "react-ga";
 import { Security, LoginCallback } from "@okta/okta-react";
 
-import "bootstrap/dist/css/bootstrap.css";
-import "assets/scss/now-ui-dashboard.scss?v1.4.0";
-import "assets/css/demo.css";
-
 import AdminLayout from "common/components/Layout/Admin";
-import { config } from 'common/variables/constants';
+import { config } from "common/variables/constants";
 
 const hist = createBrowserHistory();
 
