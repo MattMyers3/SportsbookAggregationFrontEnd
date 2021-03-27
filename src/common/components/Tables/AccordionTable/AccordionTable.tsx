@@ -68,8 +68,8 @@ const AccordionTable = ({ headers, widths, children }: AccordionTableProps) => {
   return (
     <Table>
       <colgroup>
-        {widths?.map((w) => {
-          return <col style={{ width: String(w) + "%" }}></col>;
+        {widths?.map((w, i) => {
+          return <col key={i} style={{ width: String(w) + "%" }}></col>;
         })}
       </colgroup>
       <TableHead>
@@ -82,12 +82,12 @@ const AccordionTable = ({ headers, widths, children }: AccordionTableProps) => {
           <TableCell className={classes.headerMain}>
             {headers[0].toUpperCase()}
           </TableCell>
-          {headers.slice(1).map((header) => {
+          {headers.slice(1).map((header, i) => {
             if (isMobile && !open) {
               return <TableCell />;
             }
             return (
-              <TableCell className={classes.headerSecondary}>
+              <TableCell key={i} className={classes.headerSecondary}>
                 {header.toUpperCase()}
               </TableCell>
             );

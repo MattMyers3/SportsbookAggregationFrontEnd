@@ -127,7 +127,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 interface GameRowProps {
-  key: string;
   sport: string;
   homeTeamId: string;
   awayTeamId: string;
@@ -137,7 +136,6 @@ interface GameRowProps {
 }
 
 const GameRow = ({
-  key,
   sport,
   homeTeamId,
   awayTeamId,
@@ -204,9 +202,7 @@ const GameRow = ({
   };
 
   const getGameLines = async () => {
-    var lines = await GameLinesService.getLines(gameId, checkedBooks);
-
-    setCurrentGameLines(lines);
+    return await GameLinesService.getLines(gameId, checkedBooks);
   };
 
   const getTeamNames = async () => {
@@ -217,17 +213,33 @@ const GameRow = ({
   };
 
   useEffect(() => {
+    let mounted = true;
     const asyncWrapper = async () => {
       await getGameLines();
       await getTeamNames();
     };
 
     asyncWrapper();
-    setIsLoaded(true);
+    if(mounted) {
+      setIsLoaded(true);
+    }
+
+    return function(){
+      mounted = false;
+    };
   }, []);
 
   useEffect(() => {
-    getGameLines();
+    let mounted = true;
+    getGameLines().then(lines => {
+      if(mounted) {
+        setCurrentGameLines(lines);
+      }
+    })
+
+    return function(){
+      mounted = false;
+    };
   }, [checkedBooks]);
 
   if (!IsLoaded) {

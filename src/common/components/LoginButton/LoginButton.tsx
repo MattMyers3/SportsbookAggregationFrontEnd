@@ -11,9 +11,9 @@ const useStyles = makeStyles((theme) => ({
 
 const ToLoginButton = withStyles((theme) => ({
   root: {
-    background: "linear-gradient(224deg, #FFD047, #FFB347)",
+    background: "linear-gradient(136deg, #FFD047, #FFB347)",
     "&:hover": {
-      background: "linear-gradient(224deg, #FFD047, #FFB347)",
+      background: "linear-gradient(136deg, #FFD047, #FFB347)",
     },
   },
 }))(Button);

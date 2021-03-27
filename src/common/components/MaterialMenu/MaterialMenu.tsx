@@ -51,14 +51,14 @@ const MaterialMenu = ({ children, history }: MaterialMenuProps) => {
         </div>
         <Divider />
         <List>
-          {dashRoutes.map((route) => {
+          {dashRoutes.map((route, i) => {
             const routePath = route.layout + route.path;
             const isCurrentPath =
               history.location.pathname.toLowerCase() ===
               routePath.toLowerCase();
             return (
               <ListItem
-                key={route.sport}
+                key={i}
                 button
                 component={Link}
                 to={route.layout + route.path}

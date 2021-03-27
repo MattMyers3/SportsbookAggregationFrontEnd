@@ -109,9 +109,9 @@ const SportsBookSelector = ({
         unSelected.push(book);
       }
     }
-    return unSelected.map((unSelectedBook) => {
+    return unSelected.map((unSelectedBook, i) => {
       return (
-        <option className={classes.optionFont} value={unSelectedBook.value}>
+        <option key={i} className={classes.optionFont} value={unSelectedBook.value}>
           {unSelectedBook.label}
         </option>
       );
@@ -129,13 +129,14 @@ const SportsBookSelector = ({
   return (
     <div>
       <Grid container direction="column" alignItems="flex-start">
-        <Grid item>
+        <Grid>
           <FormControl className={classes.margin}>
             <NativeSelect
               id="demo-customized-select"
               onChange={handleChange}
               input={<BootstrapInput />}
               value={"1"}
+              fullWidth
               IconComponent={coloredExpandMore}
             >
               <option disabled={true} value="1">
@@ -152,9 +153,9 @@ const SportsBookSelector = ({
           spacing={1}
           className={classes.chipOrganization}
         >
-          {checkedBooks.map((book) => {
+          {checkedBooks.map((book, i) => {
             return (
-              <Grid item>
+              <Grid item key={i}>
                 <Chip
                   label={book.value}
                   variant="outlined"

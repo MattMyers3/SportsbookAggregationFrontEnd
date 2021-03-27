@@ -35,9 +35,9 @@ const GamePropTableWithOptions = ({
 
   const renderGamePropRowsOverUnder = (props: any) => {
     let propsGroupedByName = groupBy(props, "playerName");
-    return propsGroupedByName.map((props) => {
+    return propsGroupedByName.map((props, i) => {
       if (props.groupList[0].playerName.toLowerCase().includes(searchTerm))
-        return <PropRowWithOptions propList={props.groupList} />;
+        return <PropRowWithOptions key={i} propList={props.groupList} />;
     });
   };
 

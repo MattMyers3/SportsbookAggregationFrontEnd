@@ -87,10 +87,10 @@ const BoostRegularTables = ({
         : null;
     if (bookBoosts == null) return;
 
-    return bookBoosts.map((boost) => {
+    return bookBoosts.map((boost, i) => {
       return (
         <BoostRow
-          key={boost.oddsboostid}
+          key={i}
           description={boost.description}
           previousOdds={boost.previousOdds}
           boostedOdds={boost.boostedOdds}

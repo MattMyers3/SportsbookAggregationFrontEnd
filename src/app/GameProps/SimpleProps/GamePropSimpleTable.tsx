@@ -21,9 +21,9 @@ const GamePropSimpleTable = ({
       .sort(function (a, b) {
         return a.currentPayout - b.currentPayout;
       })
-      .map((singleProp) => {
+      .map((singleProp, i) => {
         if (singleProp.playerName.toLowerCase().includes(searchTerm)) {
-          return <PropRow playerProp={singleProp} />;
+          return <PropRow key={i} playerProp={singleProp} />;
         }
       });
   };

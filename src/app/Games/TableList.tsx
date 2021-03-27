@@ -112,24 +112,22 @@ const RegularTables = ({
   const renderGameRows = () => {
     var sortGames = Games;
     sortGames.sort(function (a, b) {
-      return Math.abs(
-        new Date(a.timeStamp).getTime() - new Date(b.timeStamp).getTime()
-      );
+        return new Date(a.timeStamp).getTime() - new Date(b.timeStamp).getTime()
     });
-    return sortGames.map((game) => {
+    return sortGames.map((game, i) => {
       return (
-        <React.Fragment>
-        <GameRow
-          key={game.gameId}  
-          sport={sport}
-          homeTeamId={game.homeTeamId}
-          awayTeamId={game.awayTeamId}
-          gameId={game.gameId}
-          checkedBooks={
-            checkedBooks != null ? checkedBooks.map((book) => book.value) : []
-          }
-          gameTime={game.timeStamp}
-        />
+        <React.Fragment key={i}>
+          <GameRow
+            key={game.gameId}  
+            sport={sport}
+            homeTeamId={game.homeTeamId}
+            awayTeamId={game.awayTeamId}
+            gameId={game.gameId}
+            checkedBooks={
+              checkedBooks != null ? checkedBooks.map((book) => book.value) : []
+            }
+            gameTime={game.timeStamp}
+          />
         </React.Fragment>
       );
     });
@@ -220,11 +218,12 @@ const RegularTables = ({
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <KeyboardDatePicker
             margin="normal"
-            id="date-picker-dialog"
-            label="Date picker dialog"
+            id="date-selector"
+            label="Select Date"
             format="MM/dd/yyyy"
             value={StartDate}
             onChange={handleDateChange}
+            fullWidth
             KeyboardButtonProps={{
               'aria-label': 'change date',
             }}
@@ -342,37 +341,65 @@ const RegularTables = ({
   }, []);
 
   useEffect(() => {
+    let mounted = true;
     if (sport === "NFL") {
-      fetchGamesInRange(StartDate, EndDate);
-    } else {
-      fetchGamesOnDay(StartDate);
+      fetchGamesInRange(StartDate, EndDate).then(games => {
+        if(mounted) {
+          setGames(games);
+        }
+      });
+    } 
+    else {
+      if (StartDate.getDate() < new Date().getDate()){
+        if(mounted) {
+          const games = [];
+          setGames(games);
+        }
+      }
+      else{
+        fetchGamesOnDay(StartDate).then(games => {
+          if(mounted) {
+            setGames(games)
+          }
+        });
+      }      
     }
+
+    return function(){
+      mounted = false;
+    };
   }, [StartDate, EndDate]);
 
   useEffect(() => {
+    let mounted = true;
     const asyncWrapper = async () => {
       let refreshTime = await LastRefreshTimeService.getRefreshTime(
         "GameLines"
       );
-      setLastRefreshTime(refreshTime);
+      if(mounted) {
+        setLastRefreshTime(refreshTime);
+      }
     };
 
     asyncWrapper();
+
+    return function(){
+      mounted = false;
+    };
   }, [Games]);
 
   const fetchGamesInRange = async (startDate: Date, endDate: Date) => {
     endDate.setHours(23, 59, 59, 999);
-    const games = await GamesService.getGamesByDateRange(
+    return await GamesService.getGamesByDateRange(
       startDate,
       endDate,
       sport
     );
-    setGames(games);
   };
 
   const fetchGamesOnDay = (date) => {
-    var endTime = new Date(date);
-    fetchGamesInRange(date, endTime);
+      var endTime = new Date(date);
+      return fetchGamesInRange(date, endTime);
   };
 
   return (
