@@ -131,7 +131,6 @@ const SportsBookSelector = ({
       <Grid container direction="column" alignItems="flex-start">
         <Grid item>
           <FormControl className={classes.margin}>
-            <InputLabel>Add a Sportsbook</InputLabel>
             <NativeSelect
               id="demo-customized-select"
               onChange={handleChange}

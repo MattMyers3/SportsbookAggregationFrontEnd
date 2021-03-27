@@ -47,8 +47,14 @@ import {
   useMediaQuery,
   useTheme,
   CardContent,
-  Card
+  Card,
+  TextField
 } from "@material-ui/core";
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker,
+} from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/date-fns';
 import clsx from "clsx";
 import SportsbookSelector from "common/components/SportsbookSelector/SportsbookSelector";
 import SearchBox from "common/components/SearchBox/SearchBox";
@@ -114,7 +120,7 @@ const RegularTables = ({
       return (
         <React.Fragment>
         <GameRow
-          key={game.gameId}
+          key={game.gameId}  
           sport={sport}
           homeTeamId={game.homeTeamId}
           awayTeamId={game.awayTeamId}
@@ -211,16 +217,29 @@ const RegularTables = ({
     } else {
       return (
         <div>
-          <Form.Label>Select Date</Form.Label>
-          <br></br>
-          <DatePicker selected={StartDate} onChange={handleDateChange} />
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <KeyboardDatePicker
+            margin="normal"
+            id="date-picker-dialog"
+            label="Date picker dialog"
+            format="MM/dd/yyyy"
+            value={StartDate}
+            onChange={handleDateChange}
+            KeyboardButtonProps={{
+              'aria-label': 'change date',
+            }}
+          />
+          </MuiPickersUtilsProvider>
         </div>
       );
     }
   };
 
+
   const handleDateChange = (date) => {
-    if (date.getDate() > new Date().getDate()) date.setHours(0, 0, 0);
+    if (date.getDate() > new Date().getDate())
+      date.setHours(0, 0, 0);
+      
     setStartDate(date);
 
     ReactGA.event({
