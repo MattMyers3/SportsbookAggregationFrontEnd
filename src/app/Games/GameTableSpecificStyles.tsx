@@ -11,7 +11,10 @@ const useStyles = makeStyles((theme) => ({
   },
   subheading: {
     marginBottom: "0.5rem",
-    opacity: 0.7
+    opacity: 0.7,
+    [theme.breakpoints.down("sm")]: {
+      marginBottom: "0rem",
+    },
   },
   lastRefreshDesktop: {
     marginTop: "1rem",
