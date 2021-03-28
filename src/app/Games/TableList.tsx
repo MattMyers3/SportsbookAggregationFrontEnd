@@ -54,6 +54,9 @@ const StyledTableCellHeader = withStyles((theme) =>
       color: '#4b5258',
       textTransform: 'uppercase',
       fontWeight: 'bold',
+      [theme.breakpoints.down("sm")]: {
+        paddingTop: '0'
+      }
     },
   }),
 )(TableCell);
