@@ -410,7 +410,7 @@ const RegularTables = ({
           <CardContent>
           <Grid
               container
-              spacing={2}
+              spacing={isMobile ? 3 : 2}
               justify="space-between"
               alignItems="flex-start"
               direction="row"
