@@ -409,7 +409,7 @@ const RegularTables = ({
             </Typography>
           </Grid>
         </Grid>
-        <Card className={classes.card}>
+        <Card className={classes.card} elevation={isMobile ? 5 : 2}>
           <CardContent>
           <Grid
               container
