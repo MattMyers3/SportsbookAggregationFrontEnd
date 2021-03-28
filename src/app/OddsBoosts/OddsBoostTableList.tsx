@@ -18,7 +18,6 @@ import OddsBoostService from "common/services/OddsBoostService";
 import { theadOddsBoosts } from "common/variables/headerNames";
 import React, { useEffect, useState } from "react";
 import { Jumbotron } from "react-bootstrap";
-import "react-datepicker/dist/react-datepicker.css";
 
 const useStyles = makeStyles((theme) => ({
   root: {

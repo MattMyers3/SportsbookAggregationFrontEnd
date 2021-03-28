@@ -20,7 +20,7 @@ export default class GameLinesService {
         "?sportsbooks=" +
         checkedBooks.join()
     );
-    if (response.status != 200) {
+    if (response.status !== 200) {
       throw "Could Not Fetch Game Lines";
     }
     return response.json();

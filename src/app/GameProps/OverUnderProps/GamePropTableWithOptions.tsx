@@ -1,5 +1,4 @@
 import React from "react";
-import { Table } from "reactstrap";
 import { theadPropsOverUnder } from "common/variables/headerNames";
 import fuzz from "fuzzball";
 import PropRowWithOptions from "app/GameProps/OverUnderProps/PropRowWithOptions";

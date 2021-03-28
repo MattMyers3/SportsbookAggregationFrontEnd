@@ -1,10 +1,5 @@
 import React from "react";
-// javascript plugin used to create scrollbars on windows
-
-// reactstrap components
 import { Route, Switch } from "react-router-dom";
-
-// core components
 import { apiUrl } from "common/variables/constants";
 import Login from "app/Login/Login";
 import routes from "routes";

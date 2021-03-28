@@ -25,7 +25,6 @@ interface LoginButtonProps {
 }
 
 const LoginButton = ({ authState, authService, history }: LoginButtonProps) => {
-  const classes = useStyles();
   const [_isMounted, setIsMounted] = useState(false);
   const [userInfo, setUserInfo] = useState<any>(null);
 

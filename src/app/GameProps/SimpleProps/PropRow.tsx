@@ -1,4 +1,4 @@
-import React, { Component, useState } from "react";
+import React from "react";
 import OddsFormater from "common/helpers/OddsFormater";
 import { GameProp } from "common/models/GameProp";
 import { makeStyles, TableCell, TableRow } from "@material-ui/core";

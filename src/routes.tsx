@@ -19,7 +19,7 @@ import TableList from "app/Games/TableList";
 import BoostRegularTables from "app/OddsBoosts/OddsBoostTableList";
 import {
   faBasketballBall,
-  faFootballBall,
+  //faFootballBall,
   faQuestion,
   faRocket,
   faHockeyPuck,

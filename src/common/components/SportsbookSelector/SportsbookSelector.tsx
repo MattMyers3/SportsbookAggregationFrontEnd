@@ -2,10 +2,7 @@ import React from "react";
 import {
   FormControl,
   InputBase,
-  InputLabel,
   makeStyles,
-  MenuItem,
-  Select,
   createStyles,
   withStyles,
   Chip,

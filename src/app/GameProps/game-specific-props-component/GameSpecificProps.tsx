@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import { Jumbotron } from "react-bootstrap";
-import makeAnimated from "react-select/animated";
 import GamePropSimpleTable from "app/GameProps/SimpleProps/GamePropSimpleTable";
 import GamePropTableWithOptions from "app/GameProps/OverUnderProps/GamePropTableWithOptions";
 import { GameProp } from "common/models/GameProp";
@@ -72,7 +71,7 @@ const GameSpecificProps = ({
       );
       setGameProps(props);
     };
-    if (!checkedBooks) {
+    if (!checkedBooks || checkedBooks.length === 0) {
       setGameProps([]);
       setPropTypes([]);
     } else {

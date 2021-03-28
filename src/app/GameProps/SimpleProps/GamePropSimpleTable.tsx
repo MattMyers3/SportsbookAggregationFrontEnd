@@ -1,5 +1,4 @@
 import React from "react";
-import { Table } from "reactstrap";
 import { theadProps } from "common/variables/headerNames";
 import { GameProp } from "common/models/GameProp";
 import PropRow from "./PropRow";

@@ -1,30 +1,8 @@
-/*!
-
-=========================================================
-* Now UI Dashboard React - v1.4.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/now-ui-dashboard-react
-* Copyright 2020 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://github.com/creativetimofficial/now-ui-dashboard-react/blob/master/LICENSE.md)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
 import React, { useEffect, useState } from "react";
-
 import { theadDesktop, theadMobile } from "common/variables/headerNames";
-
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
 import GameRow from "app/Games/GameRow";
 import ReactGA from "react-ga";
 import { Form, Jumbotron } from "react-bootstrap";
-import makeAnimated from "react-select/animated";
 import { Game } from "common/models/Game";
 import { Book } from "common/models/Book";
 import LastRefreshTimeService from "common/services/LastRefreshTimeService";
@@ -47,8 +25,7 @@ import {
   useMediaQuery,
   useTheme,
   CardContent,
-  Card,
-  TextField
+  Card
 } from "@material-ui/core";
 import {
   MuiPickersUtilsProvider,
@@ -57,7 +34,6 @@ import {
 import DateFnsUtils from '@date-io/date-fns';
 import clsx from "clsx";
 import SportsbookSelector from "common/components/SportsbookSelector/SportsbookSelector";
-import SearchBox from "common/components/SearchBox/SearchBox";
 
 const StyledTable = withStyles((theme) =>
   createStyles({
@@ -81,8 +57,6 @@ const StyledTableCellHeader = withStyles((theme) =>
     },
   }),
 )(TableCell);
-
-const animatedComponents = makeAnimated();
 
 interface TableListProps {
   sport: string;
