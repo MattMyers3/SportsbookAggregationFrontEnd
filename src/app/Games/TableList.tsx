@@ -191,7 +191,7 @@ const RegularTables = ({
         <div>
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <KeyboardDatePicker
-            margin="normal"
+            margin={!isMobile ? "normal" : "none"}
             id="date-selector"
             label="Select Date"
             format="MM/dd/yyyy"
@@ -415,6 +415,11 @@ const RegularTables = ({
               alignItems="flex-start"
               direction="row"
             >
+              {isMobile &&
+                <Grid item xs={12} md={4}>
+                  {getDateSelector()}
+                </Grid>
+              }
               <Grid item xs={12} md={8}>
                 <SportsbookSelector
                   allBooks={allBooks}
@@ -422,13 +427,11 @@ const RegularTables = ({
                   handleSportsBookChange={handleSportsbookChange}
                 ></SportsbookSelector>
               </Grid>
-              <Grid item xs={12} md={4}>
-              {getDateSelector()}
-                {/* <SearchBox
-                  handleSearch={handleSearch}
-                  placeholder={"Search player"}
-                ></SearchBox> */}
-              </Grid>
+              {!isMobile &&
+                <Grid item xs={12} md={4}>
+                  {getDateSelector()}
+                </Grid>
+              }
             </Grid>
           </CardContent>
           <CardContent>
