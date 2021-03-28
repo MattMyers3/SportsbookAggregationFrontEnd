@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import "react-datepicker/dist/react-datepicker.css";
 import { Jumbotron } from "react-bootstrap";
 import GamePropSimpleTable from "app/GameProps/SimpleProps/GamePropSimpleTable";
 import GamePropTableWithOptions from "app/GameProps/OverUnderProps/GamePropTableWithOptions";

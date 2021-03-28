@@ -125,9 +125,9 @@ const SportsBookSelector = ({
 
   return (
     <div>
-      <Grid container direction="column" alignItems="flex-start">
-        <Grid>
-          <FormControl className={classes.margin}>
+      <Grid container alignItems="flex-start" spacing={1}>
+        <Grid xs={12} md={11}>
+          <FormControl className={classes.margin} fullWidth>
             <NativeSelect
               id="demo-customized-select"
               onChange={handleChange}
