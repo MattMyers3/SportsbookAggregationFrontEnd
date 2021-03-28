@@ -1,4 +1,5 @@
 import { createMuiTheme } from "@material-ui/core/styles";
+import "@fontsource/open-sans"
 
 interface PaletteColor {
   light?: string;
@@ -28,5 +29,8 @@ const mainTheme = createMuiTheme({
       main: "#f9e609",
     },
   },
+  typography: {
+    fontFamily: 'Open Sans'
+  }
 });
 export default mainTheme;
