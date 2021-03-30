@@ -63,6 +63,7 @@ const MaterialMenu = ({ children, history }: MaterialMenuProps) => {
                 component={Link}
                 to={route.layout + route.path}
                 className={clsx(isCurrentPath && classes.optionIsSelected)}
+                onClick={isMobile && handleDrawerClose}
               >
                 <ListItemIcon>
                   <FontAwesomeIcon
