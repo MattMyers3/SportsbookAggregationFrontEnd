@@ -5,20 +5,25 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   heading: {
-    fontSize: "1.5rem",
+    fontSize: "2rem",
+    fontWeight: "bold",
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "1.5rem",
+    },
     color: "#000000",
     marginTop: "1rem",
+    marginBottom: "-0.75rem"
   },
   subheading: {
-    marginBottom: "0.5rem",
     opacity: 0.7,
-    [theme.breakpoints.down("sm")]: {
-      marginBottom: "0rem",
-    },
   },
   lastRefreshDesktop: {
-    marginTop: "1rem",
-    opacity: 0.7
+    opacity: 0.7,
+    textAlign: "right",
+    marginBottom: "1rem",
+  },
+  refreshIcon: {
+    opacity: 0.7,
   },
   lastRefreshMobile: {
     opacity: 0.7,

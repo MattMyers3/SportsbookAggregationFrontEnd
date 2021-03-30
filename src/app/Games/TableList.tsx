@@ -201,6 +201,7 @@ const RegularTables = ({
             value={StartDate}
             onChange={handleDateChange}
             fullWidth
+            autoOk
             KeyboardButtonProps={{
               'aria-label': 'change date',
             }}
@@ -389,22 +390,26 @@ const RegularTables = ({
           alignItems="flex-start"
           direction="row"
         >
-          <Grid item xs={12} md={8}>
+          <Grid item xs={12}>
             <Typography className={classes.heading}>
               {sport} Best Lines (PA)
             </Typography>
+          </Grid>
+          <Grid item xs={12} md={8}>
             <Typography className={classes.subheading}>See where you should be placing your bets!</Typography>
           </Grid>
-          <Grid item xs={12} md={4}>
+          <Grid 
+            item 
+            xs={12} 
+            md={4}
+          >
             <Typography className={clsx(
                 !isMobile && classes.lastRefreshDesktop,
                 isMobile && classes.lastRefreshMobile
               )}>
               <FontAwesomeIcon
               icon={faSyncAlt} 
-              className={clsx(
-                !isMobile && classes.lastRefreshDesktop
-              )}/>   
+              className={classes.refreshIcon}/>   
               &nbsp;&nbsp;Last Refresh Time: {getFormattedDate(LastRefreshTime)}
             </Typography>
           </Grid>
