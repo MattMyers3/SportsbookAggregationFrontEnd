@@ -102,7 +102,8 @@ const useStyles = makeStyles((theme) => ({
   },
   betValueDisplay: {
     fontWeight: 'bold',
-    paddingRight: '5px',
+    paddingRight: '0.3rem',
+    paddingLeft: '0.3rem',
     [theme.breakpoints.down("sm")]: {
       fontSize: "0.675rem",
     },
