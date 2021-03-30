@@ -39,9 +39,9 @@ const MoreWagersButton = withStyles((theme) =>
       '&:hover': {
         color: 'black'
       },
+      whiteSpace: 'nowrap',
       [theme.breakpoints.down("sm")]: {
         fontSize: '0.675rem',
-        whiteSpace: 'nowrap',
         marginTop: '-2em'
       },
     }
@@ -56,7 +56,17 @@ const StyledTableCellHeader = withStyles((theme) =>
   }),
 )(TableCell);
 
-const MoreWagersTableCell = withStyles((theme) =>
+const MoreWagersTableCellDesktop = withStyles((theme) =>
+  createStyles({
+    root: {
+      textAlign: 'center',
+      padding: '0',
+      width: '1%'
+    },
+  }),
+)(TableCell);
+
+const MoreWagersTableCellMobile = withStyles((theme) =>
   createStyles({
     root: {
       border: 'none',
@@ -273,11 +283,11 @@ const GameRow = ({
           <Typography className={classes.fontDisplayMobile}>{AwayTeamName}</Typography>
         </StyledTableCellData>
         {!isMobile &&
-          <StyledTableCellData rowSpan={2} className={clsx(!isMobile && classes.awayBorderDisplayDesktop, isMobile && classes.awayBorderDisplayMobile)}>
+          <MoreWagersTableCellDesktop rowSpan={2} className={clsx(!isMobile && classes.awayBorderDisplayDesktop, isMobile && classes.awayBorderDisplayMobile)}>
             <MoreWagersButton href={"/sports/" + sport + "/games/" + gameId} variant="contained">
               More Wagers
             </MoreWagersButton>
-          </StyledTableCellData> 
+          </MoreWagersTableCellDesktop> 
         }
         {getDisplayCell(
           CurrentGameLines.currentAwaySpread,
@@ -333,11 +343,11 @@ const GameRow = ({
       </StyledTableRow>
       {isMobile &&
         <TableRow>
-          <MoreWagersTableCell align="center" colSpan={4}>
+          <MoreWagersTableCellMobile align="center" colSpan={4}>
             <MoreWagersButton href={"/sports/" + sport + "/games/" + gameId} variant="contained">
                     More Wagers
             </MoreWagersButton>
-          </MoreWagersTableCell>
+          </MoreWagersTableCellMobile>
         </TableRow>
       }
       <TableRow><StyledTableCellHeader></StyledTableCellHeader></TableRow>
