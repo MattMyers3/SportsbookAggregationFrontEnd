@@ -102,10 +102,12 @@ const useStyles = makeStyles((theme) => ({
   },
   betValueDisplay: {
     fontWeight: 'bold',
-    paddingRight: '0.3rem',
-    paddingLeft: '0.3rem',
+    paddingRight: '0.5rem',
+    paddingLeft: '0rem',
     [theme.breakpoints.down("sm")]: {
       fontSize: "0.675rem",
+      paddingRight: '0.3rem',
+      paddingLeft: '0.3rem',
     },
   },
   awayBorderDisplayDesktop: {
