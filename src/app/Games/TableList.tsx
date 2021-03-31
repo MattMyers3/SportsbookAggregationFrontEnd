@@ -328,7 +328,7 @@ const RegularTables = ({
       });
     } 
     else {
-      if (StartDate.getDate() < new Date().getDate()){
+      if (StartDate.getDate() !== new Date().getDate() && StartDate.getTime() < new Date().getTime()){
         if(mounted) {
           const games = [];
           setGames(games);
