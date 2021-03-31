@@ -33,7 +33,7 @@ const MaterialMenu = ({ children, history }: MaterialMenuProps) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const classes = useStylesMenu();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(!isMobile);
   const handleDrawerOpen = () => {
     setOpen(true);
   };
