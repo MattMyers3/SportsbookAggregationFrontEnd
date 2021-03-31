@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import clsx from "clsx";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Drawer from "@material-ui/core/Drawer";
@@ -18,7 +18,7 @@ import {
   ListItemIcon,
   ListItemText,
   useMediaQuery,
-  useTheme,
+  useTheme
 } from "@material-ui/core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import LoginButton from "../LoginButton/LoginButton";
@@ -34,6 +34,11 @@ const MaterialMenu = ({ children, history }: MaterialMenuProps) => {
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const classes = useStylesMenu();
   const [open, setOpen] = React.useState(false);
+
+  useEffect(() => {
+    setOpen(!isMobile)
+  }, [isMobile]);
+
   const handleDrawerOpen = () => {
     setOpen(true);
   };
