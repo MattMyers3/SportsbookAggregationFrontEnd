@@ -4,9 +4,9 @@ import { createBrowserHistory } from "history";
 import { Router, Route, Switch, Redirect } from "react-router-dom";
 import ReactGA from "react-ga";
 import { Security, LoginCallback } from "@okta/okta-react";
-
 import AdminLayout from "common/components/Layout/Admin";
 import { config } from "common/variables/constants";
+import Home from "common/components/Home/Home";
 
 const hist = createBrowserHistory();
 
@@ -25,6 +25,9 @@ ReactDOM.render(
   <Router history={hist}>
     <Security {...oktaConfig}>
       <Switch>
+        <Route exact path="/">
+          <Home />
+        </Route>
         <Route
           path="/sports/:sport/games/:gameId"
           render={(props) => <AdminLayout history={hist} {...props} />}
@@ -45,7 +48,7 @@ ReactDOM.render(
             <AdminLayout baseUrl="https://dev-5862712.okta.com" {...props} />
           )}
         />
-        <Redirect to="/sports/nba" />
+        <Redirect to="/" />
       </Switch>
     </Security>
   </Router>,
