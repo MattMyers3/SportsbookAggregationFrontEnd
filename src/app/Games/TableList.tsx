@@ -214,7 +214,7 @@ const RegularTables = ({
 
 
   const handleDateChange = (date) => {
-    if (date.getDate() > new Date().getDate())
+    if (date.getDate() !== new Date().getDate() && date.getTime() > new Date().getTime())
       date.setHours(0, 0, 0);
       
     setStartDate(date);
@@ -328,7 +328,7 @@ const RegularTables = ({
       });
     } 
     else {
-      if (StartDate.getDate() < new Date().getDate()){
+      if (StartDate.getDate() !== new Date().getDate() && StartDate.getTime() < new Date().getTime()){
         if(mounted) {
           const games = [];
           setGames(games);

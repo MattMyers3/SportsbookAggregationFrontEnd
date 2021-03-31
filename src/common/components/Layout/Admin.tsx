@@ -42,7 +42,10 @@ export default withOktaAuth(
       fetch(apiUrl + "/gamblingsite")
         .then((res) => res.json())
         .then((data) => {
-          var books = data.map((site) => {
+          var dataSorted = data.sort(function(a,b) {
+            return (a.name < b.name) ? -1 : (a.name > b.name) ? 1 : 0;
+          } );
+          var books = dataSorted.map((site) => {
             const container = {};
 
             container["value"] = site.name;

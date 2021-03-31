@@ -20,6 +20,7 @@ import BoostRegularTables from "app/OddsBoosts/OddsBoostTableList";
 import {
   faBasketballBall,
   //faFootballBall,
+  faBaseballBall,
   faQuestion,
   faRocket,
   faHockeyPuck,
@@ -44,6 +45,14 @@ var dashRoutes: route[] = [
     name: "Odds Boosts",
     icon: faRocket,
     component: BoostRegularTables,
+    layout: "/sports",
+  },
+  {
+    path: "/MLB",
+    sport: "MLB",
+    name: "MLB",
+    icon: faBaseballBall,
+    component: TableList,
     layout: "/sports",
   },
   {
