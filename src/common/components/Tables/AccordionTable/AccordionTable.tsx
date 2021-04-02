@@ -25,6 +25,7 @@ const useStyles = makeStyles((theme) => ({
   },
   collapsed: {
     visibility: "collapse",
+    display: "none"
   },
   headerRow: {
     borderBottom: "1px solid rgba(224, 224, 224, 1);",
