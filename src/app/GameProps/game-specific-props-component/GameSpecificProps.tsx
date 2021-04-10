@@ -122,6 +122,7 @@ const GameSpecificProps = ({
 
   const renderTable = (propType) => {
     if (!GameProps) return;
+    const firstTable = PropTypes[0] === propType;
 
     let propsForPropType: any = GameProps.filter(
       (singleProp) => getPropTableTitle(singleProp) === propType
@@ -135,6 +136,7 @@ const GameSpecificProps = ({
           propsForPropType={propsForPropType}
           propType={propType}
           searchTerm={searchTerm}
+          firstTable={firstTable}
         ></GamePropTableWithOptions>
       );
     } else {
@@ -143,6 +145,7 @@ const GameSpecificProps = ({
           propsForPropType={propsForPropType}
           propType={propType}
           searchTerm={searchTerm}
+          firstTable={firstTable}
         ></GamePropSimpleTable>
       );
     }
