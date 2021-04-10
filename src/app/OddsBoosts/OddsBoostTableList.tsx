@@ -110,7 +110,7 @@ const BoostRegularTables = ({
     );
   };
 
-  const renderTable = (sportsbook) => {
+  const renderTable = (sportsbook, index: number) => {
     if (
       OddsBoosts == null ||
       OddsBoosts.filter((boost) => boost.siteName === sportsbook.value)
@@ -123,6 +123,7 @@ const BoostRegularTables = ({
       <AccordionTable
         headers={[sportsbook.value, theadOddsBoosts[0], theadOddsBoosts[1]]}
         widths={[60, 20, 20]}
+        startOpen={index === 0}
       >
         {renderOddsBoostRows(sportsbook)}
       </AccordionTable>
@@ -170,7 +171,7 @@ const BoostRegularTables = ({
                 checkedBooks.length === 0 ||
                 TableState === LoadingStatus.LOADING
                   ? renderNoBooksCheckedMessage()
-                  : checkedBooks.map((book) => renderTable(book))}
+                  : checkedBooks.map((book, i) => renderTable(book, i))}
               </TableContainer>
             </CardContent>
           </Card>
