@@ -1,20 +1,31 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { theadPropsOverUnder } from "common/variables/headerNames";
 import fuzz from "fuzzball";
 import PropRowWithOptions from "app/GameProps/OverUnderProps/PropRowWithOptions";
 import AccordionTable from "common/components/Tables/AccordionTable/AccordionTable";
+import { GameProp } from "common/models/GameProp";
 
 interface GamePropTableWithOptionsProps {
-  propType: any;
-  propsForPropType: any;
-  searchTerm: String;
+  propType: string;
+  propsForPropType: GameProp[];
+  searchTerm: string;
+  firstTable?: boolean;
 }
 
 const GamePropTableWithOptions = ({
   propType,
   propsForPropType,
   searchTerm,
+  firstTable,
 }: GamePropTableWithOptionsProps) => {
+  const [accordionOpen, setAccordionOpen] = useState(firstTable);
+  useEffect(() => {
+    if (searchTerm !== "") {
+      setAccordionOpen(true);
+    } else {
+      setAccordionOpen(false);
+    }
+  });
   const groupBy = (props, field) => {
     let groupedArr = [] as any;
     props.forEach(function (e) {
@@ -45,6 +56,7 @@ const GamePropTableWithOptions = ({
       <AccordionTable
         headers={[propType].concat(theadPropsOverUnder)}
         widths={[60, 20, 20]}
+        startOpen={accordionOpen}
       >
         {renderGamePropRowsOverUnder(propsForPropType)}
       </AccordionTable>

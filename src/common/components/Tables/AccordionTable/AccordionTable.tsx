@@ -6,15 +6,13 @@ import {
   TableCell,
   TableHead,
   TableRow,
-  useMediaQuery,
-  useTheme,
 } from "@material-ui/core";
 import {
   KeyboardArrowDown as KeyboardArrowDownIcon,
   KeyboardArrowUp as KeyboardArrowUpIcon,
 } from "@material-ui/icons";
 import clsx from "clsx";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -25,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
   },
   collapsed: {
     visibility: "collapse",
-    display: "none"
+    display: "none",
   },
   headerRow: {
     borderBottom: "1px solid rgba(224, 224, 224, 1);",
@@ -58,13 +56,24 @@ interface AccordionTableProps {
   headers: string[];
   widths?: number[];
   children: React.ReactNode;
+  startOpen?: boolean;
 }
 
-const AccordionTable = ({ headers, widths, children }: AccordionTableProps) => {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+const AccordionTable = ({
+  headers,
+  widths,
+  children,
+  startOpen,
+}: AccordionTableProps) => {
   const classes = useStyles();
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(startOpen);
+
+  useEffect(() => {
+    if (startOpen) {
+      setOpen(startOpen);
+    }
+  }, [startOpen]);
+
   return (
     <Table>
       <colgroup>
@@ -83,7 +92,7 @@ const AccordionTable = ({ headers, widths, children }: AccordionTableProps) => {
             {headers[0].toUpperCase()}
           </TableCell>
           {headers.slice(1).map((header, i) => {
-            if (isMobile && !open) {
+            if (!open) {
               return <TableCell />;
             }
             return (
