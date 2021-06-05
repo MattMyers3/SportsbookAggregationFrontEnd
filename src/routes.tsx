@@ -64,14 +64,6 @@ var dashRoutes: route[] = [
     layout: "/sports",
   },
   {
-    path: "/NCAAB",
-    sport: "NCAAB",
-    name: "NCAAB",
-    icon: faBasketballBall,
-    component: TableList,
-    layout: "/sports",
-  },
-  {
     path: "/NHL",
     sport: "NHL",
     name: "NHL",
